@@ -1,0 +1,112 @@
+/* メインテーブル*/
+#main_table{
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* タイトルエリア */
+#title {
+    height: 110px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ccf;
+    border: 0px;
+    border-radius: 20px;
+}
+
+/* タイトル行 */
+#title_line {
+    font-weight: bold;
+    font-size: x-large;
+    border: 0px;
+    margin:0px;
+    padding: 0px;
+    letter-spacing: 1px;
+}
+
+/* メニューボタンなど */
+.menu_button {
+    width: 61px;
+    height: 55px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: small;
+    cursor: pointer; /* クリックできることをわかりやすく */
+}
+
+/* 盤面全体 */
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    border: 4px solid #333; /* 枠線を少し太くして重厚感をプラス */
+    width: 480px;
+    margin: 20px auto; /* 画面中央に配置したい場合に便利 */
+}
+
+/* マス目 */
+.cell {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 盤の色 */
+.light { 
+    background-color: #f0d9b5; 
+}
+
+.dark { 
+    background-color: #b58863; 
+    cursor: pointer; /* プレイに使う黒マスだけカーソルを指にする */
+}
+
+/* 駒のスタイル */
+.piece {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,0.4), 0 3px 6px rgba(0,0,0,0.3); /* 立体感をアップ */
+    box-sizing: border-box; /* 選択時のボーダーによるサイズ変化を防ぐ */
+    display: flex; /* キングの星マークを中央に寄せるため */
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease; /* 選択時に少し浮くアニメーション用 */
+}
+
+.player1 { background-color: #e74c3c; } /* 赤 */
+
+.player2 { background-color: #2c3e50; } /* 黒 */
+
+/* 選択中 */
+.selected { 
+    border: 3px solid #f1c40f; 
+    transform: scale(1.05); /* 選択された駒を少し大きく見せる */
+} 
+
+/* 連続ジャンプ中の駒 */
+.jumping { 
+    box-shadow: 0 0 15px #f1c40f, inset 0 -3px 6px rgba(0,0,0,0.4) !important; 
+    animation: pulse 1s infinite alternate; /* 点滅させて強調 */
+}
+
+/* キング */
+.king::after {
+    content: "★";
+    color: #fff;
+    font-size: 22px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5); /* 星を見えやすく */
+}
+
+/* 連続ジャンプ待ち用の点滅アニメーション */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
