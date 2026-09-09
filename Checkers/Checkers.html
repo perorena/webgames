@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <title>チェッカー</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./Checkers.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【<ruby>チェッカー<rt>ちぇっかー</rt></ruby>】
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./CheckersHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <div style="margin-top: 8px;">
+                <label for="difficulty-select" style="font-size: small; font-weight: bold; margin-right: 5px;">難易度:</label>
+                <select id="difficulty-select" class="menu_button" style="width: auto; height: 30px; padding: 0 10px;">
+                    <option value="easy">初級 (ランダム)</option>
+                    <option value="normal" selected>中級 (普通)</option>
+                    <option value="hard">上級 (少し賢い)</option>
+                </select>
+                <button id="reset" class="menu_button" style="height: 30px; margin-left: 10px;">やり直す</button>
+            </div>
+
+            <!--<button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>-->
+            </td>
+        </tr>
+    </table>
+
+
+    <h2>手番: <span id="turn-indicator">プレイヤー1（赤）</span></h2>
+    <div id="board"></div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./Checkers.js"></script>
+</body>
+</html>
