@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <title>平安京エイリアン</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./HeiankyoAlien.css">
+    <!-- JavaScript -->
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">【<ruby>平安京<rt>へいあんきょう</rt></ruby>エイリアン】</span>
+            </td>
+        </tr>
+        <tr>
+            <td id="explanation">
+                プレーヤーである<ruby>犬<rt>いぬ</rt></ruby>を<ruby>操作<rt>そうさ</rt></ruby>し、<ruby>敵<rt>てき</rt></ruby>であるゾンビ<ruby>犬<rt>いぬ</rt></ruby>を<ruby>穴<rt>あな</rt></ruby>を<ruby>掘<rt>ほ</rt></ruby>って<ruby>埋<rt>う</rt></ruby>めていくゲームです。いわゆる、<ruby>平安京<rt>へいあんきょう</rt></ruby>エイリアンです！<br>
+                <img src="../img/Heiankyo.png"><br>
+                ・<ruby>犬<rt>いぬ</rt></ruby>は<ruby>直接的<rt>ちょくせつてき</rt></ruby>な<ruby>攻撃手段<rt>こうげきしゅだん</rt></ruby>はなく、「<ruby>穴<rt>あな</rt></ruby>を<ruby>掘<rt>ほ</rt></ruby>る」「<ruby>穴<rt>あな</rt></ruby>を<ruby>埋<rt>う</rt></ruby>める」の<ruby>操作<rt>そうさ</rt></ruby>でゾンビ<ruby>犬<rt>いぬ</rt></ruby>を<ruby>退治<rt>たいじ</rt></ruby>します。<br>
+                ・<ruby>犬<rt>いぬ</rt></ruby><ruby>掘<rt>ほ</rt></ruby>りは、Xキーを<ruby>押<rt>お</rt></ruby>すごとに<ruby>最大<rt>さいだい</rt></ruby>5<ruby>段階<rt>だんかい</rt></ruby>あります。<ruby>穴<rt>あな</rt></ruby>を<ruby>掘<rt>ほ</rt></ruby>る<ruby>場所<rt>ばしょ</rt></ruby>は、<ruby>犬<rt>いぬ</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>（<ruby>頭<rt>あたま</rt></ruby>の<ruby>方向<rt>ほうこう</rt></ruby>）となります。<br>
+                ・<ruby>最大<rt>さいだい</rt></ruby>の<ruby>大<rt>おお</rt></ruby>きさになったときのみ、ゾンビ<ruby>犬<rt>いぬ</rt></ruby>を<ruby>穴<rt>あな</rt></ruby>に<ruby>落<rt>お</rt></ruby>とすことができます。
+                ・<ruby>犬<rt>いぬ</rt></ruby>を<ruby>移動<rt>いどう</rt></ruby>させずに、<ruby>向<rt>む</rt></ruby>きだけを<ruby>変<rt>か</rt></ruby>えたい<ruby>場合<rt>ばあい</rt></ruby>には、Sキー（<ruby>右<rt>みぎ</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）、またはAキー（<ruby>左<rt>ひだり</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）を<ruby>押<rt>お</rt></ruby>します。<br>
+                ・<ruby>犬<rt>いぬ</rt></ruby>は<ruby>穴<rt>あな</rt></ruby>の<ruby>大<rt>おお</rt></ruby>きさに<ruby>関<rt>かか</rt></ruby>わらず、<ruby>穴<rt>あな</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>通<rt>とお</rt></ruby>ることはできません。
+                &emsp;ただし、ゾンビ<ruby>犬<rt>いぬ</rt></ruby>が<ruby>最大<rt>さいだい</rt></ruby><ruby>穴<rt>あな</rt></ruby><ruby>以外<rt>いがい</rt></ruby>の<ruby>穴<rt>あな</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>通<rt>とお</rt></ruby>ると、その<ruby>穴<rt>あな</rt></ruby>は<ruby>消滅<rt>しょうめつ</rt></ruby>してしまいます。<br>
+                ・ゾンビ<ruby>犬<rt>いぬ</rt></ruby>は<ruby>穴<rt>あな</rt></ruby>に<ruby>落<rt>お</rt></ruby>ちただけでは<ruby>退治<rt>たいじ</rt></ruby>できず、<ruby>穴<rt>あな</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めて<ruby>通路<rt>つうろ</rt></ruby>の<ruby>状態<rt>じょうたい</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>したときに<ruby>初<rt>はじ</rt></ruby>めて<ruby>退治<rt>たいじ</rt></ruby>できます。<br>
+                ・<ruby>穴<rt>あな</rt></ruby><ruby>埋<rt>う</rt></ruby>めは、Zキーを<ruby>押<rt>お</rt></ruby>すたびに<ruby>最大<rt>さいだい</rt></ruby>5<ruby>段階<rt>だんかい</rt></ruby>で<ruby>穴<rt>あな</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めます。
+                ・ゾンビ<ruby>犬<rt>いぬ</rt></ruby>は<ruby>穴<rt>あな</rt></ruby>に<ruby>落<rt>お</rt></ruby>ちてから<ruby>一定<rt>いってい</rt></ruby><ruby>時間<rt>じかん</rt></ruby><ruby>経過<rt>けいか</rt></ruby>すると<ruby>這<rt>は</rt></ruby>い<ruby>上<rt>あ</rt></ruby>がって<ruby>通路<rt>つうろ</rt></ruby><ruby>上<rt>じょう</rt></ruby>に<ruby>復活<rt>ふっかつ</rt></ruby>し、<ruby>穴<rt>あな</rt></ruby>も<ruby>消<rt>き</rt></ruby>えてしまいます。<br>
+                &emsp;また、<ruby>通路<rt>つうろ</rt></ruby><ruby>上<rt>じょう</rt></ruby>の<ruby>他<rt>ほか</rt></ruby>のゾンビ<ruby>犬<rt>いぬ</rt></ruby>と<ruby>穴<rt>あな</rt></ruby>の<ruby>中<rt>なか</rt></ruby>のゾンビ<ruby>犬<rt>いぬ</rt></ruby>が<ruby>接触<rt>せっしょく</rt></ruby>すると、<ruby>時間<rt>じかん</rt></ruby><ruby>経過<rt>けいか</rt></ruby>に<ruby>関<rt>かか</rt></ruby>わらず<ruby>一瞬<rt>いっしゅん</rt></ruby>で<ruby>穴<rt>あな</rt></ruby>から<ruby>救出<rt>きゅうしゅつ</rt></ruby>されます。<br>
+                ・<ruby>犬<rt>いぬ</rt></ruby>がゾンビ<ruby>犬<rt>いぬ</rt></ruby>に<ruby>接触<rt>せっしょく</rt></ruby>するとやられてしまい、プレーヤーの<ruby>犬数<rt>けんすう</rt></ruby>が<ruby>減<rt>へ</rt></ruby>ります。<ruby>再開<rt>さいかい</rt></ruby>のエイリアンの<ruby>数<rt>かず</rt></ruby>は、やられた<ruby>直前<rt>ちょくぜん</rt></ruby>の<ruby>数<rt>かず</rt></ruby>です。<br>
+                ・そのステージのすべてのエイリアンを<ruby>退治<rt>たいじ</rt></ruby>するとステージクリアとなります。<br>
+                <br><br>
+                &emsp;&emsp;Xキー：<ruby>掘<rt>ほ</rt></ruby>る<br>
+                &emsp;&emsp;Zキー：<ruby>埋<rt>う</rt></ruby>める<br>
+                &emsp;&emsp;Sキー：<ruby>向<rt>む</rt></ruby>き<ruby>変更<rt>へんこう</rt></ruby>（<ruby>右<rt>みぎ</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）<br>
+                &emsp;&emsp;Aキー：<ruby>向<rt>む</rt></ruby>き<ruby>変更<rt>へんこう</rt></ruby>（<ruby>左<rt>ひだり</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）<br>
+                <ruby>矢印<rt>やじるし</rt></ruby>キー：<ruby>移動<rt>いどう</rt></ruby><br>
+                <ruby>同時<rt>どうじ</rt></ruby>に<ruby>掘<rt>ほ</rt></ruby>れる<ruby>穴<rt>あな</rt></ruby>：<ruby>最大<rt>さいだい</rt></ruby>10<ruby>個<rt>こ</rt></ruby><br>
+                <ruby>犬<rt>いぬ</rt></ruby>（プレーヤー）：3匹<br>
+                <br>
+                [<ruby>START<rt>スタート</rt></ruby>]ボタンをクリック（タッチ）するとそのステージが<ruby>開始<rt>かいし</rt></ruby>します。
+                ステージが<ruby>変<rt>か</rt></ruby>わっても<ruby>犬数<rt>けんすう</rt></ruby>は3<ruby>匹<rt>びき</rt></ruby>にはなりません。<br><br>
+                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
