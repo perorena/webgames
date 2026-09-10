@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width">
+        <meta charset="UTF-8">
+        <title>ヒット＆ブロー</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./HitAndBlow.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【ヒット＆ブロー】 
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./HitAndBlowHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td id="number">
+                <label>&emsp;<ruby>桁数<rt>けたすう</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。</label>
+                <label><input type="radio" id="radio1" name="digitNumber" value="3" checked>3桁</label>
+                <label><input type="radio" id="radio2" name="digitNumber" value="4">4桁</label>
+                <br>
+                <label>&emsp;モードを<ruby>選<rt>えら</rt></ruby>んでください。</label>
+                <label><input type="radio" id="radio3" name="modeNumber" value="0" checked>ひとり</label>
+                <label><input type="radio" id="radio4" name="modeNumber" value="1">コンピュータと対戦</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="start" class="menu_button" type="button" value="START"><ruby>START<rt>すたーと</rt></ruby></button>
+                <button id="giveup" class="menu_button" type="button" value="GIVE UP"><ruby>GIVE UP<rt>ぎぶあっぷ</rt></ruby></button>
+            </td>
+        </tr>
+    </table>
+    <div id="mainScreen"></div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./HitAndBlow.js"></script>
+</body>
+</html>
