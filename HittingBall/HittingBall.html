@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <title>ヒッティングボール</title>
+    <link rel="stylesheet" href="./HittingBall.css">
+</head>
+<body onLoad="onLoad()">
+    <div id="container" class="container">
+        <!-- classにscoreとcurrent-scoreの二つを指定したことになる -->
+        <div class="score current-score">score<br>
+            <span id="current-score"></span>
+        </div>
+        <!-- classにscoreとhigh-scoreの二つを指定したことになる -->
+        <div class="score high-score">high score<br>
+            <span id="high-score"></span>
+        </div>
+    </div>
+
+    <!-- スクリプト -->
+    <script src="./matter.js"></script>
+    <script src="./decomp.js"></script>
+    <script src="./matter-attractors.js"></script>
+    <script src="./HittingBall.js"></script>
+</body>
+</html>
