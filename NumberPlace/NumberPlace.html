@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width">
+        <meta charset="UTF-8">
+        <title>ナンバープレイス</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./NumberPlace.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【ナンバープレイス】
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./NumberPlaceHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td id="number">
+                <label>&emsp;<ruby>問題<rt>もんだい</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。
+                    <select id="dataNumber">
+                        <option value="" selected></option>
+                    </select>
+                </label>
+                <br>
+                <label>&emsp;<ruby>空<rt>あ</rt></ruby>き<ruby>目安<rt>めやす</rt></ruby><ruby>数<rt>すう</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。
+                    <select id="spaceNumber">
+                        <option value="10" >10</option>
+                        <option value="20" >20</option>
+                        <option value="30" selected>30</option>
+                        <option value="40" >40</option>
+                        <option value="50" >50</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+                <button id="hint" class="menu_button" type="button" value="HINT"><ruby>HINT<rt>ヒント</rt></ruby></button>
+                <button id="solver" class="menu_button" type="button" value="SOLVER"><ruby>SOLVER<rt>ソルバー</rt></ruby></button>
+                <button id="generator" class="" type="button" value="GENERATOR"><ruby>GENERATOR<rt>ジェネレーター</rt></ruby></button>
+            </td>
+        </tr>
+    </table>
+    <div id="successImage"></div>
+    <div id="mainScreen"></div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./NumberPlaceData.js"></script>
+    <script type="text/javascript" src="./NumberPlace.js"></script>
+</body>
+</html>
