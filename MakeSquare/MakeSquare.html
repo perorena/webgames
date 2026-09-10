@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width">
+        <meta charset="UTF-8">
+        <title>四角に分ける</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./MakeSquare.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【<ruby>四角<rt>しかく</rt></ruby>に<ruby>分<rt>わ</rt></ruby>ける】
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./MakeSquareHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td id="number">
+                <label>&emsp;<ruby>問題<rt>もんだい</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。
+                    <select id="dataNumber">
+                        <option value="1" selected>1</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+                <button id="undo" class="menu_button" type="button" value="UNDO"><ruby>UNDO<rt>あんどぅー</rt></ruby></button>
+            </td>
+        </tr>
+    </table>
+    <div id="successImage"></div>
+    <div id="mainScreen"></div>
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./MakeSquareData.js"></script>
+    <script type="text/javascript" src="./MakeSquare.js"></script>
+</body>
+</html>
