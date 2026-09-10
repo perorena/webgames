@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width">
+        <meta charset="UTF-8">
+        <title>マインスイーパー</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./Minesweeper.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【マインスイーパー】
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./MinesweeperHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td id="number">
+                <label>&emsp;<ruby>難易度<rt>なんいど</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。<br>　<ruby>数<rt>かず</rt></ruby>が<ruby>大<rt>おお</rt></ruby>きいほどタイル<ruby>数<rt>すう</rt></ruby>が<ruby>増大<rt>ふえ</rt></ruby>えます！
+                    <select id="dataNumber">
+                        <option value="1" selected>1</option>
+                    </select>
+                </label>
+                <br>
+                <table>
+                    <tr>
+                        <th><ruby>難易度<rt>なんいど</rt></ruby></th><th>マス<ruby>数<rt>すう</rt></ruby></th><th><ruby>地雷数<rt>じらいすう</rt></ruby></th>
+                        <th><ruby>難易度<rt>なんいど</rt></ruby></th><th>マス<ruby>数<rt>すう</rt></ruby></th><th><ruby>地雷数<rt>じらいすう</rt></ruby></th>
+                    </tr>
+                    <tr align="center"><td>1</td><td>4 × 4</td><td>2</td><td>4</td><td>7 × 7</td><td>7</td></tr>
+                    <tr align="center"><td>2</td><td>5 × 5</td><td>3</td><td>5</td><td>8 × 8</td><td>8</td></tr>
+                    <tr align="center"><td>3</td><td>6 × 6</td><td>5</td><td>6</td><td>9 × 9</td><td>10</td></tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+                <button id="answer" class="menu_button" type="button" value="ANSWER" style="font-size: xx-small;"><ruby>ANSWER<rt>あんさー</rt></ruby></button>
+            </td>
+        </tr>
+    </table>
+    <div id="mainScreen"></div>
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./MinesweeperData.js"></script>
+    <script type="text/javascript" src="./Minesweeper.js"></script>
+</body>
+</html>
