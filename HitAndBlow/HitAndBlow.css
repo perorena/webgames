@@ -67,11 +67,11 @@
     font-size: medium;
 }
 
-/* 数字テーブル */
-#numberhistory {
+/* 数字テーブル（自分用・相手用両方に適用） */
+#numberhistory, #comphistory {
     padding: 0px;
     margin: 0px;
-    border-collapse: separate; /*collapse;*/
+    border-collapse: separate;
     border-spacing: 5px;
     text-align: center;
     width: 100%;
@@ -82,13 +82,12 @@
     -moz-user-select: none;
 }
 
-#numberhistory td {
+#numberhistory td, #comphistory td {
     padding: 0px;
     margin: 0px;
     text-align: center;
     vertical-align: middle;
 }
-
 #inputArea {
     padding: 0px;
     margin: 0px;

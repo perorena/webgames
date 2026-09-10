@@ -67,24 +67,23 @@ function keyUp(event){
 // グリッドの動的作成
 function makeTable(parentId){
     // 描画エリア削除
-    parent = document.getElementById(parentId);
+    let parent = document.getElementById(parentId);
     while(parent.firstChild){
       parent.removeChild(parent.firstChild);
     }
 
-    // グリッドの作成開始
-    let rows=[];
+    // --- 1. 自分用グリッドの作成 ---
+    let rows = [];
     let table = document.createElement('table');
     table.setAttribute('id', 'numberhistory');
 
-    // 履歴表示用
     for(let i = 0; i < HistoryRowMax; i++){
         rows.push(table.insertRow(-1));
         // 自分履歴
         for(let j = 0; j < 4; j++){
             let cell = rows[i].insertCell(-1);
-            // 背景色のデータ用と入力位置用id
             let idString = i.toString() + IdSeparator + j.toString();
+            
             // 枠の設定
             cell.style.borderStyle = 'solid';
             cell.style.borderLeftWidth = OuterThickness.toString() + 'px';
@@ -95,14 +94,14 @@ function makeTable(parentId){
             cell.style.height = CellHeight.toString() + 'px';
             cell.style.width = (CellWidth * 2).toString() + 'px';
             if(j == 1) cell.style.width = (CellWidth * 6).toString() + 'px';
+
             if(i == 0){
                 cell.style.height = (CellHeight + 30).toString() + 'px';
                 if(j == 0) cell.textContent = '';
                 if(j == 1){
-                    cell.textContent = 'ー　ー　ー';
-                    if(digitNum == 4) cell.textContent = 'ー　ー　ー　ー';
+                    cell.textContent = 'ー ー ー';
+                    if(digitNum == 4) cell.textContent = 'ー ー ー ー';
                 }
-                
                 if(j == 2) cell.textContent = '';
                 if(j == 3) cell.textContent = '';
             } else if(i == 1){
@@ -112,78 +111,16 @@ function makeTable(parentId){
                 if(j == 2) cell.textContent = 'Hit';
                 if(j == 3) cell.textContent = 'Blow';
             } else {
-                if( j == 0) cell.textContent = (i - 1).toString();
+                if(j == 0) cell.textContent = (i - 1).toString();
             }
 
             cell.setAttribute('id', idString);
         }
-        //document.getElementById('0#0').setAttribute('colspan', '4');
-        // 対戦時
-        if(modeNum == 1){
-            // 相手履歴
-            for(let j = 4; j < 9; j++){
-                let cell = rows[i].insertCell(-1);
-                
-                // 背景色のデータ用と入力位置用id
-                let idString = i.toString() + IdSeparator + j.toString();
-                // 枠の設定
-                if(j == 4){
-                    cell.style.borderStyle = '';
-                } else {
-                    cell.style.borderStyle = 'solid';
-                }
-                cell.style.borderLeftWidth = OuterThickness.toString() + 'px';
-                cell.style.borderTopWidth = OuterThickness.toString() + 'px';
-                cell.style.borderRightWidth = OuterThickness.toString() + 'px';
-                cell.style.borderBottomWidth = OuterThickness.toString() + 'px';
-                cell.style.fontSize = NumberMojiSize.toString() + 'px';
-                cell.style.height = CellHeight.toString() + 'px';
-                cell.style.width = (CellWidth * 2).toString() + 'px';
-                if(j == 6) cell.style.width = (CellWidth * 6).toString() + 'px';
-                if(i == 0){
-                    cell.style.height = (CellHeight + 30).toString() + 'px';
-                    if(j == 5) cell.textContent = '';
-                    if(j == 6){
-                        for(let k = 0; k < digitNum; k++){
-                            let inputId = QuestionForComp + k.toString();
-                            let input = document.createElement('input');
-                            input.type = 'number';
-                            input.autocomplete = 'off';
-                            input.min = '0';
-                            input.max = '9';
-                            input.setAttribute('id', inputId);
-                            input.setAttribute('class', 'questionforcomp');
-                            input.addEventListener('click', function(event){
-                                activeInputId = inputId;
-                            });
-                            input.addEventListener('input', function() {
-                                if (this.value.length > 1) {
-                                    this.value = this.value.slice(0, 1);
-                                }
-                            });
-                            cell.appendChild(input);
-                        }
-                    }
-                    if(j == 7) cell.textContent = '';
-                    if(j == 8) cell.textContent = '';
-                } else if(i == 1){
-                    cell.style.backgroundColor = 'cornflowerblue';
-                    if(j == 4) cell.style.backgroundColor = '';
-                    if(j == 5) cell.textContent = '';
-                    if(j == 6) cell.textContent = '相手の推理';
-                    if(j == 7) cell.textContent = 'Hit';
-                    if(j == 8) cell.textContent = 'Blow';
-                } else {
-                    if( j == 5) cell.textContent = (i - 1).toString();
-                }
-                cell.setAttribute('id', idString);
-            }
-        }
     }
-    // 指定した親要素に加える
-    document.getElementById(parentId).appendChild(table);
+    // 自分用テーブルを追加
+    parent.appendChild(table);
 
-    // 入力ボックス作成
+    // --- 2. 入力ボックスの作成 ---
     let inputArea = document.createElement('div');
     inputArea.setAttribute('id', 'inputArea');
     for(let k = 0; k < digitNum; k++){
@@ -205,7 +142,76 @@ function makeTable(parentId){
         });
         inputArea.appendChild(input);
     }
-    document.getElementById(parentId).appendChild(inputArea);
+    // 入力エリアをテーブルの下に追加
+    parent.appendChild(inputArea);
+
+    // --- 3. 相手用グリッドの作成（対戦時・入力ボックスの下に配置） ---
+    if(modeNum == 1){
+        let oppRows = [];
+        let oppTable = document.createElement('table');
+        oppTable.setAttribute('id', 'comphistory');
+
+        for(let i = 0; i < HistoryRowMax; i++){
+            oppRows.push(oppTable.insertRow(-1));
+            for(let j = 0; j < 4; j++){
+                let cell = oppRows[i].insertCell(-1);
+                // 元の相手用IDに合わせてインデックス（j+5）等の互換性を調整
+                // （※ 5=行番号, 6=相手の推理, 7=Hit, 8=Blow）
+                let targetJ = j + 5;
+                let idString = i.toString() + IdSeparator + targetJ.toString();
+
+                cell.style.borderStyle = 'solid';
+                cell.style.borderLeftWidth = OuterThickness.toString() + 'px';
+                cell.style.borderTopWidth = OuterThickness.toString() + 'px';
+                cell.style.borderRightWidth = OuterThickness.toString() + 'px';
+                cell.style.borderBottomWidth = OuterThickness.toString() + 'px';
+                cell.style.fontSize = NumberMojiSize.toString() + 'px';
+                cell.style.height = CellHeight.toString() + 'px';
+                cell.style.width = (CellWidth * 2).toString() + 'px';
+                if(j == 1) cell.style.width = (CellWidth * 6).toString() + 'px';
+
+                if(i == 0){
+                    cell.style.height = (CellHeight + 30).toString() + 'px';
+                    if(j == 0) cell.textContent = '';
+                    if(j == 1){
+                        for(let k = 0; k < digitNum; k++){
+                            let inputId = QuestionForComp + k.toString();
+                            let input = document.createElement('input');
+                            input.type = 'number';
+                            input.autocomplete = 'off';
+                            input.min = '0';
+                            input.max = '9';
+                            input.setAttribute('id', inputId);
+                            input.setAttribute('class', 'questionforcomp');
+                            input.addEventListener('click', function(event){
+                                activeInputId = inputId;
+                            });
+                            input.addEventListener('input', function() {
+                                if (this.value.length > 1) {
+                                    this.value = this.value.slice(0, 1);
+                                }
+                            });
+                            cell.appendChild(input);
+                        }
+                    }
+                    if(j == 2) cell.textContent = '';
+                    if(j == 3) cell.textContent = '';
+                } else if(i == 1){
+                    cell.style.backgroundColor = 'cornflowerblue';
+                    if(j == 0) cell.textContent = '';
+                    if(j == 1) cell.textContent = '相手の推理';
+                    if(j == 2) cell.textContent = 'Hit';
+                    if(j == 3) cell.textContent = 'Blow';
+                } else {
+                    if(j == 0) cell.textContent = (i - 1).toString();
+                }
+
+                cell.setAttribute('id', idString);
+            }
+        }
+        // 相手用テーブルを一番下に追加
+        parent.appendChild(oppTable);
+    }
 }
 
 // ボタンアクション設定
@@ -378,8 +384,8 @@ function setNumber(num){
 }
 
 // hit&blow判定
-//questionNumber, MyAnswer
-//answerNumberForComp, QuestionForComp
+// questionNumber, MyAnswer
+// answerNumberForComp, QuestionForComp
 function hitblowHantei(number, inputPrefix) {
     let hit = 0;
     let blow = 0;
@@ -789,7 +795,7 @@ function zoomCalc(){
     let bh = window.innerHeight - 220;      //220は表題やボタンなどの縦幅による
     //let gridw = (CellWidth + CellWidth * 4 + CellWidth + CellWidth) * 2;
     let gridw = CellWidth + CellWidth * 4 + CellWidth + CellWidth;
-    let gridh = (CellHeight + 20) * HistoryRowMax + 85;     // 20は行間など
+    let gridh = (CellHeight + 20) * HistoryRowMax + 85;     // 20は行間など、縦表示なので2倍
 
     // 表示倍率計算
     for(let i = 2; i > 0; i = i - 0.01){
