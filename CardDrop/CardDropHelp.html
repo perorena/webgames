@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <title>カードドロップ</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./CardDrop.css">
+    <!-- JavaScript -->
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">【カードドロップ】</span>
+            </td>
+        </tr>
+        <tr>
+            <td id="explanation">
+                カードドロップ<ruby>式<rt>しき</rt></ruby>のポーカーです。
+                <br>
+                <img src="../img/CardDrop.png">
+                <br>
+                <ruby>落<rt>お</rt></ruby>ちてくるカードを<ruby>左右<rt>さゆう</rt></ruby>に<ruby>移動<rt>いどう</rt></ruby>させてポーカーの<ruby>役<rt>やく</rt></ruby>を<ruby>作<rt>つく</rt></ruby>ろう！<br>
+                ・<ruby>各段<rt>かくだん</rt></ruby>で5<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>うと<ruby>自動的<rt>じどうてき</rt></ruby>に<ruby>役判定<rt>やくはんてい</rt></ruby>を<ruby>行<rt>おこな</rt></ruby>い<ruby>得点<rt>とくてん</rt></ruby>を<ruby>計算<rt>けいさん</rt></ruby>します。<br>
+                ・<ruby>役<rt>やく</rt></ruby>となったカードは<ruby>消<rt>き</rt></ruby>え、<ruby>消<rt>き</rt></ruby>えたカードの<ruby>上<rt>うえ</rt></ruby>にあったカードが<ruby>落<rt>お</rt></ruby>ちます。<br>
+                ・すべてのカード(52<ruby>枚<rt>まい</rt></ruby>)を<ruby>使<rt>つか</rt></ruby>いきるか、<ruby>真<rt>ま</rt></ruby>ん<ruby>中<rt>なか</rt></ruby>のレーンが7<ruby>段<rt>だん</rt></ruby>に<ruby>積<rt>つ</rt></ruby>み<ruby>上<rt>あ</rt></ruby>がるとゲームオーバーです。
+                ＜<ruby>役<rt>やく</rt></ruby>＞<br>
+                ロイヤルフラッシュ（30<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じスート（<ruby>柄<rt>がら</rt></ruby>）で10・J・Q・K・Aの5<ruby>枚<rt>まい</rt></ruby>が<ruby>連続<rt>れんぞく</rt></ruby>して<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
+                ストレートフラッシュ（25<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じスートで<ruby>連続<rt>れんぞく</rt></ruby>する5<ruby>枚<rt>まい</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>が<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby>（ロイヤルフラッシュを<ruby>除<rt>のぞ</rt></ruby>く）<br>
+                フォーカード（20<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が4<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
+                フルハウス（15<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が3<ruby>枚<rt>まい</rt></ruby>（スリーカード）と、<ruby>別<rt>べつ</rt></ruby>の<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が2<ruby>枚<rt>まい</rt></ruby>（ワンペア）の<ruby>組<rt>く</rt></ruby>み<ruby>合<rt>あ</rt></ruby>わた<ruby>役<rt>やく</rt></ruby><br>
+                フラッシュ（10<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>数字<rt>すうじ</rt></ruby>に<ruby>関係<rt>かんけい</rt></ruby>なく、<ruby>同<rt>おな</rt></ruby>じスート（<ruby>柄<rt>がら</rt></ruby>）のカード5<ruby>枚<rt>まい</rt></ruby>が<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
+                ストレート（6<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>数字<rt>すうじ</rt></ruby>が<ruby>連続<rt>れんぞく</rt></ruby>している5<ruby>枚<rt>まい</rt></ruby>のカードが<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby>（スートは<ruby>問<rt>と</rt></ruby>わない）<br>
+                スリーカード（4<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が3<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
+                ツーペア（2<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>のペアが2<ruby>組<rt>くみ</rt></ruby>ある<ruby>役<rt>やく</rt></ruby><br>
+                ワンペア（1<ruby>点<rt>てん</rt></ruby>）：<br>
+                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が2<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br><br>
+                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タッチ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br>
+                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
