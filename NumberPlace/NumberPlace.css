@@ -1,0 +1,156 @@
+/* メインテーブル*/
+#main_table{
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* タイトルエリア */
+#title {
+    height: 110px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ccf;
+    border: 0px;
+    border-radius: 20px;
+}
+
+/* タイトル行 */
+#title_line {
+    font-weight: bold;
+    font-size: x-large;
+    border: 0px;
+    margin:0px;
+    padding: 0px;
+    letter-spacing: 1px;
+}
+
+/* 操作説明文 */
+#explanation {
+    text-align: left;
+    background-color: #fff;
+    font-size: 100%;
+    border: 0px;
+}
+
+/* 問題選択 */
+#number {
+    height: 65px;
+    vertical-align: top;
+    border: 1px solid #000;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* メニューボタンなど */
+.menu_button {
+    width: 61px;
+    height: 55px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: small;
+}
+
+#generator {
+    width: 122px;
+    height: 55px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: small;
+}
+
+/* 遷移用ボタンなど */
+.transition_button {
+    width: 150px;
+    height: 35px;
+    border-radius: 20px;
+}
+
+/* 問題番号 */
+#dataNumber,#spaceNumber{
+    font-size: medium;
+}
+
+/* 数字テーブル */
+#numberplace {
+    padding: 0px;
+    margin: 0px;
+    border-collapse: separate; /*collapse;*/
+    border-spacing: 5px;
+    text-align: center;
+    width: 100%;
+    table-layout: fixed;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+#numberplace td {
+    padding: 0px;
+    margin: 0px;
+    width: 95px;
+    height: 95px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 入力ボックス */
+.input {
+    width: 85px;
+    height: 85px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* 入力ボックスのスピンボタンを消す */
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance:textfield;
+    appearance:textfield;
+}
+
+/* Chrome/Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox/IE */
+input[type="number"]{
+    -moz-appearance:textfield;
+    appearance:textfield;
+}
+
+/* 成功画像エリア */
+#successImage {
+    position: relative;
+}
+
+/* 成功画像 */
+#simage {
+    position: absolute;
+    z-index: 1000;
+}
+
+/* ヒント */
+#hintMessage {
+    font-size: large;
+    border:0px;
+    padding: 0;
+    margin: 0px;
+    vertical-align: middle;
+}
