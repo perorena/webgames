@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <title>2048パズル</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./2048Puzzle.css">
+    <!-- JavaScript -->
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">【2048パズル】</span>
+            </td>
+        </tr>
+        <tr>
+            <td id="explanation">
+                プレーヤーは<ruby>上下左右<rt>じょうげさゆう</rt></ruby>のいずれかの<ruby>方向<rt>ほうこう</rt></ruby>を<ruby>選<rt>えら</rt></ruby>び、タイルを<ruby>一斉<rt>いっせい</rt></ruby>に<ruby>動<rt>うご</rt></ruby>かします。<br>
+                <ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>のタイルがぶつかると、２つのタイルがくっついて２<ruby>倍<rt>ばい</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>のタイル１<ruby>枚<rt>まい</rt></ruby>になります。<br>
+                その<ruby>時<rt>とき</rt></ruby>、<ruby>新<rt>あたら</rt></ruby>しくできたタイルの<ruby>数字<rt>すうじ</rt></ruby>が<ruby>獲得得点<rt>かくとくとくてん</rt></ruby>になります。<br>
+                <img src="../img/2048puz.png"><br>
+                ・<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が３<ruby>枚<rt>まい</rt></ruby><ruby>以上<rt>いじょう</rt></ruby>が<ruby>並<rt>なら</rt></ruby>んでいる<ruby>場合<rt>ばあい</rt></ruby>は、<ruby>移動方向<rt>いどうほうこう</rt></ruby>の<ruby>先<rt>さき</rt></ruby>のものから<ruby>優先的<rt>ゆうせんてき</rt></ruby>にくっつきます。<br>
+                ・くっついてできたタイルは、そのターンにはそれ<ruby>以上<rt>いじょう</rt></ruby>くっつきません。<br>
+                ・１<ruby>列<rt>れつ</rt></ruby>に４<ruby>枚<rt>まい</rt></ruby><ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が<ruby>並<rt>なら</rt></ruby>んでる<ruby>場合<rt>ばあい</rt></ruby>は、２<ruby>倍<rt>ばい</rt></ruby>タイルが２<ruby>枚<rt>まい</rt></ruby>できます。<br>
+                ・<ruby>移動<rt>いどう</rt></ruby>が<ruby>終<rt>お</rt></ruby>わると<ruby>空<rt>あ</rt></ruby>いてるマスのいずれかに<ruby>新<rt>あた</rt></ruby>しいパネルが１<ruby>枚<rt>まい</rt></ruby><ruby>出現<rt>しゅつげん</rt></ruby>します。<br>
+                ・どの<ruby>方向<rt>ほうこう</rt></ruby>も<ruby>選択<rt>せんたく</rt></ruby>できなくなったら<ruby>終了<rt>しゅうりょう</rt></ruby>です。<br>
+                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タッチ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br><br>
+                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
