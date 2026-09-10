@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width">
+        <meta charset="UTF-8">
+        <title>15パズル</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./15Puzzle.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【15パズル】
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./15PuzzleHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td id="number">
+                <label>&emsp;<ruby>難易度<rt>なんいど</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。<br>　<ruby>数<rt>かず</rt></ruby>が<ruby>大<rt>おお</rt></ruby>きいほどタイル<ruby>数<rt>すう</rt></ruby>が<ruby>増大<rt>ふえ</rt></ruby>えます！
+                    <select id="dataNumber">
+                        <option value="1" selected>1</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+                <button id="shuffle" class="menu_button" type="button" value="SHUFFLE" style="font-size: xx-small;"><ruby>SHUFFLE<rt>しゃっふる</rt></ruby></button>
+                <span id="operationsNumber"></span>
+            </td>
+        </tr>
+    </table>
+    <div id="mainScreen"></div>
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./15PuzzleData.js"></script>
+    <script type="text/javascript" src="./15Puzzle.js"></script>
+</body>
+</html>
