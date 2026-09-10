@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base target="_top">
+        <meta charset="UTF-8">
+        <title>カードドロップ</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./CardDrop.css">
+    </head>
+    <body>
+        <table id="main_table">
+            <tr>
+                <td id="title">
+                    <span id="checkmap"></span>
+                    <span id="title_line">
+                        【カードドロップ】
+                    </span>
+                    <br><br>
+                    <span>
+                        <button class="transition_button" onclick='window.open("./CardDropHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <span id="checkText"></span>
+        <div id="gameoverImage"></div>
+        <div id="clearImage"></div>
+        <div id="mainScreen"></div>
+        <table id="sub_table">
+            <tr>
+                <td>
+                    <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+                    <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png"></button>
+                    <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png"></button>
+                    <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png"></button>
+                </td>
+            </tr>
+        </table>
+
+        <!-- JavaScript -->
+        <script type="text/javascript" src="./CardDrop.js"></script>
+    </body>
+</html>
