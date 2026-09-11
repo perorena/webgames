@@ -224,6 +224,8 @@ function hasAnyValidMoves() {
         { dr: 2, dc: -2 }, { dr: 2, dc: 2 }
     ];
 
+    // 追記解説: まず盤面全体の自分の駒に「ジャンプできる手」があるかを確認
+    // mustJumpの状態にかかわらず全パターンを独立走査します
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
             if (isOwnPiece(boardState[r][c])) {
@@ -246,9 +248,21 @@ function endTurn() {
     // 2. ★超重要★ 次のプレイヤーの視点でジャンプ義務があるかを「今」更新する
     mustJump = checkAllJumps();
 
-    // 3. 正しい mustJump の状態をもとに、動かせる手があるか調べる
-    if (!hasAnyValidMoves()) {
+    // 追記解説: 3. 勝敗判定を「駒が全滅したか」と「動かせる手がないか（手詰まり）」の2段階で明確化
+    // 自身の駒が存在するかカウント
+    let pieceCount = 0;
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            if (isOwnPiece(boardState[r][c])) {
+                pieceCount++;
+            }
+        }
+    }
+
+    // 駒が0個、または動かせる有効手が存在しない場合は敗北（＝相手の勝ち）とする
+    if (pieceCount === 0 || !hasAnyValidMoves()) {
         isGameOver = true;
+        // ターン切り替え後なので、手番のプレイヤーが敗北＝もう一方が勝ちとなる
         const winner = currentTurn === 1 ? 'コンピュータ（黒）' : 'あなた（赤）';
         turnIndicator.textContent = `ゲーム終了！ ${winner}の勝ちです！`;
         selectedPiece = null;
@@ -521,99 +535,3 @@ function zoomCalc(){
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
-
-/*
-// CPUの思考・行動ロジック（完全修正版）
-function makeCpuMove() {
-    if (isGameOver) return;
-
-    let availableMoves = [];
-    
-    // 1. 連続ジャンプ中の場合（その駒の次のジャンプだけを探す）
-    if (jumpingPiece) {
-        const directions = [
-            { dr: -2, dc: -2 }, { dr: -2, dc: 2 },
-            { dr: 2, dc: -2 }, { dr: 2, dc: 2 }
-        ];
-        for (let d of directions) {
-            if (isValidJump(jumpingPiece.row, jumpingPiece.col, jumpingPiece.row + d.dr, jumpingPiece.col + d.dc)) {
-                availableMoves.push({
-                    fromRow: jumpingPiece.row, fromCol: jumpingPiece.col,
-                    toRow: jumpingPiece.row + d.dr, toCol: jumpingPiece.col + d.dc,
-                    type: 'jump'
-                });
-            }
-        }
-    } else {
-        // 2. 通常の手番：まず盤面全体で「ジャンプできる駒があるか」を調べる
-        mustJump = checkAllJumps();
-
-        // 盤面を走査して駒を探す
-        for (let r = 0; r < 8; r++) {
-            for (let c = 0; c < 8; c++) {
-                if (isOwnPiece(boardState[r][c])) {
-
-                    if (mustJump) {
-                        // 【ルートA】ジャンプできる駒があるなら、ジャンプの手だけをリストアップする
-                        const jumpDirs = [
-                            { dr: -2, dc: -2 }, { dr: -2, dc: 2 },
-                            { dr: 2, dc: -2 }, { dr: 2, dc: 2 }
-                        ];
-                        for (let d of jumpDirs) {
-                            if (isValidJump(r, c, r + d.dr, c + d.dc)) {
-                                availableMoves.push({
-                                    fromRow: r, fromCol: c,
-                                    toRow: r + d.dr, toCol: c + d.dc,
-                                    type: 'jump'
-                                });
-                            }
-                        }
-                    } else {
-                        // 【ルートB】ジャンプできる駒が一切ないなら、通常移動の手だけをリストアップする
-                        const normalDirs = [
-                            { dr: -1, dc: -1 }, { dr: -1, dc: 1 },
-                            { dr: 1, dc: -1 }, { dr: 1, dc: 1 }
-                        ];
-                        const isKing = (boardState[r][c] === 3 || boardState[r][c] === 4);
-
-                        for (let d of normalDirs) {
-                            const nextR = r + d.dr;
-                            const nextC = c + d.dc;
-
-                            // 盤面の外ならスキップ
-                            if (nextR < 0 || nextR > 7 || nextC < 0 || nextC > 7) continue;
-                            // 移動先が空いていないならスキップ
-                            if (boardState[nextR][nextC] !== 0) continue;
-                            
-                            // 通常の黒ポーン（キング以外）は後ろ（上方向 dr: -1）には戻れない
-                            if (!isKing && currentTurn === 2 && d.dr === -1) continue;
-                            // 通常の赤ポーン（キング以外）は後ろ（下方向 dr: 1）には戻れない
-                            if (!isKing && currentTurn === 1 && d.dr === 1) continue;
-                            
-                            availableMoves.push({
-                                fromRow: r, fromCol: c,
-                                toRow: nextR, toCol: nextC,
-                                type: 'normal'
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // 3. 確定した安全な選択肢の中からランダムに1つ選んで実行
-    if (availableMoves.length > 0) {
-        const randomMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-        
-        // 選択された駒を一瞬ハイライト
-        selectedPiece = { row: randomMove.fromRow, col: randomMove.fromCol };
-        createBoard();
-
-        // 完全に独立したタスクとして移動を実行
-        setTimeout(() => {
-            executeMove(randomMove.fromRow, randomMove.fromCol, randomMove.toRow, randomMove.toCol, randomMove.type);
-        }, 300);
-    }
-}
-*/
