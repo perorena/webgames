@@ -4,14 +4,14 @@ const NumberMojiSize = '35';
 const IdSeparator = '#';
 const CellWidth = 50;
 const CellHeight = 50;
-const QuestionForComp = 'que';      // コンピューターへの問題入力
+const QuestionForComp = 'que';      // コンピュ―タ―への問題入力
 const MyAnswer = 'ans';             // 解答入力
 const NumberButton = 'num';
 const HistoryRowMax = 12;
 
 // 桁数指定
 //let digitNumber = document.getElementById('digitNumber');
-// 問題変更時のイベントリスナー
+// 問題変更時のイベントリスナ―
 //digitNumber.addEventListener('change', drawingTable);
 let digitNumber = document.getElementsByName('digitNumber');
 let digitRadio1 = document.getElementById('radio1');
@@ -19,9 +19,9 @@ digitRadio1.addEventListener('change', drawingTable);
 let digitRadio2 = document.getElementById('radio2');
 digitRadio2.addEventListener('change', drawingTable);
 
-// モード指定
+// モ―ド指定
 //let modeNumber = document.getElementById('modeNumber');
-// 問題変更時のイベントリスナー
+// 問題変更時のイベントリスナ―
 //modeNumber.addEventListener('change', setMode);
 let modeNumber = document.getElementsByName('modeNumber');
 let modeRadio3 = document.getElementById('radio3');
@@ -31,13 +31,13 @@ modeRadio4.addEventListener('change', setMode);
 
 // 桁数
 let digitNum;
-//　モード
+//　モ―ド
 let modeNum;
 
-// コンピュータが作った問題
+// コンピュ―タが作った問題
 let questionNumber = [];
 
-// コンピュータ推理回答用
+// コンピュ―タ推理回答用
 let allNumbers = [];
 
 // アクティブinput要素
@@ -46,16 +46,16 @@ let activeInputId = '';
 // 履歴表示行
 let historyRow;
 
-// ズーム値
+// ズ―ム値
 let zoom = 1.0;
 
-// Webページのロードが完了した後に呼び出されるロードイベントを設定する
+// Webペ―ジのロ―ドが完了した後に呼び出されるロ―ドイベントを設定する
 window.addEventListener("load", onLoad, false);
 
-// キーが押されたときのリスナー
+// キ―が押されたときのリスナ―
 document.addEventListener('keyup', keyUp, false);
 
-// キーが押されたとき
+// キ―が押されたとき
 function keyUp(event){
     //alert(event.target.value);
     //alert(event.target.id); //inp0 or questionforcomp0
@@ -99,8 +99,8 @@ function makeTable(parentId){
                 cell.style.height = (CellHeight + 30).toString() + 'px';
                 if(j == 0) cell.textContent = '';
                 if(j == 1){
-                    cell.textContent = 'ー ー ー';
-                    if(digitNum == 4) cell.textContent = 'ー ー ー ー';
+                    cell.textContent = '―　―　―';
+                    if(digitNum == 4) cell.textContent = '―　―　―　―';
                 }
                 if(j == 2) cell.textContent = '';
                 if(j == 3) cell.textContent = '';
@@ -117,7 +117,7 @@ function makeTable(parentId){
             cell.setAttribute('id', idString);
         }
     }
-    // 自分用テーブルを追加
+    // 自分用テ―ブルを追加
     parent.appendChild(table);
 
     // --- 2. 入力ボックスの作成 ---
@@ -142,7 +142,7 @@ function makeTable(parentId){
         });
         inputArea.appendChild(input);
     }
-    // 入力エリアをテーブルの下に追加
+    // 入力エリアをテ―ブルの下に追加
     parent.appendChild(inputArea);
 
     // --- 3. 相手用グリッドの作成（対戦時・入力ボックスの下に配置） ---
@@ -209,14 +209,14 @@ function makeTable(parentId){
                 cell.setAttribute('id', idString);
             }
         }
-        // 相手用テーブルを一番下に追加
+        // 相手用テ―ブルを一番下に追加
         parent.appendChild(oppTable);
     }
 }
 
 // ボタンアクション設定
 function makeButtonAction(){
-    // スタート
+    // スタ―ト
     let startButton = document.getElementById('start');
     startButton.addEventListener('click', function(event){
         startAct();
@@ -228,23 +228,23 @@ function makeButtonAction(){
     });
 }
 
-// スタートアクション
+// スタ―トアクション
 function startAct(){
     if(historyRow > 1){
-        // テーブル表示
+        // テ―ブル表示
         drawingTable();
     } else {
         if(modeNum == 1){
             if(!checkInputComplete(QuestionForComp)){
-                alert('コンピュータに推理させる問題を入力してください！');
-                // テーブル表示
+                alert('コンピュ―タに推理させる問題を入力してください！');
+                // テ―ブル表示
                 drawingTable();
                 return;
             }
-            // コンピュータ推理回答用候補リスト作成
+            // コンピュ―タ推理回答用候補リスト作成
             makeAllNumbers();
         } else {
-            // テーブル表示
+            // テ―ブル表示
             drawingTable();
         }
         // 問題作成
@@ -346,7 +346,7 @@ function getRandomInt(min, max) {
 // 入力完了後自動判定
 function setNumber(num){
     if(questionNumber.length != digitNum){
-        alert('スタートボタンをクリックして、自分が解く問題を作成してください！');
+        alert('スタ―トボタンをクリックして、自分が解く問題を作成してください！');
         clearInputBox(MyAnswer);
         return;
     }
@@ -375,8 +375,8 @@ function setNumber(num){
             if(checkInputComplete(QuestionForComp)){
                 hanteiForComp();
             } else {
-                alert('コンピュータに推理させる問題を入力してください！');
-                // テーブル表示
+                alert('コンピュ―タに推理させる問題を入力してください！');
+                // テ―ブル表示
                 drawingTable();
             }
         }
@@ -455,7 +455,7 @@ function clearInputBox(strid){
     }
 }
 
-// コンピュータに推理させる問題数字チェック
+// コンピュ―タに推理させる問題数字チェック
 function checkQuestionNumber(num){
     if(activeInputId == '') return;
     // 入力チェック
@@ -474,8 +474,8 @@ function checkQuestionNumber(num){
     document.getElementById(activeInputId).value = num;
 }
 
-// コンピュータ推理回答用候補リスト作成
-// すべてのパターンからダブりの無いものだけをリスト化
+// コンピュ―タ推理回答用候補リスト作成
+// すべてのパタ―ンからダブりの無いものだけをリスト化
 function makeAllNumbers() {
     allNumbers = [];
     let loop = 10 ** digitNum;
@@ -492,10 +492,10 @@ function makeAllNumbers() {
 }
 
 /*
-// コンピュータ推理回答用候補リスト作成
+// コンピュ―タ推理回答用候補リスト作成
 function makeAllNumbers(){
     allNumbers = [];
-    // すべてのパターンからダブりの無いものだけをリスト化
+    // すべてのパタ―ンからダブりの無いものだけをリスト化
     let loop = 10 ** digitNum;
     for(let k = 0; k < loop; k++){
         let temp = String(k).padStart(digitNum, '0');
@@ -516,16 +516,16 @@ function makeAllNumbers(){
 }
 */
 
-// コンピュータ用判定
+// コンピュ―タ用判定
 function hanteiForComp(){
-    // コンピュータ推理回答作成
+    // コンピュ―タ推理回答作成
     let answerNumberForComp = [];
     let index = getRandomInt(0, allNumbers.length - 1);
     answerNumberForComp = allNumbers[index];
-    //alert('コンピュータ推理回答：' + answerNumberForComp + '(' + index + ')' + '  候補数：' + allNumbers.length + '\n\r' + allNumbers);
+    //alert('コンピュ―タ推理回答：' + answerNumberForComp + '(' + index + ')' + '  候補数：' + allNumbers.length + '\n\r' + allNumbers);
     //alert('分解 ' +answerNumberForComp[0].toString() + ':' + answerNumberForComp[1].toString() + ':' + answerNumberForComp[2].toString());
 
-    // コンピュータ用hit&blow判定
+    // コンピュ―タ用hit&blow判定
     let r = hitblowHantei(answerNumberForComp, QuestionForComp);
     
     // 履歴表示
@@ -541,20 +541,20 @@ function hanteiForComp(){
     if(r.hit === digitNum){
         // ボタン有効
         buttonON();
-        alert('コンピュータ　正解！');
+        alert('コンピュ―タ　正解！');
     } else {
-        // コンピュータ推理回答用候補リスト再作成
+        // コンピュ―タ推理回答用候補リスト再作成
         optionNumbersReMake(answerNumberForComp, r.hit, r.blow);
     }
 
-    //alert('判定後　コンピュータ推理回答：' + answerNumberForComp + ' (index:' + index + ')' + '  候補数：' + allNumbers.length + '\n\r' +  'hit=' + hit + '  blow=' + blow + '\n' + allNumbers);
+    //alert('判定後　コンピュ―タ推理回答：' + answerNumberForComp + ' (index:' + index + ')' + '  候補数：' + allNumbers.length + '\n\r' +  'hit=' + hit + '  blow=' + blow + '\n' + allNumbers);
 
 }
 
-// コンピュータ推理回答用候補リスト再作成
+// コンピュ―タ推理回答用候補リスト再作成
 function optionNumbersReMake(answerNumberForComp, hit, blow){
     //alert('optionNumbersReMake hit=' + hit + '  blow=' + blow);
-    let flag = 0;   // 0:強いモード　0以外:そうでもない
+    let flag = 0;   // 0:強いモ―ド　0以外:そうでもない
     if(flag === 0){
         // 直前の回答と候補を判定させて、hitとblowが同じになる候補を残す方法
         // 候補一覧の数字(checkNum)が正解だと仮定して、answerNumberForCompがhitとblowが同じものを次の候補一覧とする
@@ -582,7 +582,7 @@ function optionNumbersReMake(answerNumberForComp, hit, blow){
             } else {
                 //削除する
                 //alert('削除する' + allNumbers[m]);
-                allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforループは使えない
+                allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforル―プは使えない
             }
         }
         //alert('optionNumbersReMake 候補数1：' + allNumbers.length);
@@ -597,7 +597,7 @@ function optionNumbersReMake(answerNumberForComp, hit, blow){
                 let del = false;
                 for(let l = 0; l < digitNum; l++){
                     if(checkNum.includes(answerNumberForComp[l])){
-                        allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforループは使えない
+                        allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforル―プは使えない
                         del = true;
                         break;
                     }
@@ -616,7 +616,7 @@ function optionNumbersReMake(answerNumberForComp, hit, blow){
                 let del = false;
                 for(let l = 0; l < digitNum; l++){
                     if(checkNum[l].toString() == answerNumberForComp[l].toString()){
-                        allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforループは使えない
+                        allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforル―プは使えない
                         del = true;
                         //alert('checkNum[l]=' + checkNum[l].toString() + '  answerNumberForComp[l]' + answerNumberForComp[l].toString());
                         break;
@@ -644,7 +644,7 @@ function optionNumbersReMake(answerNumberForComp, hit, blow){
                 }
                 if(del) {
                     // 削除
-                    allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforループは使えない
+                    allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforル―プは使えない
                 } else {
                     // 削除せず次へ
                     m = m + 1;
@@ -678,7 +678,7 @@ function optionNumbersReMake(answerNumberForComp, hit, blow){
                 }
                 if(del) {
                     // 削除
-                    allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforループは使えない
+                    allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforル―プは使えない
                 } else {
                     // 削除せず次へ
                     m = m + 1;
@@ -708,7 +708,7 @@ function optionNumbersReMake(answerNumberForComp, hit, blow){
                 if(c0 == a0 && c2 == a2 && c3 == a3) del = false;
                 if(del) {
                     // 削除
-                    allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforループは使えない
+                    allNumbers.splice(m, 1);    // 削除を配列が詰まるのでforル―プは使えない
                 } else {
                     // 削除せず次へ
                     m = m + 1;
@@ -740,20 +740,20 @@ function onLoad(){
     makeButtonAction();
 }
 
-// モード設定
+// モ―ド設定
 function setMode(){
-    // モード設定
+    // モ―ド設定
     for (let k = 0; k < modeNumber.length; k++){
         if (modeNumber.item(k).checked){
             modeNum = Number(modeNumber.item(k).value);
         }
     }
 
-     // テーブル表示
+     // テ―ブル表示
     drawingTable();
 }
 
-// テーブル表示
+// テ―ブル表示
 function drawingTable(){
     // 初期化
     resetData();
@@ -795,7 +795,7 @@ function zoomCalc(){
     let bh = window.innerHeight - 220;      //220は表題やボタンなどの縦幅による
     //let gridw = (CellWidth + CellWidth * 4 + CellWidth + CellWidth) * 2;
     let gridw = CellWidth + CellWidth * 4 + CellWidth + CellWidth;
-    let gridh = (CellHeight + 20) * HistoryRowMax + 85;     // 20は行間など、縦表示なので2倍
+    let gridh = (CellHeight + 20) * HistoryRowMax + 85;     // 20は行間など
 
     // 表示倍率計算
     for(let i = 2; i > 0; i = i - 0.01){
