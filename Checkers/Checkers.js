@@ -496,9 +496,31 @@ function makeButtonAction(){
 function onLoad(){
     gameInitial();
     createBoard();
+    zoomCalc();
     makeButtonAction();
 }
 
+// 表示倍率計算
+function zoomCalc(){
+    // 表示サイズの計算
+    let mainScreen = document.getElementById('board');
+    let bw = window.innerWidth;
+    let bh = window.innerHeight - 200;          //200は表題やボタンなどの縦幅による
+    let gridw = 5 * 100;      //5はいろいろ試した結果
+    let gridh = 5 * 100;      //
+
+    // 表示倍率計算
+    for(let i = 2; i > 0; i = i - 0.01){
+      if( gridw * i < bw && gridh * i < bh){
+        zoom = i;
+        break;
+      }
+    }
+    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
+    if(zoom < 0 || zoom > 1) zoom = 1.0;
+    mainScreen.style.transformOrigin = 'top left';
+    mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
+}
 
 /*
 // CPUの思考・行動ロジック（完全修正版）
