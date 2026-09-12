@@ -14,8 +14,19 @@ let isCpuThinking = false; // CPUの計算中にプレイヤーの操作をブ�
 // CPUの難易度設定: 'easy'（最弱・ランダム）, 'normal'（普通）, 'hard'（少し賢い）
 let cpuDifficulty = 'normal'; 
 
+// ★追加：CPUの思考タイマーを保持する変数（リセット時にタイマーを解除するため）
+let cpuTimer = null;
+
+// ズーム値
+let zoom = 1.0;
 
 function gameInitial() {
+    // ★追加：すでに発火待ちのCPU思考タイマーがあれば解除する
+    if (cpuTimer) {
+        clearTimeout(cpuTimer);
+        cpuTimer = null;
+    }
+
     boardState = [
         [0, 2, 0, 2, 0, 2, 0, 2],
         [2, 0, 2, 0, 2, 0, 2, 0],
@@ -217,39 +228,58 @@ function checkAndPromote(row, col) {
 
 // 現在の手番のプレイヤーが、盤面上で動かせる駒を1つでも持っているか（手詰まりになっていないか）
 function hasAnyValidMoves() {
-    const directions = [
-        { dr: -1, dc: -1 }, { dr: -1, dc: 1 },
-        { dr: 1, dc: -1 }, { dr: 1, dc: 1 },
-        { dr: -2, dc: -2 }, { dr: -2, dc: 2 },
-        { dr: 2, dc: -2 }, { dr: 2, dc: 2 }
-    ];
+    // 1. まずジャンプできる手があるかチェック
+    if (checkAllJumps()) {
+        return true;
+    }
 
-    // 追記解説: まず盤面全体の自分の駒に「ジャンプできる手」があるかを確認
-    // mustJumpの状態にかかわらず全パターンを独立走査します
+    // 2. ジャンプできる手がない場合、通常移動ができる駒があるかチェック
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
             if (isOwnPiece(boardState[r][c])) {
-                for (let d of directions) {
-                    if (isValidMove(r, c, r + d.dr, c + d.dc)) {
-                        return true;
+                const pieceType = boardState[r][c];
+                const isKing = (pieceType === 3 || pieceType === 4);
+                
+                // 通常移動の候補4方向
+                const normalDirs = [
+                    { dr: -1, dc: -1 }, { dr: -1, dc: 1 },
+                    { dr: 1, dc: -1 },  { dr: 1, dc: 1 }
+                ];
+
+                for (let d of normalDirs) {
+                    const nextR = r + d.dr;
+                    const nextC = c + d.dc;
+
+                    // 盤面外ならスキップ
+                    if (nextR < 0 || nextR > 7 || nextC < 0 || nextC > 7) continue;
+                    // 移動先が空いていないならスキップ
+                    if (boardState[nextR][nextC] !== 0) continue;
+
+                    // 移動方向の制限チェック（キング以外）
+                    if (!isKing) {
+                        if (currentTurn === 1 && d.dr === 1) continue;  // 赤（プレイヤー）は下方向不可
+                        if (currentTurn === 2 && d.dr === -1) continue; // 黒（CPU）は上方向不可
                     }
+
+                    // 1つでも動かせる移動があれば手詰まりではない
+                    return true;
                 }
             }
         }
     }
+
     return false;
 }
 
-// ターン終了処理（修正版）
+// ターン終了処理
 function endTurn() {
     // 1. まず手番を次のプレイヤーに交代する
     currentTurn = currentTurn === 1 ? 2 : 1;
 
-    // 2. ★超重要★ 次のプレイヤーの視点でジャンプ義務があるかを「今」更新する
+    // 2. 次のプレイヤーの視点でジャンプ義務があるかを更新
     mustJump = checkAllJumps();
 
-    // 追記解説: 3. 勝敗判定を「駒が全滅したか」と「動かせる手がないか（手詰まり）」の2段階で明確化
-    // 自身の駒が存在するかカウント
+    // 3. 交代後のプレイヤーの駒数をカウント
     let pieceCount = 0;
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
@@ -259,12 +289,15 @@ function endTurn() {
         }
     }
 
-    // 駒が0個、または動かせる有効手が存在しない場合は敗北（＝相手の勝ち）とする
+    // 駒が0個、または動かせる手がない（手詰まり）場合は交代後のプレイヤーが敗北
     if (pieceCount === 0 || !hasAnyValidMoves()) {
         isGameOver = true;
-        // ターン切り替え後なので、手番のプレイヤーが敗北＝もう一方が勝ちとなる
-        const winner = currentTurn === 1 ? 'コンピュータ（黒）' : 'あなた（赤）';
-        turnIndicator.textContent = `ゲーム終了！ ${winner}の勝ちです！`;
+        
+        // currentTurn が敗北した側の手番になっているため、勝者は反対側
+        const winner = (currentTurn === 1) ? 'コンピュータ（黒）' : 'あなた（赤）';
+        const reason = (pieceCount === 0) ? '全滅しました！' : '手詰まりです！';
+        
+        turnIndicator.textContent = `ゲーム終了！ ${reason} ${winner}の勝ちです！`;
         selectedPiece = null;
         jumpingPiece = null;
         mustJump = false;
@@ -275,13 +308,13 @@ function endTurn() {
     // 通常のターン継続処理
     selectedPiece = null;
     jumpingPiece = null;
-    // mustJump = false; // ←ここでのクリアは削除（上記2行目で次ターンの状態を保持するため）
     createBoard();
 
     if (currentTurn === 2) {
         turnIndicator.textContent = "コンピュータ（黒）が考えています...";
         isCpuThinking = true;
-        setTimeout(makeCpuMove, 800); 
+        // ★修正：タイマーIDを変数に保持
+        cpuTimer = setTimeout(makeCpuMove, 800); 
     } else {
         turnIndicator.textContent = "あなた（赤）の番です";
         isCpuThinking = false;
@@ -371,7 +404,8 @@ function makeCpuMove() {
         selectedPiece = { row: chosenMove.fromRow, col: chosenMove.fromCol };
         createBoard();
 
-        setTimeout(() => {
+        // ★修正：タイマーIDを変数に保持
+        cpuTimer = setTimeout(() => {
             executeMove(chosenMove.fromRow, chosenMove.fromCol, chosenMove.toRow, chosenMove.toCol, chosenMove.type);
         }, 300);
     }
@@ -390,7 +424,8 @@ function executeMove(fromRow, fromCol, toRow, toCol, moveType) {
         boardState[toRow][toCol] = movingPieceType;
         const becameKing = checkAndPromote(toRow, toCol);
 
-        // キングにならず、さらにジャンプできる駒がある場合（連続ジャンプ）
+        // ★修正：キングへの昇格が起きて「おらず（!becameKing）」、かつ連続ジャンプが可能な場合のみ継続
+        // チェッカー規則：ジャンプ途中で最奥列に到達して昇格した場合、そのターンは即時終了となる
         if (!becameKing && canPieceJump(toRow, toCol)) {
             jumpingPiece = { row: toRow, col: toCol };
             selectedPiece = jumpingPiece;
@@ -401,8 +436,8 @@ function executeMove(fromRow, fromCol, toRow, toCol, moveType) {
             if (currentTurn === 2) {
                 // プレイヤーの操作ブロックを維持したまま、次のジャンプへ
                 isCpuThinking = true; 
-                // 次の1手（連続ジャンプ用のロジック）を呼び出す
-                setTimeout(makeCpuMove, 600);
+                // 次の1手（連続ジャンプ用のロジック）を呼び出す（タイマーIDを保持）
+                cpuTimer = setTimeout(makeCpuMove, 600);
             }
             return; // ターンは交代せずにここで終了
         }
@@ -520,8 +555,9 @@ function zoomCalc(){
     let mainScreen = document.getElementById('board');
     let bw = window.innerWidth;
     let bh = window.innerHeight - 200;          //200は表題やボタンなどの縦幅による
+    // ★補足：8マス×1マスの標準サイズ（仮に1マス60px前後の想定など）に合わせて調整が必要な箇所です
     let gridw = 5 * 100;      //5はいろいろ試した結果
-    let gridh = 5 * 100;      //
+    let gridh = 5 * 100;      //5はいろいろ試した結果
 
     // 表示倍率計算
     for(let i = 2; i > 0; i = i - 0.01){
@@ -535,3 +571,4 @@ function zoomCalc(){
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
+
