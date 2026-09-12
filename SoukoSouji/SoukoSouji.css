@@ -1,7 +1,23 @@
-/* メインテーブル*/
-#main_table{
+/* メインテーブルから操作ボタン行を分離・固定するための調整 */
+#main_table {
     width: 100%;
     table-layout: fixed;
+    /* ボタンエリアの高さ分、下部に余白を設けてグリッドと重なるのを防ぐ */
+    padding-bottom: 10px;
+}
+
+/* 操作ボタンを画面最下部に固定 */
+.button_container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background-color: #fff; /* 背後の要素が透けないように背景色を指定 */
+    text-align: left;
+    padding: 5px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 視認性を高める影（任意） */
+    z-index: 100; /* グリッドより前面に表示 */
 }
 
 /* タイトルエリア */

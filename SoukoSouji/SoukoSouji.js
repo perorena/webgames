@@ -333,7 +333,7 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 200;          //200は表題やボタンなどの縦幅による
+    let bh = window.innerHeight - 170;          //200は表題やボタンなどの縦幅による// ヘッダー＋下部固定ボタンの高さ（約250px〜270px）を引いてグリッドの縮尺を計算
     let gridw = (soukoData[0].length + 1) * cellWidth;
     let gridh = (soukoData.length + 1) * cellWidth;
 
