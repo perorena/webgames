@@ -256,9 +256,6 @@ function makeTable(parentId){
 
 // HTML読み込み後、自動実行
 function onLoad(){
-    // ビューポートの設定
-    //UpdateViewport();
-
     //alert("問題数=" + soukoDataArray[0].length + " どっち？" + soukoDataArray.length);
     // 問題選択肢作成
     for(let i = 2; i <= soukoDataArray.length; i++){
@@ -333,7 +330,7 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 170;          //200は表題やボタンなどの縦幅による// ヘッダー＋下部固定ボタンの高さ（約250px〜270px）を引いてグリッドの縮尺を計算
+    let bh = window.innerHeight - 230;          //200は表題やボタンなどの縦幅による
     let gridw = (soukoData[0].length + 1) * cellWidth;
     let gridh = (soukoData.length + 1) * cellWidth;
 
@@ -359,16 +356,4 @@ function zoomCalc(){
     img.style.width = (gridw * zoom * 0.3 * 1.5).toString() + 'px';
     successImageDiv.appendChild(img);
 
-}
-
-// ビューポートの設定
-function UpdateViewport() {
-    let str_viewport;
-    let str_ua = navigator.userAgent.toLowerCase();
-    if (str_ua.indexOf('iphone') >= 0 || str_ua.indexOf('ipad') >= 0 || str_ua.indexOf('android') >= 0 && str_ua.indexOf('mobile') >= 0) {
-        //str_viewport = "width=475px";
-    //} else {
-        str_viewport = "width=device-width";
-        document.querySelector("meta[name='viewport']").setAttribute("content", str_viewport);
-    }
 }
