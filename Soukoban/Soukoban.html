@@ -30,18 +30,19 @@
                 </label>
             </td>
         </tr>
-        <tr>
-            <td>
-                <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png"></button>
-                <button id="ubtn" class="menu_button" type="button" value="↑"><img src="../img/n.png"></button>
-                <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png"></button>
-                <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png"></button>
-                <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
-            </td>
-        </tr>
     </table>
     <div id="successImage"></div>
     <div id="mainScreen"></div>
+
+        <!-- 操作ボタンを画面下部に固定する要素として分離 -->
+    <div class="button_container">
+        <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png"></button>
+        <button id="ubtn" class="menu_button" type="button" value="↑"><img src="../img/n.png"></button>
+        <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png"></button>
+        <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png"></button>
+        <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+    </div>
+
     <!-- JavaScript -->
     <script type="text/javascript" src="./SoukobanData.js"></script>
     <script type="text/javascript" src="./Soukoban.js"></script>
