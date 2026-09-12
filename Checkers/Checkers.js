@@ -294,7 +294,7 @@ function endTurn() {
         isGameOver = true;
         
         // currentTurn が敗北した側の手番になっているため、勝者は反対側
-        const winner = (currentTurn === 1) ? 'コンピュータ（黒）' : 'あなた（赤）';
+        const winner = (currentTurn === 1) ? '相手（黒）' : 'あなた（赤）';
         const reason = (pieceCount === 0) ? '全滅しました！' : '手詰まりです！';
         
         turnIndicator.textContent = `ゲーム終了！ ${reason} ${winner}の勝ちです！`;
@@ -311,7 +311,7 @@ function endTurn() {
     createBoard();
 
     if (currentTurn === 2) {
-        turnIndicator.textContent = "コンピュータ（黒）が考えています...";
+        turnIndicator.textContent = "相手（黒）が考えています...";
         isCpuThinking = true;
         // ★修正：タイマーIDを変数に保持
         cpuTimer = setTimeout(makeCpuMove, 800); 
