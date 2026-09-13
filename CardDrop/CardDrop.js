@@ -33,10 +33,10 @@ const ClearImageSrc = 'img/clear.png';
 
 // グローバル定数
 class Config{
-    static CARD_W = 40;  // カード画像の幅px
-    static CARD_H = 60;  // カード画像の高さpx
-    static SCREEN_W = 200;  // CARD_W * 5 cssのmainScreen widthと同じ数値に
-    static SCREEN_H = 420;  // CARD_H * 7 cssのmainScreen heightと同じ数値に
+    static CARD_W = 96;  // カード画像の幅px
+    static CARD_H = 144;  // カード画像の高さpx
+    static SCREEN_W = 480;  // CARD_W * 5 cssのmainScreen widthと同じ数値に
+    static SCREEN_H = 1008;  // CARD_H * 7 cssのmainScreen heightと同じ数値に
     static FALLING = 'falling';
     static FIXED = 'fixed';
     static MAX_CARD = 53;   // 利用するカード数 51:数字カードのみ 52:ジョーカー含む  53:ジョーカーと裏含む
@@ -53,7 +53,7 @@ suit Spade,Heart,Diamond,Club,Joker,Back
 class Card{
     constructor(suit, number, no){
         // イメージファイル名を作成する
-        let imgsrc = 'img/' + 'card_' + suit + '_' + number + '.png';
+        let imgsrc = './img/' + 'card_' + suit + '_' + number + '.png';
         if(number == '00') imgsrc = 'img/' + 'card_' + suit + '.png';
         this.imgsrc = imgsrc;
         this.suit = suit;
@@ -140,6 +140,7 @@ function onLoad(){
     cimg.style.left = '20px';
     cimg.style.width = (Config.SCREEN_W * 0.8).toString() + 'px';
     clearImageDiv.appendChild(cimg);
+
 /*
     // カードクラス配列
     let card = null;
@@ -166,7 +167,6 @@ function onLoad(){
 
     // メインループ
     mainLoop();
-
 
     //ボタンアクション設定
     makeButtonAction();
@@ -991,9 +991,9 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 165;      //165は表題やボタンなどの縦幅による
-    let gridw = 200;
-    let gridh = 420;
+    let bh = window.innerHeight - 200;      //165は表題やボタンなどの縦幅による
+    let gridw = Config.SCREEN_W;
+    let gridh = Config.SCREEN_H;
 
     // 表示倍率計算
     for(let i = 2; i > 0; i = i - 0.01){
@@ -1003,13 +1003,10 @@ function zoomCalc(){
       }
     }
     //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
-    //if(zoom < 0 || zoom > 1) zoom = 1.0;
-    zoom = zoom * 0.9;
+    if(zoom < 0 || zoom > 1) zoom = 1.0;
+    //zoom = zoom * 0.9;
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
-    let subTable = document.getElementById('sub_table');
-    let a = (zoom - 1) * 10 * 42;
-    subTable.style = 'margin-top: ' + a.toString() + 'px';
 }
 
 /*
