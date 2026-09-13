@@ -1002,7 +1002,7 @@ function zoomCalc(){
         break;
       }
     }
-    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
+    alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     if(zoom < 0 || zoom > 1) zoom = 1.0;
     //zoom = zoom * 0.9;
     mainScreen.style.transformOrigin = 'top left';
