@@ -160,7 +160,7 @@ function onLoad(){
     CardDataArray.push(card);
 */
     //表示倍率
-    zoomCalc();
+    //zoomCalc();
 
     // 初期化
     init();
@@ -746,7 +746,7 @@ function highCard(cards){
     // 表示
     //alert('cards len = ' + cards.length);
     for(let i = 0; i < cards.length; i++){
-        alert('highCard ' + i + '  status = ' + cards[i].status + '  suit = ' + cards[i].suit + '  number = ' + cards[i].number);
+        //alert('highCard ' + i + '  status = ' + cards[i].status + '  suit = ' + cards[i].suit + '  number = ' + cards[i].number);
     }
 
 }
@@ -1002,7 +1002,7 @@ function zoomCalc(){
         break;
       }
     }
-    alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
+    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     if(zoom < 0 || zoom > 1) zoom = 1.0;
     //zoom = zoom * 0.9;
     mainScreen.style.transformOrigin = 'top left';
