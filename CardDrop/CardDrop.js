@@ -114,6 +114,9 @@ window.addEventListener("load", onLoad, false);
 document.addEventListener('keydown', keyDown, false);
 document.addEventListener('keyup', keyUp, false);
 
+// 画面サイズ変更時・向き変更時にも倍率を再計算するよう追加
+window.addEventListener('resize', zoomCalc);
+window.addEventListener('orientationchange', zoomCalc);
 
 // **********************
 // ロードイベント関数
@@ -160,7 +163,7 @@ function onLoad(){
     CardDataArray.push(card);
 */
     //表示倍率
-    //zoomCalc();
+    zoomCalc();
 
     // 初期化
     init();
@@ -1005,7 +1008,7 @@ function zoomCalc(){
     //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     if(zoom < 0 || zoom > 1) zoom = 1.0;
     //zoom = zoom * 0.9;
-    mainScreen.style.transformOrigin = 'top left';
+    mainScreen.style.transformOrigin = 'top center';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
 
