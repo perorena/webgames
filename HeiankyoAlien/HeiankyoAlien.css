@@ -1,7 +1,26 @@
-/* メインテーブル*/
-#main_table{
+/* 親要素を固定 */
+.fixed_footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+/* 各行の設定（fixed指定を削除し、heightの制限を外す） */
+.button_container {
+    width: 100%;
+    text-align: center;
+    padding: 3px 0;
+}
+
+/* メインテーブルの下部余白を2行分（約120px〜130px）確保 */
+#main_table {
     width: 100%;
     table-layout: fixed;
+    padding-bottom: 10px;
 }
 
 /* タイトルエリア */

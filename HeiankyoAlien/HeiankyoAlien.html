@@ -54,24 +54,23 @@
     <div id="gameoverImage"></div>
     <div id="clearImage"></div>
     <div id="mainScreen"></div>
-    <table id="sub_table">
-        <tr>
-            <td>
-                <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png"></button>
-                <button id="ubtn" class="menu_button" type="button" value="↑"><img src="../img/n.png"></button>
-                <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png"></button>
-                <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png"></button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button id="dig" class="menu_button" type="button" value="DIG" style="font-size: small;"><ruby>掘<rt>ほ</rt></ruby>る</button>
-                <button id="bury" class="menu_button" type="button" value="BURY" style="font-size: small;"><ruby>埋<rt>う</rt></ruby>める</button>
-                <button id="turnright" class="menu_button" type="button" value="RIGHT" style="font-size: small;"><ruby>右回<rt>みぎまわ</rt></ruby>り</button>
-                <button id="turnleft" class="menu_button" type="button" value="LEFT" style="font-size: xx-small;"><ruby>左回<rt>ひだりまわ</rt></ruby>り</button>
-            </td>
-        </tr>
-    </table>
+
+    <!-- 2行のボタンを1つの親要素（fixed_footer）で包む -->
+    <div class="fixed_footer">
+        <div class="button_container">
+            <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png"></button>
+            <button id="ubtn" class="menu_button" type="button" value="↑"><img src="../img/n.png"></button>
+            <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png"></button>
+            <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png"></button>
+            <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+        </div>
+        <div class="button_container">
+            <button id="dig" class="menu_button" type="button" value="DIG" style="font-size: small;"><ruby>掘<rt>ほ</rt></ruby>る</button>
+            <button id="bury" class="menu_button" type="button" value="BURY" style="font-size: small;"><ruby>埋<rt>う</rt></ruby>める</button>
+            <button id="turnright" class="menu_button" type="button" value="RIGHT" style="font-size: small;"><ruby>右回<rt>みぎまわ</rt></ruby>り</button>
+            <button id="turnleft" class="menu_button" type="button" value="LEFT" style="font-size: xx-small;"><ruby>左回<rt>ひだりまわ</rt></ruby>り</button>
+        </div>
+    </div>
 
     <!-- JavaScript -->
     <script type="text/javascript" src="./HeiankyoAlienData.js"></script>
