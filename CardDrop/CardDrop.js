@@ -498,6 +498,44 @@ function makeButtonAction(){
     });
 }
 
+/*
+function makeButtonAction(){
+    let leftButton = document.getElementById('lbtn');
+    let downButton = document.getElementById('dbtn');
+    let rightButton = document.getElementById('rbtn');
+
+    leftButton.addEventListener('click', function(event){
+        arrowAction('ArrowLeft');
+    });
+
+    // タッチデバイスとPCのマウス操作で分岐
+    const isTouch = ('ontouchend' in window);
+    const startEvent = isTouch ? 'touchstart' : 'mousedown';
+    const endEvent = isTouch ? 'touchend' : 'mouseup';
+
+    downButton.addEventListener(startEvent, function(event){
+        event.preventDefault();
+        acceleration = 2.0;
+    });
+
+    downButton.addEventListener(endEvent, function(event){
+        event.preventDefault();
+        acceleration = 1.0;
+    });
+
+    rightButton.addEventListener('click', function(event){
+        arrowAction('ArrowRight');
+    });
+
+    let resetButton = document.getElementById('reset');
+    resetButton.addEventListener('click', function(event){
+        RequestAnimationFrameID = null;
+        init();
+        mainLoop();
+    });
+}
+*/
+
 // 矢印アクション
 // 左右の動きは、列ごとに移動させる
 function arrowAction(action){
@@ -1007,8 +1045,8 @@ function zoomCalc(){
     }
     //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     if(zoom < 0 || zoom > 1) zoom = 1.0;
-    //zoom = zoom * 0.9;
-    mainScreen.style.transformOrigin = 'top center';
+
+    mainScreen.style.transformOrigin = 'top center';    // 中央寄せに変更
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
 

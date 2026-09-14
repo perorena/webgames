@@ -86,7 +86,7 @@
 /* メインスクリーン */
 #mainScreen {
     position: relative;
-    margin: 0px auto;
+    margin: 0px auto;   /* autoを追加　中央寄せに変更 */
     width: 480px;
     height: 1008px;
     background-color: gray;
