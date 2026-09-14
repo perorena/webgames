@@ -119,6 +119,10 @@ window.addEventListener("load", onLoad, false);
 // キーが押されたときのリスナー
 document.addEventListener('keydown', keyDown, false);
 
+// 画面サイズ変更時・向き変更時にも倍率を再計算するよう追加
+window.addEventListener('resize', zoomCalc);
+window.addEventListener('orientationchange', zoomCalc);
+
 // 矢印キーアクション
 function arrowAction(action){
     // プレーヤー操作不可の場合は何もしない
