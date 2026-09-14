@@ -72,7 +72,34 @@ function makeTable(parentId){
       parent.removeChild(parent.firstChild);
     }
 
-    // --- 1. 自分用グリッドの作成 ---
+    // --- 1. 入力ボックスの作成 ---
+    let inputArea = document.createElement('div');
+    inputArea.setAttribute('id', 'inputArea');
+    for(let k = 0; k < digitNum; k++){
+        let inputId = MyAnswer + k.toString();
+        let input = document.createElement('input');
+        input.type = 'number';
+        input.autocomplete = 'off';
+        input.min = '0';
+        input.max = '9';
+        input.setAttribute('id', inputId);
+        input.setAttribute('class', 'input');
+        input.addEventListener('click', function(event){
+            activeInputId = inputId;
+        });
+        input.addEventListener('input', function() {
+            if (this.value.length > 1) {
+                this.value = this.value.slice(0, 1);
+            }
+            // スクロール位置が飛ぶのを強制リセット
+            window.scrollTo(0, 0);
+        });
+        inputArea.appendChild(input);
+    }
+    // 入力エリアをテ―ブルの下に追加
+    parent.appendChild(inputArea);
+
+    // --- 2. 自分用グリッドの作成 ---
     let rows = [];
     let table = document.createElement('table');
     table.setAttribute('id', 'numberhistory');
@@ -119,33 +146,6 @@ function makeTable(parentId){
     }
     // 自分用テ―ブルを追加
     parent.appendChild(table);
-
-    // --- 2. 入力ボックスの作成 ---
-    let inputArea = document.createElement('div');
-    inputArea.setAttribute('id', 'inputArea');
-    for(let k = 0; k < digitNum; k++){
-        let inputId = MyAnswer + k.toString();
-        let input = document.createElement('input');
-        input.type = 'number';
-        input.autocomplete = 'off';
-        input.min = '0';
-        input.max = '9';
-        input.setAttribute('id', inputId);
-        input.setAttribute('class', 'input');
-        input.addEventListener('click', function(event){
-            activeInputId = inputId;
-        });
-        input.addEventListener('input', function() {
-            if (this.value.length > 1) {
-                this.value = this.value.slice(0, 1);
-            }
-            // スクロール位置が飛ぶのを強制リセット
-            window.scrollTo(0, 0);
-        });
-        inputArea.appendChild(input);
-    }
-    // 入力エリアをテ―ブルの下に追加
-    parent.appendChild(inputArea);
 
     // --- 3. 相手用グリッドの作成（対戦時・入力ボックスの下に配置） ---
     if(modeNum == 1){
