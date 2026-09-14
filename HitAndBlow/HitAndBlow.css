@@ -89,11 +89,27 @@
     vertical-align: middle;
 }
 
+/* 入力エリアの折り返しを防止 */
 #inputArea {
     padding: 0px;
-    margin: 0px;
+    margin: 10px 0; /* 10追加 */
     text-align: center;
     vertical-align: middle;
+    white-space: nowrap; /* 強制的に1行に収める */
+}
+
+/* 入力ボックス（サイズと余白を小さく調整） */
+.input {
+    width: 60px;          /* 85px → 60px に縮小 */
+    height: 60px;         /* 85px → 60px に縮小 */
+    font-size: 40px;      /* 60px → 40px に縮小 */
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px;
+    margin: 4px;          /* 10px → 4px に縮小 */
+    border-radius: 5px;
+    border: 3px solid #000;
+    box-sizing: border-box; /* パディングを含めたサイズ計算 */
 }
 
 /* コンピュータに解かせる問題 */
@@ -107,19 +123,6 @@
     margin: 5px;
     border-radius: 5px;
     border: 1px solid #000;
-}
-
-/* 入力ボックス */
-.input {
-    width: 85px;
-    height: 85px;
-    font-size: 60px;
-    text-align: center;
-    vertical-align: middle;
-    padding: 0px;
-    margin: 10px;
-    border-radius: 5px;
-    border: 3px solid #000;
 }
 
 /* 入力ボックスのスピンボタンを消す */

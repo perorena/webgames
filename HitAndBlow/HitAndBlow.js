@@ -139,6 +139,8 @@ function makeTable(parentId){
             if (this.value.length > 1) {
                 this.value = this.value.slice(0, 1);
             }
+            // スクロール位置が飛ぶのを強制リセット
+            window.scrollTo(0, 0);
         });
         inputArea.appendChild(input);
     }
