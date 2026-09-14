@@ -78,6 +78,15 @@
     z-index: 100; /* グリッドより前面に表示 */
 }
 
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.menu_button,
+.transition_button,
+.button_container,
+#heiankyo {
+    touch-action: manipulation;
+}
+
 /* 問題番号 */
 #dataNumber {
     font-size: medium;
