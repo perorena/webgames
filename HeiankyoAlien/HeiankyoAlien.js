@@ -849,9 +849,6 @@ function makeTable(parentId){
 
 // HTML読み込み後、自動実行
 function onLoad(){
-    // ビューポートの設定
-    //UpdateViewport();
-
     // 問題選択肢作成
     for(let i = 2; i <= heiankyoDataArray.length; i++){
         let option = document.createElement("option");
@@ -974,7 +971,7 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 200;          //200は表題やボタンなどの縦幅による
+    let bh = window.innerHeight - 300;          //200は表題やボタンなどの縦幅による
     let gridw = (heiankyoData[0].length + 1) * cellhaba;
     let gridh = (heiankyoData.length + 1) * cellhaba;
 
@@ -986,13 +983,13 @@ function zoomCalc(){
       }
     }
     if(zoom < 0 || zoom > 1) zoom = 1.0;
-    zoom = zoom * 0.9;
+    //zoom = zoom * 0.9;
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
     //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
-    let subTable = document.getElementById('sub_table');
-    let a = (zoom - 1) * 10 * 42;
-    subTable.style = 'margin-top: ' + a.toString() + 'px';
+    //let subTable = document.getElementById('sub_table');
+    //let a = (zoom - 1) * 10 * 42;
+    //subTable.style = 'margin-top: ' + a.toString() + 'px';
 
     // ゲームオーバーイメージ
     let gameoverImageDiv = document.getElementById('gameoverImage');
@@ -1013,18 +1010,6 @@ function zoomCalc(){
     //cimg.style.height = (gridh * zoom * 0.5).toString() + 'px'
     cimg.style.width = (gridw * zoom * 0.5).toString() + 'px';
     clearImageDiv.appendChild(cimg);
-}
-
-// ビューポートの設定
-function UpdateViewport() {
-    let str_viewport;
-    let str_ua = navigator.userAgent.toLowerCase();
-    if (str_ua.indexOf('iphone') >= 0 || str_ua.indexOf('ipad') >= 0 || str_ua.indexOf('android') >= 0 && str_ua.indexOf('mobile') >= 0) {
-        str_viewport = "width=475px";
-    } else {
-        str_viewport = "width=device-width";
-    }
-    document.querySelector("meta[name='viewport']").setAttribute("content", str_viewport);
 }
 
 // 平安京エイリアンマップデータ表示(デバッグ用)
