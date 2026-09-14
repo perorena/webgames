@@ -28,8 +28,8 @@ checkOnePair
 */
 
 const CrLf = '\n\r';
-const GameoverImageSrc = 'img/gameover.png';
-const ClearImageSrc = 'img/clear.png';
+const GameoverImageSrc = './img/gameover.png';
+const ClearImageSrc = './img/clear.png';
 
 // グローバル定数
 class Config{
