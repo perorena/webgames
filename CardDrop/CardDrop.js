@@ -458,6 +458,45 @@ function keyDown(event){
 
 // ボタンアクション設定
 function makeButtonAction(){
+    let leftButton = document.getElementById('lbtn');
+    let downButton = document.getElementById('dbtn');
+    let rightButton = document.getElementById('rbtn');
+
+    leftButton.addEventListener('click', function(event){
+        arrowAction('ArrowLeft');
+    });
+
+    // --- Pointer Events に統一 ---
+    // PCのマウス押し込み・スマホのタッチ双方にスマートに対応
+    downButton.addEventListener('pointerdown', function(event){
+        event.preventDefault();
+        acceleration = 2.0;
+    });
+
+    downButton.addEventListener('pointerup', function(event){
+        event.preventDefault();
+        acceleration = 1.0;
+    });
+
+    // 画面外に指やカーソルが外れた場合も加速を解除
+    downButton.addEventListener('pointerleave', function(event){
+        acceleration = 1.0;
+    });
+
+    rightButton.addEventListener('click', function(event){
+        arrowAction('ArrowRight');
+    });
+
+    let resetButton = document.getElementById('reset');
+    resetButton.addEventListener('click', function(event){
+        RequestAnimationFrameID = null;
+        init();
+        mainLoop();
+    });
+}
+/*
+// ボタンアクション設定
+function makeButtonAction(){
     // イベント取得用ボタンオブジェクト取得
     let leftButton = document.getElementById('lbtn');
     let downButton = document.getElementById('dbtn');
@@ -497,6 +536,7 @@ function makeButtonAction(){
         mainLoop();
     });
 }
+*/
 
 /*
 function makeButtonAction(){
@@ -1046,7 +1086,7 @@ function zoomCalc(){
     //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     if(zoom < 0 || zoom > 1) zoom = 1.0;
 
-    mainScreen.style.transformOrigin = 'top center';    // 中央寄せに変更
+    mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
 
