@@ -511,7 +511,7 @@ function makeButtonAction(){
     // 下 mousedown → mouseup → click の順番でイベント発生
     downButton.addEventListener('touchstart', function(event){
         event.preventDefault();
-        acceleration = 2.0;
+        acceleration = 6.0;
     });
     downButton.addEventListener('touchend', function(event){
         event.preventDefault();
@@ -519,7 +519,7 @@ function makeButtonAction(){
     });
     downButton.addEventListener('mousedown', function(event){
         event.preventDefault();
-        acceleration = 2.0;
+        acceleration = 6.0;
     });
     downButton.addEventListener('mouseup', function(event){
         event.preventDefault();
@@ -1073,7 +1073,7 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 200;      //165は表題やボタンなどの縦幅による
+    let bh = window.innerHeight - 250;
     let gridw = Config.SCREEN_W;
     let gridh = Config.SCREEN_H;
 
