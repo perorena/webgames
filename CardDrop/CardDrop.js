@@ -456,6 +456,7 @@ function keyDown(event){
     arrowAction(strArrow);
 }
 
+/*
 // ボタンアクション設定
 function makeButtonAction(){
     let leftButton = document.getElementById('lbtn');
@@ -494,7 +495,8 @@ function makeButtonAction(){
         mainLoop();
     });
 }
-/*
+*/
+
 // ボタンアクション設定
 function makeButtonAction(){
     // イベント取得用ボタンオブジェクト取得
@@ -536,7 +538,6 @@ function makeButtonAction(){
         mainLoop();
     });
 }
-*/
 
 /*
 function makeButtonAction(){
