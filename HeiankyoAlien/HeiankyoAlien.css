@@ -82,10 +82,11 @@
 }
 
 /* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
-button, 
-.menu_button, 
-.transition_button, 
-.fixed_footer, 
+button,
+.menu_button,
+.transition_button,
+.button_container,
+.fixed_footer,
 #heiankyo {
     touch-action: manipulation;
 }
