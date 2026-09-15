@@ -62,6 +62,14 @@
     border-radius: 20px;
 }
 
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.menu_button,
+.transition_button,
+#tileGrid {
+    touch-action: manipulation;
+}
+
 /* 問題番号 */
 #dataNumber {
     font-size: medium;
