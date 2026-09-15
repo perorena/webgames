@@ -488,7 +488,6 @@ function makeTable(parentId){
         }
     }
 
-/*
     // 【追加】iOS Safari用のダブルタップ拡大防止処理
     let lastTouchTime = 0;
     table.addEventListener('touchend', function(event) {
@@ -500,7 +499,7 @@ function makeTable(parentId){
         }
         lastTouchTime = currentTime;
     }, { passive: false }); // passive: false を指定して preventDefault を有効化
-*/
+
     // 指定したdiv要素に迷路を加える
     document.getElementById(parentId).appendChild(table);
 }
