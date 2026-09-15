@@ -222,6 +222,8 @@ function drawCoord(){
 // 座標系の初期化
 // **********************
 function drawInit() {
+  zoomCalc();
+
   // 一度描画をクリア
   ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
@@ -281,4 +283,26 @@ function drawInit() {
   ctx.fillText('Ｏ', oX - 5, oY + 15, MAX_WIDTH);
   ctx.fillText('ｘ', CANVAS_W - 15, oY + 15, MAX_WIDTH);
   ctx.fillText('ｙ', oX - 15, 10, MAX_WIDTH);
+}
+
+// 表示倍率計算
+function zoomCalc(){
+    // 表示サイズの計算
+    let coordCanvasRapper = document.getElementById('coordCanvasRapper');
+    let bw = window.innerWidth;
+    let bh = window.innerHeight;
+    let gridw = CANVAS_W;
+    let gridh = CANVAS_H;
+
+    // 表示倍率計算
+    for(let i = 2; i > 0; i = i - 0.01){
+      if( gridw * i < bw && gridh * i < bh){
+        zoom = i;
+        break;
+      }
+    }
+    alert("zoom=" + zoom.toString());
+    if(zoom < 0 || zoom > 1) zoom = 1.0;
+    coordCanvasRapper.style.transformOrigin = 'top left';
+    coordCanvasRapper.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
