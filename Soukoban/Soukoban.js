@@ -301,7 +301,7 @@ function makeTable(parentId){
     // 倉庫の作成開始
     let rows=[];
     let table = document.createElement('table');
-    table.setAttribute('id', 'souko');
+    table.setAttribute('id', 'soukoGrid');
 
     // 倉庫に2次元配列の要素を格納
     for(let i = 0; i < maxRow; i++){
