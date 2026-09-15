@@ -57,8 +57,11 @@
 button,
 .menu_button,
 .transition_button,
-#tileGrid {
+#tileGrid,
+#tileGrid td {
     touch-action: manipulation;
+    -webkit-user-select: none; /* iOS Safari用テキスト選択防止 */
+    user-select: none;
 }
 
 /* タイルテーブル */

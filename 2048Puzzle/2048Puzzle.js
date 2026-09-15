@@ -487,11 +487,20 @@ function makeTable(parentId){
 
         }
     }
-    // ダブルクリックによる拡大を防止する処理を追加
-    table.addEventListener('dblclick', function(event){
-        event.preventDefault();
-    });
 
+/*
+    // 【追加】iOS Safari用のダブルタップ拡大防止処理
+    let lastTouchTime = 0;
+    table.addEventListener('touchend', function(event) {
+        let currentTime = new Date().getTime();
+        let tapLength = currentTime - lastTouchTime;
+        if (tapLength < 300 && tapLength > 0) {
+            // 300ミリ秒以内の連続タップを無効化
+            event.preventDefault();
+        }
+        lastTouchTime = currentTime;
+    }, { passive: false }); // passive: false を指定して preventDefault を有効化
+*/
     // 指定したdiv要素に迷路を加える
     document.getElementById(parentId).appendChild(table);
 }
