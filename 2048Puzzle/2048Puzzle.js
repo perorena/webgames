@@ -487,6 +487,10 @@ function makeTable(parentId){
 
         }
     }
+    // ダブルクリックによる拡大を防止する処理を追加
+    table.addEventListener('dblclick', function(event){
+        event.preventDefault();
+    });
 
     // 指定したdiv要素に迷路を加える
     document.getElementById(parentId).appendChild(table);
