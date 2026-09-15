@@ -86,7 +86,8 @@ button,
 .menu_button,
 .transition_button,
 .fixed_footer,
-#heiankyo {
+#numberhistory,
+#comphistory {
     touch-action: manipulation;
 }
 
