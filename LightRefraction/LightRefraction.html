@@ -14,9 +14,9 @@
         </div>
         <!-- 入力エリア -->
         <div id="datainput">
-            <label>入射角（度）：<input type="number" id="numberText" value="45" class="no-spin"></label>
+            <label class="refractiveLabel">入射角（度）：<input type="number" id="numberText" value="45" class="no-spin"></label>
             <br>
-            <label>上半分屈折率：
+            <label class="refractiveLabel">上半分屈折率：
                 <select id="refractiveSelect1">
                     <option value="1.000292" selected>空気　(1.000292)</option>
                     <option value="1.5443">水晶　(1.5443)</option>
@@ -29,7 +29,7 @@
                 </select>
             </label>
             <br>
-            <label>下半分屈折率：
+            <label class="refractiveLabel">下半分屈折率：
                 <select id="refractiveSelect2">
                     <option value="1.000292" selected>空気　(1.000292)</option>
                     <option value="1.5443">水晶　(1.5443)</option>
@@ -43,7 +43,7 @@
             </label>
             <br>
             <br>
-            <input type="button" value="開始" onclick="buttonClick()">
+            <input id="startButton" type="button" value="開始" onclick="buttonClick()">
             <div id="addText"></div>
         </div>
         <!-- 描画エリア -->

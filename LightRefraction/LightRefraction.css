@@ -17,6 +17,29 @@
     border: 1px solid black;
 }
 
+.refractiveLabel {
+    font-size: large;
+}
+
+#numberText,
+#refractiveSelect1,
+#refractiveSelect2 {
+    font-size: large;
+}
+
+#startButton {
+    width: 100px;
+    height: 50px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: large;
+}
+
 /* type=number スピンを消す */
 .no-spin::-webkit-inner-spin-button,
 .no-spin::-webkit-outer-spin-button {
