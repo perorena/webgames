@@ -83,7 +83,7 @@ button,
 .menu_button,
 .transition_button,
 .button_container,
-#heiankyo {
+#soukoGrid {
     touch-action: manipulation;
 }
 
@@ -93,7 +93,7 @@ button,
 }
 
 /* 倉庫テーブル */
-#souko {
+#soukoGrid {
     padding: 0px;
     margin: 0px;
     border-collapse: collapse;
@@ -109,7 +109,7 @@ button,
     -moz-user-select: none;
 }
 
-#souko td {
+#soukoGrid td {
     margin: 0px;
     padding: 0px;
     width: 50px;

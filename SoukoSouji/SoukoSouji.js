@@ -202,7 +202,7 @@ function makeTable(parentId){
     // 作成開始
     let rows=[];
     let table = document.createElement('table');
-    table.setAttribute('id', 'souko');
+    table.setAttribute('id', 'soukoGrid');
 
     // 2次元配列の要素を格納
     for(let i = 0; i < maxRow; i++){
