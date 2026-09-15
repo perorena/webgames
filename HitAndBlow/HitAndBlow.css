@@ -1,7 +1,8 @@
-/* メインテーブル*/
-#main_table{
+/* メインテーブル */
+#main_table {
     width: 100%;
     table-layout: fixed;
+    padding-bottom: 10px;
 }
 
 /* タイトルエリア */
@@ -62,8 +63,35 @@
     border-radius: 20px;
 }
 
+/* 操作ボタンの親要素を固定 */
+.fixed_footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+/* 操作ボタン */
+.button_container {
+    width: 100%;
+    text-align: center;
+    padding: 3px 0;
+}
+
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.menu_button,
+.transition_button,
+.fixed_footer,
+#heiankyo {
+    touch-action: manipulation;
+}
+
 /* 問題番号 */
-#digitNumber{
+#digitNumber {
     font-size: medium;
 }
 
@@ -147,3 +175,34 @@ input[type="number"]{
     appearance:textfield;
 }
 
+/* ゲームエリア全体のベース設定（Flexbox指定） */
+#game_area {
+    display: flex;
+    width: 100%;
+    gap: 10px;              /* エリア間の余白 */
+}
+
+/* 各セクション共通スタイル */
+.player_section,
+.comp_section {
+    box-sizing: border-box;
+}
+
+/* 手動切替用 - 縦表示モード (.vertical クラス設定時) */
+#game_area.vertical {
+    flex-direction: column; /* 上下に並べる */
+}
+#game_area.vertical .player_section,
+#game_area.vertical .comp_section {
+    width: 100%;            /* 横幅いっぱいに指定 */
+}
+
+/* 手動切替用 - 横表示モード (.horizontal クラス設定時) */
+#game_area.horizontal {
+    flex-direction: row;    /* 左右に横並びにする */
+    justify-content: space-between;
+}
+#game_area.horizontal .player_section,
+#game_area.horizontal .comp_section {
+    width: 49%;            /* 幅を約半分ずつに分けて配置 */
+}
