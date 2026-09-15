@@ -75,13 +75,21 @@
     border-radius: 20px;
 }
 
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.menu_button,
+.transition_button,
+#numberplaceGrid {
+    touch-action: manipulation;
+}
+
 /* 問題番号 */
 #dataNumber,#spaceNumber{
     font-size: medium;
 }
 
 /* 数字テーブル */
-#numberplace {
+#numberplaceGrid {
     padding: 0px;
     margin: 0px;
     border-collapse: separate; /*collapse;*/
@@ -95,7 +103,7 @@
     -moz-user-select: none;
 }
 
-#numberplace td {
+#numberplaceGrid td {
     padding: 0px;
     margin: 0px;
     width: 95px;

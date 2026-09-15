@@ -905,7 +905,7 @@ function makeTable(parentId){
     // グリッドの作成開始
     let rows=[];
     let table = document.createElement('table');
-    table.setAttribute('id', 'numberplace');
+    table.setAttribute('id', 'numberplaceGrid');
 
     // 2次元配列の要素を格納
     for(let i = 0; i < 9; i++){
