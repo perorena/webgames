@@ -53,6 +53,14 @@
     border-radius: 20px;
 }
 
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.menu_button,
+.transition_button,
+#tileGrid {
+    touch-action: manipulation;
+}
+
 /* タイルテーブル */
 #tileGrid {
     padding: 0px;
