@@ -44,7 +44,7 @@
 
 /* メニューボタンなど */
 .menu_button {
-    width: 61px;
+    width: 80px;
     height: 55px;
     padding: 0px;
     margin: 0px; 
@@ -102,12 +102,13 @@ button,
     border-collapse: separate;
     border-spacing: 5px;
     text-align: center;
-    width: 100%;
+    width: 600px;           /* 新規変更: テーブル自体の幅を600px固定 */
     table-layout: fixed;
     user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
+    box-sizing: border-box; /* 新規追加 */
 }
 
 #numberhistory td, #comphistory td {
@@ -115,7 +116,14 @@ button,
     margin: 0px;
     text-align: center;
     vertical-align: middle;
+    box-sizing: border-box; /* 新規追加: 枠線を含めた計算で重なりを防止 */
 }
+
+/* 新規追加: 列ごとの幅をCSS側で厳密に固定制御して重なりを防止 */
+#numberhistory td:nth-child(1), #comphistory td:nth-child(1) { width: 60px; }  /* 回数 */
+#numberhistory td:nth-child(2), #comphistory td:nth-child(2) { width: 360px; } /* 推理/数字 */
+#numberhistory td:nth-child(3), #comphistory td:nth-child(3) { width: 90px; }  /* Hit */
+#numberhistory td:nth-child(4), #comphistory td:nth-child(4) { width: 90px; }  /* Blow */
 
 /* 入力エリアの折り返しを防止 */
 #inputArea {
@@ -179,7 +187,8 @@ input[type="number"]{
 #game_area {
     display: flex;
     width: 100%;
-    gap: 10px;              /* エリア間の余白 */
+    gap: 20px;              /* エリア間の余白（見やすさ改善） */
+    box-sizing: border-box;
 }
 
 /* 各セクション共通スタイル */
@@ -200,9 +209,15 @@ input[type="number"]{
 /* 手動切替用 - 横表示モード (.horizontal クラス設定時) */
 #game_area.horizontal {
     flex-direction: row;    /* 左右に横並びにする */
-    justify-content: space-between;
+    justify-content: flex-start; /* 新規変更: 重なり防止のため左寄せ固定 */
+    /* 新規変更: 2つのテーブル(600px * 2) + 隙間(20px) = 1220px に完全固定 */
+    min-width: 1220px;
+    width: 1220px;
 }
 #game_area.horizontal .player_section,
 #game_area.horizontal .comp_section {
-    width: 49%;            /* 幅を約半分ずつに分けて配置 */
+    /* 新規変更: 幅をテーブルと等しい600pxに固定 */
+    width: 600px;
+    min-width: 600px;
+    flex: 0 0 600px;
 }

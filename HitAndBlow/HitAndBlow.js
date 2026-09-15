@@ -52,6 +52,10 @@ window.addEventListener("load", onLoad, false);
 // キ―が押されたときのリスナ―
 document.addEventListener('keyup', keyUp, false);
 
+// 画面サイズ変更時・向き変更時にも倍率を再計算するよう追加
+window.addEventListener('resize', zoomCalc);
+window.addEventListener('orientationchange', zoomCalc);
+
 // キ―が押されたとき
 function keyUp(event){
     activeInputId = event.target.id;
@@ -122,8 +126,7 @@ function makeTable(parentId){
             cell.style.borderBottomWidth = OuterThickness.toString() + 'px';
             cell.style.fontSize = NumberMojiSize.toString() + 'px';
             cell.style.height = CellHeight.toString() + 'px';
-            cell.style.width = (CellWidth * 2).toString() + 'px';
-            if(j == 1) cell.style.width = (CellWidth * 6).toString() + 'px';
+            /* 新規削除: JSでの幅設定（cell.style.width）を削除してCSS側での制御に変更。幅崩れを防止 */
 
             if(i == 0){
                 cell.style.height = (CellHeight + 30).toString() + 'px';
@@ -170,8 +173,7 @@ function makeTable(parentId){
                 cell.style.borderBottomWidth = OuterThickness.toString() + 'px';
                 cell.style.fontSize = NumberMojiSize.toString() + 'px';
                 cell.style.height = CellHeight.toString() + 'px';
-                cell.style.width = (CellWidth * 2).toString() + 'px';
-                if(j == 1) cell.style.width = (CellWidth * 6).toString() + 'px';
+                /* 新規削除: JSでの幅設定（cell.style.width）を削除してCSS側での制御に変更。幅崩れを防止 */
 
                 if(i == 0){
                     cell.style.height = (CellHeight + 30).toString() + 'px';
@@ -534,7 +536,7 @@ function setMode(){
                 toggleLayout.disabled = false;
             } else {
                 currentLayoutMode = 'vertical';
-                toggleLayout.textContent = "横表示へ";
+                toggleLayout.innerHTML = "<ruby>横表示<rt>よこひょうじ</rt></ruby>へ"
                 toggleLayout.disabled = true;
             }
         }
@@ -546,8 +548,8 @@ function setMode(){
 function drawingTable(){
     resetData();
     buttonON();
-    zoomCalc();
     makeTable('mainScreen');
+    zoomCalc();
 }
 
 // 初期化
@@ -566,11 +568,23 @@ function resetData(){
 // 表示倍率計算
 function zoomCalc(){
     let mainScreen = document.getElementById('mainScreen');
+    if (!mainScreen) return;
+
     let bw = window.innerWidth;
     let bh = window.innerHeight - 220;
-    let gridw = CellWidth + CellWidth * 4 + CellWidth + CellWidth;
+    let gridw = 600;
     let gridh = (CellHeight + 20) * HistoryRowMax + 85;
 
+    /* 新規変更: 実際のテーブル幅1020pxに合わせて縮小率を正しく指定 */
+    if (currentLayoutMode === 'horizontal' && modeNum == 1) {
+        gridw = 1230; // 1020px + マージン
+        gridh = (CellHeight + 20) * HistoryRowMax + 85;
+    } else {
+        gridw = 600;
+        gridh = (CellHeight + 20) * HistoryRowMax + 85;
+    }
+
+    zoom = 1.0;
     for(let i = 2; i > 0; i = i - 0.01){
       if( gridw * i < bw && gridh * i < bh){
         zoom = i;
@@ -588,17 +602,20 @@ function toggleLayout() {
     let toggleLayout = document.getElementById("toggleLayout");
     if (currentLayoutMode === 'vertical') {
         currentLayoutMode = 'horizontal';
-        toggleLayout.textContent = "縦表示へ";
+        //toggleLayout.textContent = "縦表示へ";
+        toggleLayout.innerHTML = "<ruby>縦表示<rt>たてひょうじ</rt></ruby>へ";
         if (gameArea) {
             gameArea.classList.remove('vertical');
             gameArea.classList.add('horizontal');
         }
     } else {
         currentLayoutMode = 'vertical';
-        toggleLayout.textContent = "横表示へ";
+        //toggleLayout.textContent = "横表示へ";
+        toggleLayout.innerHTML = "<ruby>横表示<rt>よこひょうじ</rt></ruby>へ";
         if (gameArea) {
             gameArea.classList.remove('horizontal');
             gameArea.classList.add('vertical');
         }
     }
+    zoomCalc();
 }
