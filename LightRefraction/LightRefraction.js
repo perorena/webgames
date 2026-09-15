@@ -302,7 +302,7 @@ function zoomCalc(){
       }
     }
     alert("zoom=" + zoom.toString());
-    if(zoom < 0 || zoom > 1) zoom = 1.0;
+    //if(zoom < 0 || zoom > 1) zoom = 1.0;
     coordCanvasRapper.style.transformOrigin = 'top left';
     coordCanvasRapper.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
