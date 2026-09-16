@@ -1,8 +1,7 @@
-/* メインテーブル */
-#main_table {
+/* メインテーブル*/
+#main_table{
     width: 100%;
     table-layout: fixed;
-    padding-bottom: 10px;
 }
 
 /* タイトルエリア */
@@ -35,7 +34,7 @@
 
 /* 問題選択 */
 #number {
-    height: 65px;
+    height: 35px;
     vertical-align: top;
     border: 1px solid #000;
     margin: 0px;
@@ -44,7 +43,7 @@
 
 /* メニューボタンなど */
 .menu_button {
-    width: 80px;
+    width: 61px;
     height: 55px;
     padding: 0px;
     margin: 0px; 
@@ -63,31 +62,11 @@
     border-radius: 20px;
 }
 
-/* 操作ボタンの親要素を固定 */
-.fixed_footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-}
-
-/* 操作ボタン */
-.button_container {
-    width: 100%;
-    text-align: center;
-    padding: 3px 0;
-}
-
 /* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
 button,
 .menu_button,
 .transition_button,
-.fixed_footer,
-#numberhistory,
-#comphistory {
+#numberhistory {
     touch-action: manipulation;
 }
 
@@ -97,34 +76,26 @@ button,
 }
 
 /* 数字テーブル（自分用・相手用両方に適用） */
-#numberhistory, #comphistory {
+#numberhistory {
     padding: 0px;
     margin: 0px;
     border-collapse: separate;
     border-spacing: 5px;
     text-align: center;
-    width: 600px;           /* 新規変更: テーブル自体の幅を600px固定 */
+    width: 100%;
     table-layout: fixed;
     user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
-    box-sizing: border-box; /* 新規追加 */
 }
 
-#numberhistory td, #comphistory td {
+#numberhistory td {
     padding: 0px;
     margin: 0px;
     text-align: center;
     vertical-align: middle;
-    box-sizing: border-box; /* 新規追加: 枠線を含めた計算で重なりを防止 */
 }
-
-/* 新規追加: 列ごとの幅をCSS側で厳密に固定制御して重なりを防止 */
-#numberhistory td:nth-child(1), #comphistory td:nth-child(1) { width: 60px; }  /* 回数 */
-#numberhistory td:nth-child(2), #comphistory td:nth-child(2) { width: 360px; } /* 推理/数字 */
-#numberhistory td:nth-child(3), #comphistory td:nth-child(3) { width: 90px; }  /* Hit */
-#numberhistory td:nth-child(4), #comphistory td:nth-child(4) { width: 90px; }  /* Blow */
 
 /* 入力エリアの折り返しを防止 */
 #inputArea {
@@ -184,41 +155,3 @@ input[type="number"]{
     appearance:textfield;
 }
 
-/* ゲームエリア全体のベース設定（Flexbox指定） */
-#game_area {
-    display: flex;
-    width: 100%;
-    gap: 20px;              /* エリア間の余白（見やすさ改善） */
-    box-sizing: border-box;
-}
-
-/* 各セクション共通スタイル */
-.player_section,
-.comp_section {
-    box-sizing: border-box;
-}
-
-/* 手動切替用 - 縦表示モード (.vertical クラス設定時) */
-#game_area.vertical {
-    flex-direction: column; /* 上下に並べる */
-}
-#game_area.vertical .player_section,
-#game_area.vertical .comp_section {
-    width: 100%;            /* 横幅いっぱいに指定 */
-}
-
-/* 手動切替用 - 横表示モード (.horizontal クラス設定時) */
-#game_area.horizontal {
-    flex-direction: row;    /* 左右に横並びにする */
-    justify-content: flex-start; /* 新規変更: 重なり防止のため左寄せ固定 */
-    /* 新規変更: 2つのテーブル(600px * 2) + 隙間(20px) = 1220px に完全固定 */
-    min-width: 1220px;
-    width: 1220px;
-}
-#game_area.horizontal .player_section,
-#game_area.horizontal .comp_section {
-    /* 新規変更: 幅をテーブルと等しい600pxに固定 */
-    width: 600px;
-    min-width: 600px;
-    flex: 0 0 600px;
-}

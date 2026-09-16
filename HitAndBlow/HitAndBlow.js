@@ -9,27 +9,20 @@ const MyAnswer = 'ans';             // 解答入力
 const NumberButton = 'num';
 const HistoryRowMax = 12;
 
-// 表示モード状態管理用変数（'vertical' または 'horizontal'）
-let currentLayoutMode = 'vertical';
-
 // 桁数指定
+//let digitNumber = document.getElementById('digitNumber');
+// 問題変更時のイベントリスナ―
+//digitNumber.addEventListener('change', drawingTable);
 let digitNumber = document.getElementsByName('digitNumber');
 let digitRadio1 = document.getElementById('radio1');
 digitRadio1.addEventListener('change', drawingTable);
 let digitRadio2 = document.getElementById('radio2');
 digitRadio2.addEventListener('change', drawingTable);
 
-// モ―ド指定
-let modeNumber = document.getElementsByName('modeNumber');
-let modeRadio3 = document.getElementById('radio3');
-modeRadio3.addEventListener('change', setMode);
-let modeRadio4 = document.getElementById('radio4');
-modeRadio4.addEventListener('change', setMode);
-
 // 桁数
 let digitNum;
-// モ―ド
-let modeNum;
+//　モ―ド
+let modeNum = 0;;
 
 // コンピュ―タが作った問題
 let questionNumber = [];
@@ -52,18 +45,16 @@ window.addEventListener("load", onLoad, false);
 // キ―が押されたときのリスナ―
 document.addEventListener('keyup', keyUp, false);
 
-// 画面サイズ変更時・向き変更時にも倍率を再計算するよう追加
-window.addEventListener('resize', zoomCalc);
-window.addEventListener('orientationchange', zoomCalc);
-
 // キ―が押されたとき
 function keyUp(event){
+    //alert(event.target.value);
+    //alert(event.target.id); //inp0 or questionforcomp0
     activeInputId = event.target.id;
     if(activeInputId.slice(0,3) == MyAnswer) setNumber(event.target.value);
     if(activeInputId.slice(0,3) == QuestionForComp) checkQuestionNumber(event.target.value);
 }
 
-// グリッドおよび動的エリア構造の作成
+// グリッドの動的作成
 function makeTable(parentId){
     // 描画エリア削除
     let parent = document.getElementById(parentId);
@@ -90,23 +81,13 @@ function makeTable(parentId){
             if (this.value.length > 1) {
                 this.value = this.value.slice(0, 1);
             }
+            // スクロール位置が飛ぶのを強制リセット
             window.scrollTo(0, 0);
         });
         inputArea.appendChild(input);
     }
-    // 入力エリアを追加
+    // 入力エリアをテ―ブルの下に追加
     parent.appendChild(inputArea);
-
-    // ゲーム・履歴領域を囲むコンテナ構造を動的作成
-    let gameArea = document.createElement('div');
-    gameArea.setAttribute('id', 'game_area');
-    gameArea.setAttribute('class', currentLayoutMode); // 保持しているレイアウトクラスを付与
-
-    let playerSection = document.createElement('div');
-    playerSection.setAttribute('class', 'player_section');
-
-    let compSection = document.createElement('div');
-    compSection.setAttribute('class', 'comp_section');
 
     // --- 2. 自分用グリッドの作成 ---
     let rows = [];
@@ -115,10 +96,12 @@ function makeTable(parentId){
 
     for(let i = 0; i < HistoryRowMax; i++){
         rows.push(table.insertRow(-1));
+        // 自分履歴
         for(let j = 0; j < 4; j++){
             let cell = rows[i].insertCell(-1);
             let idString = i.toString() + IdSeparator + j.toString();
             
+            // 枠の設定
             cell.style.borderStyle = 'solid';
             cell.style.borderLeftWidth = OuterThickness.toString() + 'px';
             cell.style.borderTopWidth = OuterThickness.toString() + 'px';
@@ -126,14 +109,15 @@ function makeTable(parentId){
             cell.style.borderBottomWidth = OuterThickness.toString() + 'px';
             cell.style.fontSize = NumberMojiSize.toString() + 'px';
             cell.style.height = CellHeight.toString() + 'px';
-            /* 新規削除: JSでの幅設定（cell.style.width）を削除してCSS側での制御に変更。幅崩れを防止 */
+            cell.style.width = (CellWidth * 2).toString() + 'px';
+            if(j == 1) cell.style.width = (CellWidth * 6).toString() + 'px';
 
             if(i == 0){
                 cell.style.height = (CellHeight + 30).toString() + 'px';
                 if(j == 0) cell.textContent = '';
                 if(j == 1){
-                    cell.textContent = '― ― ―';
-                    if(digitNum == 4) cell.textContent = '― ― ― ―';
+                    cell.textContent = '―　―　―';
+                    if(digitNum == 4) cell.textContent = '―　―　―　―';
                 }
                 if(j == 2) cell.textContent = '';
                 if(j == 3) cell.textContent = '';
@@ -150,84 +134,19 @@ function makeTable(parentId){
             cell.setAttribute('id', idString);
         }
     }
-    playerSection.appendChild(table);
-    gameArea.appendChild(playerSection);
+    // 自分用テ―ブルを追加
+    parent.appendChild(table);
 
-    // --- 3. 相手用グリッドの作成（対戦時） ---
-    if(modeNum == 1){
-        let oppRows = [];
-        let oppTable = document.createElement('table');
-        oppTable.setAttribute('id', 'comphistory');
-
-        for(let i = 0; i < HistoryRowMax; i++){
-            oppRows.push(oppTable.insertRow(-1));
-            for(let j = 0; j < 4; j++){
-                let cell = oppRows[i].insertCell(-1);
-                let targetJ = j + 5;
-                let idString = i.toString() + IdSeparator + targetJ.toString();
-
-                cell.style.borderStyle = 'solid';
-                cell.style.borderLeftWidth = OuterThickness.toString() + 'px';
-                cell.style.borderTopWidth = OuterThickness.toString() + 'px';
-                cell.style.borderRightWidth = OuterThickness.toString() + 'px';
-                cell.style.borderBottomWidth = OuterThickness.toString() + 'px';
-                cell.style.fontSize = NumberMojiSize.toString() + 'px';
-                cell.style.height = CellHeight.toString() + 'px';
-                /* 新規削除: JSでの幅設定（cell.style.width）を削除してCSS側での制御に変更。幅崩れを防止 */
-
-                if(i == 0){
-                    cell.style.height = (CellHeight + 30).toString() + 'px';
-                    if(j == 0) cell.textContent = '';
-                    if(j == 1){
-                        for(let k = 0; k < digitNum; k++){
-                            let inputId = QuestionForComp + k.toString();
-                            let input = document.createElement('input');
-                            input.type = 'number';
-                            input.autocomplete = 'off';
-                            input.min = '0';
-                            input.max = '9';
-                            input.setAttribute('id', inputId);
-                            input.setAttribute('class', 'questionforcomp');
-                            input.addEventListener('click', function(event){
-                                activeInputId = inputId;
-                            });
-                            input.addEventListener('input', function() {
-                                if (this.value.length > 1) {
-                                    this.value = this.value.slice(0, 1);
-                                }
-                            });
-                            cell.appendChild(input);
-                        }
-                    }
-                    if(j == 2) cell.textContent = '';
-                    if(j == 3) cell.textContent = '';
-                } else if(i == 1){
-                    cell.style.backgroundColor = 'cornflowerblue';
-                    if(j == 0) cell.textContent = '';
-                    if(j == 1) cell.textContent = '相手の推理';
-                    if(j == 2) cell.textContent = 'Hit';
-                    if(j == 3) cell.textContent = 'Blow';
-                } else {
-                    if(j == 0) cell.textContent = (i - 1).toString();
-                }
-
-                cell.setAttribute('id', idString);
-            }
-        }
-        compSection.appendChild(oppTable);
-        gameArea.appendChild(compSection);
-    }
-
-    // parentにgameAreaを追加
-    parent.appendChild(gameArea);
 }
 
 // ボタンアクション設定
 function makeButtonAction(){
+    // スタ―ト
     let startButton = document.getElementById('start');
     startButton.addEventListener('click', function(event){
         startAct();
     });
+    // ギブアップ
     let giveupButton = document.getElementById('giveup');
     giveupButton.addEventListener('click', function(event){
         giveupAct();
@@ -237,31 +156,28 @@ function makeButtonAction(){
 // スタ―トアクション
 function startAct(){
     if(historyRow > 1){
+        // テ―ブル表示
         drawingTable();
     } else {
-        if(modeNum == 1){
-            if(!checkInputComplete(QuestionForComp)){
-                alert('コンピュ―タに推理させる問題を入力してください！');
-                drawingTable();
-                return;
-            }
-            makeAllNumbers();
-        } else {
-            drawingTable();
-        }
+        // テ―ブル表示
+        drawingTable();
+        // 問題作成
         makeNumber();
+        // ボタン無効
         buttonOFF();
     }
 }
 
 // ギブアップアクション
 function giveupAct(){
+    // 正解表示
     let idString = '0#1';
     let cell = document.getElementById(idString);
     cell.textContent = '';
     for(let k = 0; k < digitNum; k++){
-        cell.textContent = cell.textContent + questionNumber[k].toString() + ' ';
+        cell.textContent = cell.textContent + questionNumber[k].toString() + '　';
     }
+    // ボタン有効
     buttonON();
 }
 
@@ -276,12 +192,7 @@ function buttonON(){
     let digitRadio2 = document.getElementById('radio2');
     digitRadio2.enabled = true;
     digitRadio2.disabled = false;
-    let digitRadio3 = document.getElementById('radio3');
-    digitRadio3.enabled = true;
-    digitRadio3.disabled = false;
-    let digitRadio4 = document.getElementById('radio4');
-    digitRadio4.enabled = true;
-    digitRadio4.disabled = false;
+    //　ギブアップはON,OFF逆
     let giveupButton = document.getElementById('giveup');
     giveupButton.enabled = false;
     giveupButton.disabled = true;
@@ -294,16 +205,11 @@ function buttonOFF(){
     startButton.disabled = true;
     let digitRadio1 = document.getElementById('radio1');
     digitRadio1.enabled = false;
-    digitRadio1.disabled = false;
+    digitRadio1.disabled = true;
     let digitRadio2 = document.getElementById('radio2');
     digitRadio2.enabled = false;
     digitRadio2.disabled = true;
-    let digitRadio3 = document.getElementById('radio3');
-    digitRadio3.enabled = false;
-    digitRadio3.disabled = true;
-    let digitRadio4 = document.getElementById('radio4');
-    digitRadio4.enabled = false;
-    digitRadio4.disabled = true;
+    //　ギブアップはON,OFF逆
     let giveupButton = document.getElementById('giveup');
     giveupButton.enabled = true;
     giveupButton.disabled = false;
@@ -311,6 +217,7 @@ function buttonOFF(){
 
 // 問題作成
 function makeNumber(){
+    //alert('digitNum=' + digitNum);
     questionNumber = [];
     while(true){
         let num = getRandomInt(0,9);
@@ -319,12 +226,15 @@ function makeNumber(){
             if(questionNumber.length == digitNum) break;
         }
     }
+    //alert('自分が解く問題：' + questionNumber);
 
+    // 正解仮表示
     let idString = '0#1';
     let cell = document.getElementById(idString);
     cell.textContent = '';
     for(let k = 0; k < digitNum; k++){
-        cell.textContent = cell.textContent + '＊ ';
+        //cell.textContent = cell.textContent + questionNumber[k].toString() + '　';
+        cell.textContent = cell.textContent + '＊　';
     }
 }
 
@@ -334,38 +244,39 @@ function getRandomInt(min, max) {
 }
 
 // 推理数字の設定
+// 入力完了後自動判定
 function setNumber(num){
     if(questionNumber.length != digitNum){
         alert('スタ―トボタンをクリックして、自分が解く問題を作成してください！');
         clearInputBox(MyAnswer);
         return;
     }
+    //alert('setNumber activeInputId=' + activeInputId);
     if(activeInputId == '') return;
+    // 入力チェック
     for(let k = 0; k < digitNum; k++){
         let inputId = MyAnswer + k.toString();
+        //alert('activeInputId=' + activeInputId + '  inputId=' + inputId);
         if(activeInputId == inputId) continue;
         let check = document.getElementById(inputId).value;
+        //alert('document.getElementById(inputId).value=' + check);
         if(check != '' && check == num){
+            //alert('同じ数字！');
             document.getElementById(activeInputId).value = '';
             return;
         }
     }
     document.getElementById(activeInputId).value = num;
 
+    // 判定
     if(checkInputComplete(MyAnswer)){
         hantei();
-        if(modeNum == 1){
-            if(checkInputComplete(QuestionForComp)){
-                hanteiForComp();
-            } else {
-                alert('コンピュ―タに推理させる問題を入力してください！');
-                drawingTable();
-            }
-        }
     }
 }
 
 // hit&blow判定
+// questionNumber, MyAnswer
+// answerNumberForComp, QuestionForComp
 function hitblowHantei(number, inputPrefix) {
     let hit = 0;
     let blow = 0;
@@ -381,27 +292,33 @@ function hitblowHantei(number, inputPrefix) {
             }
         }
     }
+    //alert('comp hit=' + hit + '  blow=' + blow);
     return { hit: hit, blow: blow };
 }
 
 // 履歴表示数字用
+// 呼び出し側がnullを使ったりしてなんか嫌だな
 function rirekiNumber(number, inputPrefix) {
     let rirekiNumber = '';
     for(let k = 0; k < digitNum; k++){
         if(inputPrefix === MyAnswer) {
             let inputId = inputPrefix + k.toString();
-            rirekiNumber = rirekiNumber + ' ' + document.getElementById(inputId).value.toString();
+            rirekiNumber = rirekiNumber + '　' + document.getElementById(inputId).value.toString();
         } else {
-            rirekiNumber = rirekiNumber + ' ' + number[k].toString();
+            rirekiNumber = rirekiNumber + '　' + number[k].toString();
         }
+        
     }
+
     return rirekiNumber;
 }
 
 // 判定
 function hantei(){
+    // hit&blow判定
     let r = hitblowHantei(questionNumber, MyAnswer);
 
+    // 履歴表示
     historyRow = historyRow + 1;
     let idString = historyRow.toString() + IdSeparator + '1';
     document.getElementById(idString).textContent = rirekiNumber(null, MyAnswer);
@@ -410,12 +327,15 @@ function hantei(){
     idString = historyRow.toString() + IdSeparator + '3';
     document.getElementById(idString).textContent = r.blow.toString();
 
+    // 入力ボックスクリア
     clearInputBox(MyAnswer);
 
+    // 正解表示
     if(r.hit === digitNum){
         buttonON();
-        alert('あなた 正解！');
+        alert('あなた　正解！');
     }
+
 }
 
 // 入力ボックスクリア
@@ -429,11 +349,15 @@ function clearInputBox(strid){
 // コンピュ―タに推理させる問題数字チェック
 function checkQuestionNumber(num){
     if(activeInputId == '') return;
+    // 入力チェック
     for(let k = 0; k < digitNum; k++){
         let inputId = QuestionForComp + k.toString();
+        //alert('activeInputId=' + activeInputId + '  inputId=' + inputId);
         if(activeInputId == inputId) continue;
         let check = document.getElementById(inputId).value;
+        //alert('document.getElementById(inputId).value=' + check);
         if(check != '' && check == num){
+            //alert('同じ数字！');
             document.getElementById(activeInputId).value = '';
             return;
         }
@@ -441,79 +365,12 @@ function checkQuestionNumber(num){
     document.getElementById(activeInputId).value = num;
 }
 
-// コンピュ―タ推理回答用候補リスト作成
-function makeAllNumbers() {
-    allNumbers = [];
-    let loop = 10 ** digitNum;
-
-    for (let k = 0; k < loop; k++) {
-        let temp = String(k).padStart(digitNum, '0');
-        let set = new Set(temp);
-
-        if (set.size === temp.length) {
-            allNumbers.push(temp);
-        }
-    }
-}
-
-// コンピュ―タ用判定
-function hanteiForComp(){
-    let answerNumberForComp = [];
-    let index = getRandomInt(0, allNumbers.length - 1);
-    answerNumberForComp = allNumbers[index];
-
-    let r = hitblowHantei(answerNumberForComp, QuestionForComp);
-    
-    let idString = historyRow.toString() + IdSeparator + '6';
-    document.getElementById(idString).textContent = rirekiNumber(answerNumberForComp, null);
-    idString = historyRow.toString() + IdSeparator + '7';
-    document.getElementById(idString).textContent = r.hit.toString();
-    idString = historyRow.toString() + IdSeparator + '8';
-    document.getElementById(idString).textContent = r.blow.toString();
-
-    if(r.hit === digitNum){
-        buttonON();
-        alert('コンピュ―タ 正解！');
-    } else {
-        optionNumbersReMake(answerNumberForComp, r.hit, r.blow);
-    }
-}
-
-// コンピュ―タ推理回答用候補リスト再作成
-function optionNumbersReMake(answerNumberForComp, hit, blow){
-    let flag = 0;
-    if(flag === 0){
-        let m = 0;
-        while(true){
-            if(m > allNumbers.length - 1) break;
-            let checkNum = allNumbers[m];
-            let chit = 0;
-            let cblow = 0;
-            for(let k = 0; k < digitNum; k++){
-                for(let l = 0; l < digitNum; l++){
-                    if(checkNum[k].toString() == answerNumberForComp[l].toString()){
-                        if(k == l){
-                            chit = chit + 1;
-                        } else {
-                            cblow = cblow + 1;
-                        }
-                    }
-                }
-            }
-            if(hit == chit && blow == cblow){
-                m = m + 1;
-            } else {
-                allNumbers.splice(m, 1);
-            }
-        }
-    }
-}
-
 // 入力済みかどうか
 function checkInputComplete(strid){
     let bool = true;
     for(let k = 0; k < digitNum; k++){
         let inputId = strid + k.toString();
+        //alert('checkInputComplete inputId=' + inputId);
         let check = document.getElementById(inputId).value;
         if(check == '') bool = false;
     }
@@ -522,42 +379,40 @@ function checkInputComplete(strid){
 
 // HTML読み込み後、自動実行
 function onLoad(){
+    // グリッドの動的作成
     drawingTable();
-    makeButtonAction();
-}
 
-// モ―ド設定
-function setMode(){
-    for (let k = 0; k < modeNumber.length; k++){
-        if (modeNumber.item(k).checked){
-            modeNum = Number(modeNumber.item(k).value);
-            let toggleLayout = document.getElementById("toggleLayout");
-            if(modeNum == 1) {
-                toggleLayout.disabled = false;
-            } else {
-                currentLayoutMode = 'vertical';
-                toggleLayout.innerHTML = "<ruby>横表示<rt>よこひょうじ</rt></ruby>へ"
-                toggleLayout.disabled = true;
-            }
-        }
-    }
-    drawingTable();
+    // ボタンアクション
+    makeButtonAction();
 }
 
 // テ―ブル表示
 function drawingTable(){
+    // 初期化
     resetData();
+
+    // ボタン有効
     buttonON();
-    makeTable('mainScreen');
+
+    // 表示サイズの計算
     zoomCalc();
+
+    // 問題の動的作成
+    makeTable('mainScreen');
 }
 
 // 初期化
 function resetData(){
+    // アクティブinput
     activeInputId = '';
+
+    // 問題
     questionNumber = [];
+
+    // 履歴表示行
     historyRow = 1;
 
+    // 桁数設定
     for (let k = 0; k < digitNumber.length; k++){
         if (digitNumber.item(k).checked){
             digitNum = Number(digitNumber.item(k).value);
@@ -567,24 +422,14 @@ function resetData(){
 
 // 表示倍率計算
 function zoomCalc(){
+    // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
-    if (!mainScreen) return;
-
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 220;
-    let gridw = 600;
-    let gridh = (CellHeight + 20) * HistoryRowMax + 85;
+    let bh = window.innerHeight - 200;      //200は表題やボタンなどの縦幅による
+    let gridw = CellWidth + CellWidth * 4 + CellWidth + CellWidth;
+    let gridh = (CellHeight + 20) * HistoryRowMax + 85;     // 20は行間など
 
-    /* 新規変更: 実際のテーブル幅1020pxに合わせて縮小率を正しく指定 */
-    if (currentLayoutMode === 'horizontal' && modeNum == 1) {
-        gridw = 1230; // 1020px + マージン
-        gridh = (CellHeight + 20) * HistoryRowMax + 85;
-    } else {
-        gridw = 600;
-        gridh = (CellHeight + 20) * HistoryRowMax + 85;
-    }
-
-    zoom = 1.0;
+    // 表示倍率計算
     for(let i = 2; i > 0; i = i - 0.01){
       if( gridw * i < bw && gridh * i < bh){
         zoom = i;
@@ -592,30 +437,7 @@ function zoomCalc(){
       }
     }
     if(zoom < 0 || zoom > 1) zoom = 1.0;
+    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
-}
-
-// 縦表示と横表示を交互に切り替え（状態変数 currentLayoutMode も同時更新）
-function toggleLayout() {
-    let gameArea = document.getElementById('game_area');
-    let toggleLayout = document.getElementById("toggleLayout");
-    if (currentLayoutMode === 'vertical') {
-        currentLayoutMode = 'horizontal';
-        //toggleLayout.textContent = "縦表示へ";
-        toggleLayout.innerHTML = "<ruby>縦表示<rt>たてひょうじ</rt></ruby>へ";
-        if (gameArea) {
-            gameArea.classList.remove('vertical');
-            gameArea.classList.add('horizontal');
-        }
-    } else {
-        currentLayoutMode = 'vertical';
-        //toggleLayout.textContent = "横表示へ";
-        toggleLayout.innerHTML = "<ruby>横表示<rt>よこひょうじ</rt></ruby>へ";
-        if (gameArea) {
-            gameArea.classList.remove('horizontal');
-            gameArea.classList.add('vertical');
-        }
-    }
-    zoomCalc();
 }
