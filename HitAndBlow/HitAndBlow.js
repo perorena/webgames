@@ -4,16 +4,14 @@ const NumberMojiSize = '35';
 const IdSeparator = '#';
 const CellWidth = 50;
 const CellHeight = 50;
-//const QuestionForComp = 'que';      // コンピュ―タ―への問題入力
 const MyAnswer = 'ans';             // 解答入力
 const NumberButton = 'num';
 const HistoryRowMax = 12;
 
 // 桁数指定
-//let digitNumber = document.getElementById('digitNumber');
-// 問題変更時のイベントリスナ―
-//digitNumber.addEventListener('change', drawingTable);
 let digitNumber = document.getElementsByName('digitNumber');
+
+// 問題変更時のイベントリスナ―
 let digitRadio1 = document.getElementById('radio1');
 digitRadio1.addEventListener('change', drawingTable);
 let digitRadio2 = document.getElementById('radio2');
@@ -48,10 +46,9 @@ document.addEventListener('keyup', keyUp, false);
 // キ―が押されたとき
 function keyUp(event){
     //alert(event.target.value);
-    //alert(event.target.id); //inp0 or questionforcomp0
+    //alert(event.target.id);
     activeInputId = event.target.id;
     if(activeInputId.slice(0,3) == MyAnswer) setNumber(event.target.value);
-    //if(activeInputId.slice(0,3) == QuestionForComp) checkQuestionNumber(event.target.value);
 }
 
 // グリッドの動的作成
@@ -276,7 +273,6 @@ function setNumber(num){
 
 // hit&blow判定
 // questionNumber, MyAnswer
-// answerNumberForComp, QuestionForComp
 function hitblowHantei(number, inputPrefix) {
     let hit = 0;
     let blow = 0;
@@ -352,27 +348,6 @@ function clearInputBox(strid){
         document.getElementById(inputId).value = '';
     }
 }
-
-/*
-// コンピュ―タに推理させる問題数字チェック
-function checkQuestionNumber(num){
-    if(activeInputId == '') return;
-    // 入力チェック
-    for(let k = 0; k < digitNum; k++){
-        let inputId = QuestionForComp + k.toString();
-        //alert('activeInputId=' + activeInputId + '  inputId=' + inputId);
-        if(activeInputId == inputId) continue;
-        let check = document.getElementById(inputId).value;
-        //alert('document.getElementById(inputId).value=' + check);
-        if(check != '' && check == num){
-            //alert('同じ数字！');
-            document.getElementById(activeInputId).value = '';
-            return;
-        }
-    }
-    document.getElementById(activeInputId).value = num;
-}
-*/
 
 // 入力済みかどうか
 function checkInputComplete(strid){
