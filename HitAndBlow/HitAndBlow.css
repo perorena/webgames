@@ -108,8 +108,8 @@ button,
 
 /* 入力ボックスselect要素向けのスタイル調整 */
 .input {
-    width: 70px;
-    height: 60px;
+    width: 100px;
+    height: 70px;
     font-size: 30px; /* 矢印とのバランスを見て調整 */
     text-align: center;
     text-align-last: center; /* 選択した文字を中央寄せ（一部ブラウザ対応） */
