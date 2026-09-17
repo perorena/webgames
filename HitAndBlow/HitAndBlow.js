@@ -4,7 +4,7 @@ const NumberMojiSize = '35';
 const IdSeparator = '#';
 const CellWidth = 50;
 const CellHeight = 50;
-const QuestionForComp = 'que';      // コンピュ―タ―への問題入力
+//const QuestionForComp = 'que';      // コンピュ―タ―への問題入力
 const MyAnswer = 'ans';             // 解答入力
 const NumberButton = 'num';
 const HistoryRowMax = 12;
@@ -51,7 +51,7 @@ function keyUp(event){
     //alert(event.target.id); //inp0 or questionforcomp0
     activeInputId = event.target.id;
     if(activeInputId.slice(0,3) == MyAnswer) setNumber(event.target.value);
-    if(activeInputId.slice(0,3) == QuestionForComp) checkQuestionNumber(event.target.value);
+    //if(activeInputId.slice(0,3) == QuestionForComp) checkQuestionNumber(event.target.value);
 }
 
 // グリッドの動的作成
@@ -333,7 +333,14 @@ function hantei(){
     // 正解表示
     if(r.hit === digitNum){
         buttonON();
-        alert('あなた　正解！');
+        alert('おめでとう！正解です！');
+    } else {
+        // 10行で終わり
+        if(historyRow >= 11) {
+            alert('残念でした...');
+            // 強制ギブアップ
+            giveupAct();
+        }
     }
 
 }
@@ -346,6 +353,7 @@ function clearInputBox(strid){
     }
 }
 
+/*
 // コンピュ―タに推理させる問題数字チェック
 function checkQuestionNumber(num){
     if(activeInputId == '') return;
@@ -364,6 +372,7 @@ function checkQuestionNumber(num){
     }
     document.getElementById(activeInputId).value = num;
 }
+*/
 
 // 入力済みかどうか
 function checkInputComplete(strid){
