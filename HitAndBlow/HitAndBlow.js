@@ -41,8 +41,8 @@ let zoom = 1.0;
 window.addEventListener("load", onLoad, false);
 
 // キ―が押されたときのリスナ―
-document.addEventListener('keyup', keyUp, false);
-
+//document.addEventListener('keyup', keyUp, false);
+/*
 // キ―が押されたとき
 function keyUp(event){
     //alert(event.target.value);
@@ -50,6 +50,7 @@ function keyUp(event){
     activeInputId = event.target.id;
     if(activeInputId.slice(0,3) == MyAnswer) setNumber(event.target.value);
 }
+*/
 
 // グリッドの動的作成
 function makeTable(parentId){
@@ -59,29 +60,34 @@ function makeTable(parentId){
       parent.removeChild(parent.firstChild);
     }
 
-    // --- 1. 入力ボックスの作成 ---
+    // --- 1. 入力ボックス (select) の作成 ---
     let inputArea = document.createElement('div');
     inputArea.setAttribute('id', 'inputArea');
-    for(let k = 0; k < digitNum; k++){
+
+    for (let k = 0; k < digitNum; k++) {
         let inputId = MyAnswer + k.toString();
-        let input = document.createElement('input');
-        input.type = 'number';
-        input.autocomplete = 'off';
-        input.min = '0';
-        input.max = '9';
-        input.setAttribute('id', inputId);
-        input.setAttribute('class', 'input');
-        input.addEventListener('click', function(event){
+        let select = document.createElement('select');
+        select.setAttribute('id', inputId);
+        select.setAttribute('class', 'input'); // CSSクラスはそのまま流用可能
+        // 初期値（空選択肢）を追加
+        let defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '-';
+        select.appendChild(defaultOption);
+        // 0～9の選択肢を追加
+        for (let num = 0; num <= 9; num++) {
+            let option = document.createElement('option');
+            option.value = num.toString();
+            option.textContent = num.toString();
+            select.appendChild(option);
+        }
+        // 選択された時のイベント処理
+        select.addEventListener('change', function(event) {
             activeInputId = inputId;
+            setNumber(event.target.value);
         });
-        input.addEventListener('input', function() {
-            if (this.value.length > 1) {
-                this.value = this.value.slice(0, 1);
-            }
-            // スクロール位置が飛ぶのを強制リセット
-            window.scrollTo(0, 0);
-        });
-        inputArea.appendChild(input);
+
+        inputArea.appendChild(select);
     }
     // 入力エリアをテ―ブルの下に追加
     parent.appendChild(inputArea);
