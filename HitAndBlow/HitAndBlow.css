@@ -106,7 +106,7 @@ button,
     white-space: nowrap; /* 強制的に1行に収める */
 }
 
-/* 入力ボックスselect要素向けのスタイル調整 */
+/* 入力ボックスselect要素向け */
 .input {
     width: 100px;
     height: 70px;
