@@ -1070,9 +1070,9 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 230;          //230は表題やボタンなどの縦幅による
-    let gridw = numberData[0].length * 100;     //140は実際にやってみた感じで
-    let gridh = numberData.length * 100;        //140は実際にやってみた感じで
+    let bh = window.innerHeight - 240;          //230は表題やボタンなどの縦幅による
+    let gridw = numberData[0].length * 110;     //110は実際にやってみた感じで
+    let gridh = numberData.length * 110;        //110は実際にやってみた感じで
     //alert("numberData[0].length=" + numberData[0].length + "   numberData.length=" + numberData.length)
 
     // 表示倍率計算
@@ -1083,7 +1083,7 @@ function zoomCalc(){
       }
     }
     if(zoom < 0 || zoom > 1) zoom = 1.0;
-    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
+    alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 
