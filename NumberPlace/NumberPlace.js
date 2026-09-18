@@ -1,6 +1,6 @@
-const OuterThickness = 2;
-const DivisionThickness = 7;
-const NumberMojiSize = '40';    // CSSで入力セルの縦横を指定しているの調節が必要、1/2くらいが良さそう
+const OuterThickness = 1;
+const DivisionThickness = 4;
+const NumberMojiSize = '40';
 const IdSeparator = '#';
 const SuccessImageSrc = '../img/Success1.png';
 
@@ -1071,8 +1071,8 @@ function zoomCalc(){
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
     let bh = window.innerHeight - 230;          //230は表題やボタンなどの縦幅による
-    let gridw = numberData[0].length * 140;     //140は実際にやってみた感じで
-    let gridh = numberData.length * 140;        //140は実際にやってみた感じで
+    let gridw = numberData[0].length * 100;     //140は実際にやってみた感じで
+    let gridh = numberData.length * 100;        //140は実際にやってみた感じで
     //alert("numberData[0].length=" + numberData[0].length + "   numberData.length=" + numberData.length)
 
     // 表示倍率計算
