@@ -112,35 +112,18 @@ button,
     vertical-align: middle;
 }
 
-/* 入力ボックス */
+/* 入力（選択）ボックス */
 .input {
     width: 85px;
     height: 85px;
     text-align: center;
+    text-align-last: center; /* select内の文字を中央寄せ */
     padding: 0px;
     margin: 0px;
-}
-
-/* 入力ボックスのスピンボタンを消す */
-.input::-webkit-inner-spin-button,
-.input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-    -moz-appearance:textfield;
-    appearance:textfield;
-}
-
-/* Chrome/Safari */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button{
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox/IE */
-input[type="number"]{
-    -moz-appearance:textfield;
-    appearance:textfield;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
 }
 
 /* 成功画像エリア */

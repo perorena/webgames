@@ -50,50 +50,9 @@ let zoom = 1.0;
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
 
-// キーが押されたときのリスナー
-document.addEventListener('keyup', keyUp, false);
 
 // 問題
 let generatorDataArray = [];
-
-// キーが押されたとき
-function keyUp(event){
-    //alert(event.target.value);
-    //alert(event.target.id); //inp0#3
-    let idString = event.target.id.substr(3);
-    let id = idString.split(IdSeparator);
-    numberData[id[0]][id[1]] = Number(event.target.value);
-
-    // 完成チェック
-    //alert('numberData= ' + numberData);
-    let bool = true;
-    for(let i = 0; i < 9; i++){
-        let rowData = getRowData(i);
-        //alert(i + '   calculation(rowData)= ' + calculation(rowData));
-        if(calculation(rowData) != 45){
-            bool = false;
-        }
-    }
-    for(let j = 0; j < 9; j++){
-        let colData = getColData(j);
-        //alert(j + '   calculation(colData)= ' + calculation(colData));
-        if(calculation(colData) != 45){
-            bool = false;
-        }
-    }
-    for(let i = 0; i < 9; i++){
-        for(let j = 0; j < 9; j++){
-            let boxData = getBoxData(getBoxNo(i, j));
-            if(calculation(boxData) != 45){
-                bool = false;
-            }
-        }
-    }
-    if(bool){
-        let si = document.getElementById('successImage');
-        si.style.display = 'block';
-    }
-}
 
 // 合計を返す
 function calculation(nums){
@@ -932,17 +891,27 @@ function makeTable(parentId){
             // 数字を出力するdivタグ
             let numpl = document.createElement('div');
             if(intNum == 0){
-                // 0なら入力可能にする
-                let inputId = 'inp' + idString;
-                let input = document.createElement('input');
-                input.type = 'number';
-                input.autocomplete = 'off';
-                input.min = '1';
-                input.max = '9';
-                input.style.fontSize = NumberMojiSize.toString() + 'px';
-                input.setAttribute('id', inputId);
-                input.setAttribute('class', 'input');
-                numpl.appendChild(input);
+                // 0なら入力（選択）可能にする
+                let selectId = 'inp' + idString;
+                let select = document.createElement('select');
+                select.setAttribute('id', selectId);
+                select.setAttribute('class', 'input');
+                select.style.fontSize = NumberMojiSize.toString() + 'px';
+                // 空白の選択肢（未選択状態用）
+                let blankOption = document.createElement('option');
+                blankOption.value = '';
+                blankOption.textContent = '';
+                select.appendChild(blankOption);
+                // 1〜9の選択肢を追加
+                for(let val = 1; val <= 9; val++){
+                    let option = document.createElement('option');
+                    option.value = val;
+                    option.textContent = val;
+                    select.appendChild(option);
+                }
+                // 値が変更された時に盤面データ(numberData)を更新して完成チェックを行う
+                select.addEventListener('change', changeSelect);
+                numpl.appendChild(select);
             } else {
                 // 数字表示
                 numpl.textContent = numberData[i][j];
@@ -952,6 +921,45 @@ function makeTable(parentId){
     }
     // 指定した親要素に加える
     document.getElementById(parentId).appendChild(table);
+}
+
+// selectの値が変わったときの処理
+function changeSelect(event){
+    //alert(event.target.value);
+    //alert(event.target.id); //inp0#3
+    let idString = event.target.id.substr(3);
+    let id = idString.split(IdSeparator);
+    numberData[id[0]][id[1]] = Number(event.target.value);
+
+    // 完成チェック
+    //alert('numberData= ' + numberData);
+    let bool = true;
+    for(let i = 0; i < 9; i++){
+        let rowData = getRowData(i);
+        //alert(i + '   calculation(rowData)= ' + calculation(rowData));
+        if(calculation(rowData) != 45){
+            bool = false;
+        }
+    }
+    for(let j = 0; j < 9; j++){
+        let colData = getColData(j);
+        //alert(j + '   calculation(colData)= ' + calculation(colData));
+        if(calculation(colData) != 45){
+            bool = false;
+        }
+    }
+    for(let i = 0; i < 9; i++){
+        for(let j = 0; j < 9; j++){
+            let boxData = getBoxData(getBoxNo(i, j));
+            if(calculation(boxData) != 45){
+                bool = false;
+            }
+        }
+    }
+    if(bool){
+        let si = document.getElementById('successImage');
+        si.style.display = 'block';
+    }
 }
 
 // ボタンアクション設定
@@ -987,9 +995,6 @@ function makeButtonAction(){
 
 // HTML読み込み後、自動実行
 function onLoad(){
-    // ビューポートの設定
-    //UpdateViewport();
-
     // 問題選択肢作成
     for(let i = 1; i <= numberDataArray.length; i++){
         let option = document.createElement("option");
@@ -1091,16 +1096,4 @@ function zoomCalc(){
     img.style.height = (gridw * zoom * 0.5).toString() + 'px';
     img.style.width = (gridw * zoom * 0.5).toString() + 'px';
     successImageDiv.appendChild(img);
-}
-
-// ビューポートの設定
-function UpdateViewport() {
-    let str_viewport;
-    let str_ua = navigator.userAgent.toLowerCase();
-    if (str_ua.indexOf('iphone') >= 0 || str_ua.indexOf('ipad') >= 0 || str_ua.indexOf('android') >= 0 && str_ua.indexOf('mobile') >= 0) {
-        str_viewport = "width=475px";
-    } else {
-        str_viewport = "width=device-width";
-    }
-    document.querySelector("meta[name='viewport']").setAttribute("content", str_viewport);
 }
