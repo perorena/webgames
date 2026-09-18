@@ -1083,7 +1083,7 @@ function zoomCalc(){
       }
     }
     if(zoom < 0 || zoom > 1) zoom = 1.0;
-    alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
+    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 
