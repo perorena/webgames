@@ -110,7 +110,7 @@ button,
 .input {
     width: 100px;
     height: 70px;
-    font-size: 25px;
+    /*font-size: 25px;*/
     font-weight: normal;
     text-align: center;
     text-align-last: center; /* 選択した文字を中央寄せ（一部ブラウザ対応） */

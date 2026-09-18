@@ -69,6 +69,7 @@ function makeTable(parentId){
         let select = document.createElement('select');
         select.setAttribute('id', inputId);
         select.setAttribute('class', 'input'); // CSSクラスはそのまま流用可能
+        select.style.fontSize = (NumberMojiSize -10).toString() + 'px';
         // 初期値（空選択肢）を追加
         let defaultOption = document.createElement('option');
         defaultOption.value = '';
