@@ -360,6 +360,7 @@ function makeTable(parentId){
                     let select = document.createElement('select');
                     select.setAttribute('id', inputId);
                     select.setAttribute('class', 'input');
+                    select.style.fontSize = (NumberMojiSize - 10).toString() + 'px';
                     // 未選択時のデフォルトオプション（空文字またはハイフン）
                     let defaultOption = document.createElement('option');
                     defaultOption.value = '';
