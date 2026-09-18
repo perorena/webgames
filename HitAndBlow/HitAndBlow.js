@@ -1,5 +1,4 @@
-const OuterThickness = 2;
-const DivisionThickness = 7;
+const OuterThickness = 1;
 const NumberMojiSize = '35';
 const IdSeparator = '#';
 const CellWidth = 50;
