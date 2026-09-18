@@ -33,9 +33,6 @@ let zoom = 1.0;
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
 
-// キーが押されたときのリスナー
-document.addEventListener('keyup', keyUp, false);
-
 // 不等号正解チェック
 function inequalityDataCheck(){
     let intAllClear = 0;
@@ -280,22 +277,21 @@ function inequalityDataCheck(){
     }
 }
 
-// キーが押されたとき
-function keyUp(event){
+// 値が変更されたとき（キー操作または選択変更）
+function setNumber(event){
     for(let i = 0; i < inputList.length; i++){
-        // 半角数字のみ入力可能
-        let inpData = parseInt(document.getElementById(inputList[i]).value);
-        if(isNaN(inpData) || inpData < 1 || inpData > inputMax){
-            // 数字以外、範囲外数字(0や22など)の制限が必要、
-            document.getElementById(inputList[i]).value = '';
-        }
-        // 入力データをInequalityDataに反映
+        let selectElem = document.getElementById(inputList[i]);
+        if (!selectElem) continue;
+
+        let val = selectElem.value;
         let idString = inputList[i].substr(3);
         let id = idString.split(IdSeparator);
-        if(document.getElementById(inputList[i]).value == ''){
+
+        // 選択値の反映
+        if(val === ''){
             inequalityData[id[0]][id[1]] = '0';
         } else {
-            inequalityData[id[0]][id[1]] = document.getElementById(inputList[i]).value;
+            inequalityData[id[0]][id[1]] = val;
         }
     }
     // 不等号正解チェック
@@ -361,15 +357,26 @@ function makeTable(parentId){
                 if(intNum == 0){
                     // 0なら入力可能にする
                     let inputId = 'inp' + idString;
-                    let input = document.createElement('input');
-                    input.type = 'number';
-                    input.autocomplete = 'off';
-                    input.min = '1';
-                    input.max = inputMax;
-                    input.style.fontSize = NumberMojiSize.toString() + 'px';
-                    input.setAttribute('id', inputId);
-                    input.setAttribute('class', 'input');
-                    inequality.appendChild(input);
+                    let select = document.createElement('select');
+                    select.setAttribute('id', inputId);
+                    select.setAttribute('class', 'input');
+                    // 未選択時のデフォルトオプション（空文字またはハイフン）
+                    let defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '';
+                    select.appendChild(defaultOption);
+                    // 1 ～ inputMax までの選択肢を動的に生成
+                    for (let num = 1; num <= inputMax; num++) {
+                        let option = document.createElement('option');
+                        option.value = num.toString();
+                        option.textContent = num.toString();
+                        select.appendChild(option);
+                    }
+                    // 選択が変更されたら判定を実行
+                    select.addEventListener('change', function(event) {
+                        setNumber(event);
+                    });
+                    inequality.appendChild(select);
                     // idをリストに保持する
                     inputList[inputListCount] = inputId;
                     inputListCount = inputListCount + 1;
