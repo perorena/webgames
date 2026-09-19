@@ -75,7 +75,7 @@ function arrowAction(action){
             player.parentNode.removeChild(player);
 
             // 移動先のセルをテーブルから正確に取得（nextSiblingによる位置ズレバグを回避）
-            let table = document.getElementById('souko');
+            let table = document.getElementById('soukoGrid');
             pTd = table.rows[nextRow].cells[nextCol];
 
             // ゴミ掃除
@@ -159,9 +159,9 @@ function keyDown(event){
     }
     
     // 矢印キーのときだけブラウザのデフォルトスクロールを防止
-    if(['ArrowLeft', 'ArrowUp', 'ArrowDown', 'ArrowRight'].includes(strArrow)) {
-        event.preventDefault();
-    }
+    //if(['ArrowLeft', 'ArrowUp', 'ArrowDown', 'ArrowRight'].includes(strArrow)) {
+    //    event.preventDefault();
+    //}
     arrowAction(strArrow);
 }
 
