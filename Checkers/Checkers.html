@@ -25,9 +25,11 @@
             <div style="margin-top: 8px;">
                 <label for="difficulty-select" style="font-size: small; font-weight: bold; margin-right: 5px;">難易度:</label>
                 <select id="difficulty-select" class="menu_button" style="width: auto; height: 30px; padding: 0 10px;">
+                    <!-- 'easy'（最弱・ランダム）, 'normal'（普通）, 'hard'（強め）, 'hardest'（最上級・極強） -->
                     <option value="easy">初級 (ランダム)</option>
                     <option value="normal" selected>中級 (普通)</option>
-                    <option value="hard">上級 (少し賢い)</option>
+                    <option value="hard">上級 (1手先読み)</option>
+                    <option value="expert">最上級 (2手先読み)</option>
                 </select>
                 <button id="reset" class="menu_button" style="height: 30px; margin-left: 10px;">やり直す</button>
             </div>
@@ -40,3 +42,4 @@
     <script type="text/javascript" src="./Checkers.js"></script>
 </body>
 </html>
+

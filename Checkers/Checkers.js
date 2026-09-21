@@ -11,17 +11,17 @@ let mustJump = false;
 let jumpingPiece = null; 
 let isGameOver = false;
 let isCpuThinking = false; // CPUの計算中にプレイヤーの操作をブロックするフラグ
-// CPUの難易度設定: 'easy'（最弱・ランダム）, 'normal'（普通）, 'hard'（少し賢い）
+// CPUの難易度設定: 'easy'（最弱・ランダム）, 'normal'（普通）, 'hard'（少し賢い）, 'expert'（最強・先読み）
 let cpuDifficulty = 'normal'; 
 
-// ★追加：CPUの思考タイマーを保持する変数（リセット時にタイマーを解除するため）
+// CPUの思考タイマーを保持する変数（リセット時にタイマーを解除するため）
 let cpuTimer = null;
 
 // ズーム値
 let zoom = 1.0;
 
 function gameInitial() {
-    // ★追加：すでに発火待ちのCPU思考タイマーがあれば解除する
+    // すでに発火待ちのCPU思考タイマーがあれば解除する
     if (cpuTimer) {
         clearTimeout(cpuTimer);
         cpuTimer = null;
@@ -150,7 +150,7 @@ function isOwnPiece(pieceType) {
 
 // 移動全体のルール判定（修正版）
 function isValidMove(fromRow, fromCol, toRow, toCol) {
-    // ★追加：移動先が盤面の外（0〜7マス目以外）なら一律で移動不可にする
+    // 移動先が盤面の外（0〜7マス目以外）なら一律で移動不可にする
     if (toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
         return false;
     }
@@ -379,7 +379,7 @@ function makeCpuMove() {
 
     if (availableMoves.length === 0) return;
 
-    // 2. ★ 難易度に応じた「手の選択」ロジック ★
+    // 2. 難易度に応じた「手の選択」ロジック
     let chosenMove = null;
 
     if (cpuDifficulty === 'easy') {
@@ -395,8 +395,12 @@ function makeCpuMove() {
         }
     } 
     else if (cpuDifficulty === 'hard') {
-        // 【上級】常に一番点数が高い「最善の手」を選ぶ
+        // 【上級】常に一番点数が高い「最善の手」を選ぶ（1手読み）
         chosenMove = getBestMove(availableMoves);
+    }
+    // 【最上級】ミニマックス法による2手先読み（自分→相手の返しまで計算）
+    else if (cpuDifficulty === 'expert') {
+        chosenMove = getExpertMove(availableMoves, 3); // 探索の深さ3（自分→相手→自分）
     }
 
     // 3. 選択した手を実行
@@ -404,7 +408,7 @@ function makeCpuMove() {
         selectedPiece = { row: chosenMove.fromRow, col: chosenMove.fromCol };
         createBoard();
 
-        // ★修正：タイマーIDを変数に保持
+        // タイマーIDを変数に保持
         cpuTimer = setTimeout(() => {
             executeMove(chosenMove.fromRow, chosenMove.fromCol, chosenMove.toRow, chosenMove.toCol, chosenMove.type);
         }, 300);
@@ -450,7 +454,7 @@ function executeMove(fromRow, fromCol, toRow, toCol, moveType) {
     endTurn();
 }
 
-// 全ての選択肢の中から、盤面を評価して一番良い手（高得点の手）を返すヘルパー関数
+// 全ての選択肢の中から、盤面を評価して一番良い手（高得点の手）を返すヘルパー関数（1手読み用）
 function getBestMove(moves) {
     let bestScore = -Infinity;
     let bestMoves = [];
@@ -486,6 +490,134 @@ function getBestMove(moves) {
 
     // 最高得点の手が複数あれば、その中からランダムに1つ選ぶ
     return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+}
+
+// 最強レベル用（ミニマックス法＋α-β枝刈りで先読みして最善手を選ぶ）
+function getExpertMove(moves, depth) {
+    let bestScore = -Infinity;
+    let bestMoves = [];
+
+    for (let move of moves) {
+        let backupBoard = boardState.map(row => [...row]);
+
+        // 仮想移動の適用
+        applyVirtualMove(move);
+
+        // 次は相手（プレイヤー1）のターンとしてミニマックス評価を行う
+        let score = minimax(depth - 1, false, -Infinity, Infinity);
+
+        boardState = backupBoard;
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestMoves = [move];
+        } else if (score === bestScore) {
+            bestMoves.push(move);
+        }
+    }
+
+    return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+}
+
+// ミニマックス法＋α-β枝刈りアルゴリズム本体
+function minimax(depth, isMax, alpha, beta) {
+    if (depth === 0) {
+        return evaluateBoard();
+    }
+
+    const playerTurn = isMax ? 2 : 1; // isMax: CPU(2), !isMax: Player(1)
+    const moves = getAllValidMovesForTurn(playerTurn);
+
+    if (moves.length === 0) {
+        return isMax ? -999 : 999; // 手詰まりの場合は勝敗判定スコア
+    }
+
+    if (isMax) { // CPUの手番（スコア最大化を目指す）
+        let maxEval = -Infinity;
+        for (let move of moves) {
+            let backupBoard = boardState.map(row => [...row]);
+            applyVirtualMove(move);
+
+            let evaluation = minimax(depth - 1, false, alpha, beta);
+            boardState = backupBoard;
+
+            maxEval = Math.max(maxEval, evaluation);
+            alpha = Math.max(alpha, evaluation);
+            if (beta <= alpha) break; // α-β枝刈り（無駄な枝をスキップ）
+        }
+        return maxEval;
+    } else { // プレイヤーの手番（スコア最小化を目指す）
+        let minEval = Infinity;
+        for (let move of moves) {
+            let backupBoard = boardState.map(row => [...row]);
+            applyVirtualMove(move);
+
+            let evaluation = minimax(depth - 1, true, alpha, beta);
+            boardState = backupBoard;
+
+            minEval = Math.min(minEval, evaluation);
+            beta = Math.min(beta, evaluation);
+            if (beta <= alpha) break; // α-β枝刈り
+        }
+        return minEval;
+    }
+}
+
+// 仮想盤面上で手を進めるヘルパー関数
+function applyVirtualMove(move) {
+    const movingPieceType = boardState[move.fromRow][move.fromCol];
+    boardState[move.fromRow][move.fromCol] = 0;
+    
+    if (move.type === 'jump') {
+        const midRow = (move.fromRow + move.toRow) / 2;
+        const midCol = (move.fromCol + move.toCol) / 2;
+        boardState[midRow][midCol] = 0;
+    }
+    
+    boardState[move.toRow][move.toCol] = movingPieceType;
+
+    // 簡易プロモーション判定
+    if (movingPieceType === 1 && move.toRow === 0) boardState[move.toRow][move.toCol] = 3;
+    if (movingPieceType === 2 && move.toRow === 7) boardState[move.toRow][move.toCol] = 4;
+}
+
+// 指定した手番のプレイヤーが実行可能な全手を一覧取得するヘルパー関数
+function getAllValidMovesForTurn(turn) {
+    let moves = [];
+    let savedTurn = currentTurn;
+    currentTurn = turn; // 一時的に手番を切り替えて計算
+
+    let hasJumps = checkAllJumps();
+
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            if (isOwnPiece(boardState[r][c])) {
+                if (hasJumps) {
+                    const jumpDirs = [{ dr: -2, dc: -2 }, { dr: -2, dc: 2 }, { dr: 2, dc: -2 }, { dr: 2, dc: 2 }];
+                    for (let d of jumpDirs) {
+                        if (isValidJump(r, c, r + d.dr, c + d.dc)) {
+                            moves.push({ fromRow: r, fromCol: c, toRow: r + d.dr, toCol: c + d.dc, type: 'jump' });
+                        }
+                    }
+                } else {
+                    const normalDirs = [{ dr: -1, dc: -1 }, { dr: -1, dc: 1 }, { dr: 1, dc: -1 }, { dr: 1, dc: 1 }];
+                    const isKing = (boardState[r][c] === 3 || boardState[r][c] === 4);
+                    for (let d of normalDirs) {
+                        const nextR = r + d.dr;
+                        const nextC = c + d.dc;
+                        if (nextR < 0 || nextR > 7 || nextC < 0 || nextC > 7) continue;
+                        if (boardState[nextR][nextC] !== 0) continue;
+                        if (!isKing && turn === 2 && d.dr === -1) continue;
+                        if (!isKing && turn === 1 && d.dr === 1) continue;
+                        moves.push({ fromRow: r, fromCol: c, toRow: nextR, toCol: nextC, type: 'normal' });
+                    }
+                }
+            }
+        }
+    }
+
+    currentTurn = savedTurn; // 計算終了後、手番を元に戻す
+    return moves;
 }
 
 // 現在の盤面をCPU（黒）の視点で点数化する関数
@@ -528,7 +660,7 @@ function makeButtonAction(){
         });
     }
 
-    // ★追加：難易度選択メニューの連動処理
+    // 難易度選択メニューの連動処理
     let difficultySelect = document.getElementById('difficulty-select');
     if (difficultySelect) {
         // 画面がロードされた時の初期値を反映
