@@ -30,6 +30,8 @@ checkOnePair
 const CrLf = '\n\r';
 const GameoverImageSrc = './img/gameover.png';
 const ClearImageSrc = './img/clear.png';
+const NormalSpeed = 1.5;
+const HighSpeed = 6.0;
 
 // グローバル定数
 class Config{
@@ -104,8 +106,8 @@ let score = 0;
 let zoom = 1.0;
 
 // 落下速度と加速
-let dropSpeed = 1.0;
-let acceleration = 1.0;
+let dropSpeed = NormalSpeed;
+let acceleration = NormalSpeed;
 
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
@@ -276,8 +278,8 @@ function init(){
     RequestAnimationFrameID = null;
 
     // 落下速度と加速
-    dropSpeed = 1.0;
-    acceleration = 1.0;
+    dropSpeed = NormalSpeed;
+    acceleration = NormalSpeed;
 
     // 得点
     score = 0;
@@ -346,6 +348,82 @@ function activeCard(){
     return false;
 }
 
+// 落下
+// (x,y) x:j   y:i
+function cardDropping(){
+    let id = CardDataArray[ActiveCardNumber].suit + CardDataArray[ActiveCardNumber].number;
+    let img = document.getElementById(id);
+    let y = parseFloat(img.style.top.replace('px',''));  // 現在のY座標
+
+    // 1. 次のフレームでの移動先Y座標を事前に計算
+    let dy = dropSpeed * acceleration;
+    let nextY = y + dy;
+
+    // 2. 現在の列における「落下可能な最大Y座標（限界値）」を計算
+    // 下にカードが積まれている場合はその上まで、何もない場合は最下段まで
+    let targetRow = Config.ROW_MAX;
+    for(let r = 0; r <= Config.ROW_MAX; r++){
+        if(FixedCardList[r][ActiveCardColumn] !== Config.SPACE){
+            targetRow = r - 1; // 最初にカードが見つかった位置の1つ上
+            break;
+        }
+    }
+
+    let maxY = targetRow * Config.CARD_H;
+
+    // 3. 次の移動で限界値に達するか、超えてしまう場合（着地判定）
+    if(nextY >= maxY){
+        // 限界座標ピッタリに位置を修正
+        ActiveCardRow = targetRow;
+        
+        // 枠外（画面上部オーバー）で固定された場合はゲームオーバー処理へ
+        if(ActiveCardRow < 0){
+            let gi = document.getElementById('gameoverImage');
+            gi.style.display = 'block';
+            if(RequestAnimationFrameID != null){
+                cancelAnimationFrame(RequestAnimationFrameID);
+                RequestAnimationFrameID = null;
+            }
+            return;
+        }
+
+        // ステータス更新 & 盤面配列へ固定
+        CardDataArray[ActiveCardNumber].status = Config.FIXED;
+        FixedCardList[ActiveCardRow][ActiveCardColumn] = ActiveCardNumber;
+
+        // 位置を正確にグリッドへ整列
+        setActiveCardY(img, ActiveCardRow);
+        setActiveCardX(img, ActiveCardColumn);
+
+        // 落下アニメーションの停止
+        if(RequestAnimationFrameID != null){
+            cancelAnimationFrame(RequestAnimationFrameID);
+            RequestAnimationFrameID = null;
+        }
+
+        // 役のチェック
+        lineYaku();
+
+        // 0行目（最上段）まで埋まっていたらゲームオーバー判定
+        if(ActiveCardRow == 0){
+            let gi = document.getElementById('gameoverImage');
+            gi.style.display = 'block';
+            return;
+        }
+
+        // 次のカードへ
+        mainLoop();
+        return;
+    }
+
+    // 4. まだ途中の場合はそのまま移動を反映
+    img.style.top = nextY.toString() + 'px';
+
+    // 得点表示
+    let check = document.getElementById('checkText');
+    check.innerText = 'カード数：' + CardList.length + '     得点：' + score;
+}
+/*
 // 落下
 // (x,y) x:j   y:i
 function cardDropping(){
@@ -431,10 +509,11 @@ function cardDropping(){
     check.innerText = 'カード数：' + CardList.length + '     得点：' + score;
 
 }
+*/
 
 // キーが戻ったとき
 function keyUp(event){
-    acceleration = 1.0;
+    acceleration = NormalSpeed;
 }
 
 // キーが押されたとき
@@ -465,27 +544,29 @@ function makeButtonAction(){
 
     // 左
     leftButton.addEventListener('click', function(event){
+        event.preventDefault();
         arrowAction('ArrowLeft');
     });
     // 下 mousedown → mouseup → click の順番でイベント発生
     downButton.addEventListener('touchstart', function(event){
         event.preventDefault();
-        acceleration = 6.0;
+        acceleration = HighSpeed;
     });
     downButton.addEventListener('touchend', function(event){
         event.preventDefault();
-        acceleration = 1.0;
+        acceleration = NormalSpeed;
     });
     downButton.addEventListener('mousedown', function(event){
         event.preventDefault();
-        acceleration = 6.0;
+        acceleration = HighSpeed;
     });
     downButton.addEventListener('mouseup', function(event){
         event.preventDefault();
-        acceleration = 1.0;
+        acceleration = NormalSpeed;
     });
     // 右
     rightButton.addEventListener('click', function(event){
+        event.preventDefault();
         arrowAction('ArrowRight');
     });
 
@@ -571,7 +652,7 @@ function arrowAction(action){
             }
             break;
         case 'ArrowDown':
-            acceleration = 2.0;
+            acceleration = HighSpeed;
             break;
         case 'ArrowUp':
             lineYaku();
