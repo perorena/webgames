@@ -26,15 +26,15 @@ let particles = [];
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
 
-// イベントリスナー登録（アロー関数を使わない）
+// キー操作イベントリスナー
 window.addEventListener('keydown', handleKeyDown);
 
 // ロードイベント関数
 function onLoad(){
-    //表示倍率
+    // 表示倍率
     //zoomCalc();
 
-    //ボタンアクション設定
+    // ボタンアクション設定
     makeButtonAction();
     setupTouchKeyboard();
 
@@ -300,28 +300,6 @@ function mainLoop() {
     animFrameId = requestAnimationFrame(mainLoop);
 }
 
-// [追加] 数字の破片（パーティクル）を生成する関数
-function createParticles(x, y, colorRgb, value) {
-    const particleCount = 10; // 生成する破片の数
-
-    for (let i = 0; i < particleCount; i++) {
-        const angle = Math.random() * Math.PI * 2; // ランダムな方向
-        const speed = 1 + Math.random() * 4; // ランダムな速度
-        const fontSize = 8 + Math.random() * 10; // ランダムなフォントサイズ（小さめ）
-
-        particles.push({
-            x: x, // 数字の中心座標
-            y: y,
-            vx: Math.cos(angle) * speed, // X方向の速度
-            vy: Math.sin(angle) * speed, // Y方向の速度
-            opacity: 1, // 初期透明度
-            colorRgb: colorRgb, // 数字の色（RGB形式文字列）
-            value: value, // 数字そのもの（文字として描画）
-            fontSize: fontSize // フォントサイズ
-        });
-    }
-}
-
 // 数字の破片（パーティクル）を生成する関数
 function createParticles(x, y, colorStr, value) {
     const particleCount = 10;
@@ -363,7 +341,7 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 210;
+    let bh = window.innerHeight - 100;
     let gridw = 750;
     let gridh = 800;
 
