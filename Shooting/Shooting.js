@@ -285,7 +285,6 @@ function mainLoop() {
             if (enemyIdx !== -1) {
                 // 爆発エフェクト（破片）を生成
                 createParticles(b.targetEnemy.x, b.targetEnemy.y, b.targetEnemy.color, b.targetEnemy.value);
-
                 enemies.splice(enemyIdx, 1);
                 score += 100;
             }
@@ -322,9 +321,8 @@ function mainLoop() {
     ctx.save(); // 現在の描画状態を保存
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    if (isFog) {
-        ctx.filter = 'blur(3.5px)'; // 数字が大きいほど極太に滲んで見分けがつかなくなる
-    }
+    //if (isFog) ctx.filter = 'blur(3.5px)'; // 数字が大きいほど極太に滲んで見分けがつかなくなる(safariでは滲まない)
+
     for (const enemy of enemies) {
         //ctx.font = 'bold ' + enemy.fontSize.toString() + 'px monospace';
         ctx.font = `bold ${enemy.fontSize}px monospace`;
@@ -336,6 +334,31 @@ function mainLoop() {
         ctx.translate(enemy.x, enemy.y);
         // 座標系を enemy.angle だけ回転
         ctx.rotate(enemy.angle);
+        // 霧の場合
+        //if (isFog) {
+        //    ctx.globalAlpha = 0.4;
+        //    ctx.fillText(enemy.value, -3, -3);
+        //    ctx.fillText(enemy.value, 3, 3);
+        //    ctx.fillText(enemy.value, -3, 3);
+        //    ctx.globalAlpha = 1.0;
+        //}
+        // 霧（FOG）の時は位置を微妙にずらして重なり描画（残像・手ぶれ効果）
+        if (isFog) {
+            // 滲み・ブレ描画
+            ctx.globalAlpha = 0.35; // 残像を少し薄くして重ねる
+            // 上下左右・斜めに大きくオフセットをかけて複数描画
+            const spread = 6; // オフセット量（広がり具合）
+            // ランダムな揺れを加えて毎フレーム滲み方を変える
+            const rx = (Math.random() - 0.5) * 3;
+            const ry = (Math.random() - 0.5) * 3;
+            ctx.fillText(enemy.value, -spread + rx, -spread + ry);
+            ctx.fillText(enemy.value,  spread + rx, -spread + ry);
+            ctx.fillText(enemy.value, -spread + rx,  spread + ry);
+            ctx.fillText(enemy.value,  spread + rx,  spread + ry);
+            ctx.fillText(enemy.value, -spread * 1.2, 0);
+            ctx.fillText(enemy.value,  spread * 1.2, 0);
+            ctx.globalAlpha = 1.0; // アルファ値をリセット
+        }
         // 描画（すでに中心にいるので、座標は (0, 0)）
         ctx.fillText(enemy.value, 0, 0);
         ctx.restore(); // 1敵ごとの状態を元に戻す（translate/rotateのリセット）
@@ -368,8 +391,8 @@ function mainLoop() {
     if (isFog) {
         ctx.save();
         // 画面全体に薄いグレーの半透明膜を重ねる
-        //ctx.fillStyle = 'rgba(200, 200, 200, 0.65)'; 
-        //ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(200, 200, 200, 0.65)'; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // 警告メッセージ表示
         ctx.fillStyle = '#ff3333';
