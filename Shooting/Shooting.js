@@ -3,17 +3,39 @@ const canvas = document.getElementById('mainScreen');
 const ctx = canvas.getContext('2d');
 // プレイヤー（砲台）の座標
 const player = { x: canvas.width / 2, y: canvas.height - 30 };
-const speedCoeff = 1.5;
-const bulletSpeed = 10;
-const colorName = ['yellowgreen', 'plum', 'yellow', 'aqua', 'pink', 'lightskyblue', 'orange', 'springgreen', 'purple', 'peru', 'mistyrose',
-'magenta', 'sandybrown', 'cadetblue', 'chartreuse', 'orangered', 'olive', 'firebrick', 'indigo', 'dimgray', 'mediumseagreen',
-'lime', 'steelblue', 'deeppink', 'khaki', 'darkviolet', 'darkgreen', 'navy', 'maroon', 'slategray'];
+const speedCoeff = 1.5;     // 敵スピード係数
+const bulletSpeed = 10;     // 弾丸スピード
+//const colorName = [
+//  'yellowgreen', 'plum', 'yellow', 'aqua', 'pink', 'lightskyblue', 
+//  'orange', 'springgreen', 'purple', 'peru', 'mistyrose', 'magenta',
+//  'sandybrown', 'cadetblue', 'chartreuse', 'orangered', 'olive', 'firebrick', 
+//  'indigo', 'crimson', 'mediumseagreen', 'lime', 'steelblue', 'deeppink', 
+//  'khaki', 'darkviolet', 'darkgreen', 'navy', 'maroon', 'slategray'
+//];
+const colorName = [
+    'yellowgreen', 'plum', 'yellow', 'aqua', 'pink', 'lightskyblue', 
+    'orange', 'springgreen', 'purple', 'peru', 'mistyrose', 'magenta', 
+    'sandybrown', 'cadetblue', 'chartreuse', 'orangered', 'olive', 'firebrick', 
+    'gold', 'crimson', 'mediumseagreen', 'lime', 'steelblue', 'deeppink', 
+    'khaki', 'darkviolet', 'lawngreen', 'cyan', 'fuchsia', 'slategray'
+];
+const spawnInterval = 2000;    // 2秒
+const difficultynterval = 30000;    // 30秒
 
 // タイマーやアニメーションIDを管理する変数
 let spawnIntervalId = null;
+let difficultyIntervalId = null;
 let animFrameId = null;
 
+// 霧機能用の変数
+let isFog = false;
+let fogTimerId = null;
+let fogDurationId = null;
+
+//　スコア
 let score = 0;
+
+// ゲームオバーフラグ
 let gameOver = false;
 
 // 敵（数字）の配列
@@ -22,6 +44,13 @@ let enemies = [];
 let bullets = [];
 // パーティクル（破片）の配列
 let particles = [];
+
+// 難易度
+let diffSpeed = 0;  // 個々のスピードを30秒ごとに早める
+let diffInterval = 0;   // 敵の発生間隔を短くする
+
+// ハイスコア
+let highScore = 0;
 
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
@@ -45,10 +74,17 @@ function onLoad(){
 // ボタンアクション設定
 function makeButtonAction(){
     // やり直す
-    let resetButton = document.getElementById('reset');
-    resetButton.addEventListener('click', function(event){
+    let retryButton = document.getElementById('retry');
+    retryButton.addEventListener('click', function(event){
         init();
-  });
+    });
+    // ハイスコアリセット
+    let highscoreButton = document.getElementById('resetHighScoreBtn');
+    highscoreButton.addEventListener('click', function(event){
+    if (confirm('ハイスコアをリセットしますか？')) {
+            resetHighScore();
+        }
+    });
 }
 
 // テンキー用のイベント登録関数を追加
@@ -56,8 +92,8 @@ function setupTouchKeyboard() {
     const keys = document.querySelectorAll('.num-key');
     keys.forEach(key => {
         // pointerdownを使うことで、clickより早いレスポンスを実現
-        key.addEventListener('pointerdown', (e) => {
-            e.preventDefault(); // ダブルタップズームなどを防止
+        key.addEventListener('pointerdown', function(event) {
+            event.preventDefault(); // ダブルタップズームなどを防止
             if (gameOver) return;
             
             const pressedNum = parseInt(key.getAttribute('data-key'), 10);
@@ -73,7 +109,10 @@ function setupTouchKeyboard() {
 function init(){
     // 進行中のタイマー・ループを一旦すべて停止する（重複防止）
     if (spawnIntervalId) clearInterval(spawnIntervalId);
+    if (difficultyIntervalId) clearInterval(difficultyIntervalId);
     if (animFrameId) cancelAnimationFrame(animFrameId);
+    if (fogTimerId) clearTimeout(fogTimerId);
+    if (fogDurationId) clearTimeout(fogDurationId);
 
     // 描画設定のリセット（文字位置を左揃えに戻す）
     ctx.textAlign = 'left';
@@ -88,11 +127,57 @@ function init(){
     enemies = [];
     bullets = [];
 
-    // タイマーおよびメインループを開始
-    spawnIntervalId = setInterval(spawnEnemy, 2000);
+    // 難易度設定
+    diffSpeed = 0;
+    diffInterval = 0;
+
+    // ハイスコア
+    highScore = localStorage.getItem('numberShooter_highScore') || 0;
+
+    // 敵の発生タイマー
+    spawnIntervalId = setInterval(spawnEnemy, spawnInterval);    // 2秒ごと
+    difficultyIntervalId = setInterval(difficultySet, difficultynterval);   // 30秒ごと
+
+    // 霧の発生スケジュールを開始
+    scheduleFog();
+
+    // メインループを開始
     mainLoop();
 }
 
+// 霧の発生スケジュールを管理する関数
+function scheduleFog() {
+    // 次の霧発生までの時間（15秒〜30秒の間でランダム）
+    const nextFogTime = getRandomInt(15000, 30000);
+
+    fogTimerId = setTimeout(function() {
+        if (gameOver) return;
+
+        isFog = true; // 霧発生
+
+        // 10秒後に霧を消す
+        fogDurationId = setTimeout(function() {
+            isFog = false; // 霧終了
+            scheduleFog(); // 次の霧を再予約
+        }, 10000);
+
+    }, nextFogTime);
+}
+
+// 30秒ごと難易度変更
+function difficultySet() {
+    diffSpeed += 0.2;   // 個々のスピードをに早める
+    diffInterval += 100;    // 敵の発生間隔を短くする
+    
+    // 敵の発生間隔が短くなりすぎないよう下限を設ける
+    const currentInterval = Math.max(500, spawnInterval - diffInterval);
+
+    // 敵の発生タイマーのみを再設定
+    if (spawnIntervalId) clearInterval(spawnIntervalId);
+    spawnIntervalId = setInterval(spawnEnemy, currentInterval);
+}
+
+// 敵の発生
 function spawnEnemy() {
     if (gameOver) return;
 
@@ -102,12 +187,11 @@ function spawnEnemy() {
         x: Math.random() * (canvas.width - fontSize) + fontSize / 2,
         y: 0,
         value: getRandomInt(0, 9),
-        speed: 1 + Math.random() * speedCoeff,
+        speed: (1 + diffSpeed) + Math.random() * speedCoeff,
         color: colorName[getRandomInt(0, 29)],
         fontSize: fontSize,
         angle: Math.random() * Math.PI * 2, // 初期角度（ランダム）
-        //rotationSpeed: (Math.random() - 0.5) * 0.1 // 回転速度（正負ランダムでゆっくり） 0.1を大きくると早く回転
-        rotationSpeed: (Math.random() - 0.5) * getRandomInt(1, 9) / 10
+        rotationSpeed: (Math.random() - 0.5) * getRandomInt(1, 9) / 10  // 回転速度（正負ランダム） 0.1～0.9大きくると早く回転
     });
 }
 
@@ -199,9 +283,7 @@ function mainLoop() {
             // 着弾時：敵を配列から削除しスコア加算
             const enemyIdx = enemies.indexOf(b.targetEnemy);
             if (enemyIdx !== -1) {
-                // [追加] 爆発エフェクト（破片）を生成
-                // （敵の色をそのまま使いたい場合は、RGB管理が必要ですが、ここでは白で代用）
-                //createParticles(b.targetEnemy.x, b.targetEnemy.y, '255, 255, 255', b.targetEnemy.value);
+                // 爆発エフェクト（破片）を生成
                 createParticles(b.targetEnemy.x, b.targetEnemy.y, b.targetEnemy.color, b.targetEnemy.value);
 
                 enemies.splice(enemyIdx, 1);
@@ -236,25 +318,25 @@ function mainLoop() {
     ctx.fillStyle = '#0f0';
     ctx.fillRect(player.x - 15, player.y, 30, 20);
 
-    // 敵（数字）描画getRandomInt
-    //ctx.fillStyle = '#f00';
-    //ctx.font = 'bold 24px monospace';
-    //ctx.font = 'bold ' + (24 * getRandomInt(1,4)).toString() + 'px monospace';
+    // 敵（数字）描画
     ctx.save(); // 現在の描画状態を保存
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    if (isFog) {
+        ctx.filter = 'blur(3.5px)'; // 数字が大きいほど極太に滲んで見分けがつかなくなる
+    }
     for (const enemy of enemies) {
         //ctx.font = 'bold ' + enemy.fontSize.toString() + 'px monospace';
         ctx.font = `bold ${enemy.fontSize}px monospace`;
         ctx.fillStyle = enemy.color;
 
-        // --- [回転描画の手順] ---
+        // 回転描画の手順
         ctx.save(); // 1敵ごとの状態を保存
-        // 1. 座標系の中心を敵の中心 (x, y) に移動
+        // 座標系の中心を敵の中心 (x, y) に移動
         ctx.translate(enemy.x, enemy.y);
-        // 2. 座標系を enemy.angle だけ回転
+        // 座標系を enemy.angle だけ回転
         ctx.rotate(enemy.angle);
-        // 3. 描画（すでに中心にいるので、座標は (0, 0)）
+        // 描画（すでに中心にいるので、座標は (0, 0)）
         ctx.fillText(enemy.value, 0, 0);
         ctx.restore(); // 1敵ごとの状態を元に戻す（translate/rotateのリセット）
 
@@ -282,13 +364,41 @@ function mainLoop() {
         ctx.fill();
     }
 
+    // 霧の描画処理
+    if (isFog) {
+        ctx.save();
+        // 画面全体に薄いグレーの半透明膜を重ねる
+        //ctx.fillStyle = 'rgba(200, 200, 200, 0.65)'; 
+        //ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 警告メッセージ表示
+        ctx.fillStyle = '#ff3333';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('WARNING: FOG!', canvas.width / 2, 30);
+        ctx.restore();
+    }
+
     // スコア描画
     ctx.fillStyle = '#fff';
     ctx.font = '18px sans-serif';
-    ctx.fillText(`SCORE: ${score}`, 10, 25);
+    ctx.fillText(`SCORE: ${score}`, 10, 25);    // スコア
+    ctx.fillText(`HIGH SCORE: ${highScore}`, 10, 50);   // ハイスコア
+    //ctx.fillText(`diffSpeed: ${diffSpeed}`, 10, 75);
+    //ctx.fillText(`diffInterval: ${diffInterval}`, 10, 100);
 
-    // ゲームオーバー表示
+    // ハイスコアとゲームオーバー表示
     if (gameOver) {
+        // ハイスコア
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('numberShooter_highScore', highScore);
+            //ctx.fillStyle = '#fff';
+            //ctx.font = '18px sans-serif';
+            //ctx.clearRect(10, 30, 200, 30);
+            //ctx.fillText(`HIGH SCORE: ${highScore}`, 10, 50); // ハイスコア表示を追加
+        }
+        // ゲームオーバー
         ctx.fillStyle = '#ff0000';
         ctx.font = '36px sans-serif';
         ctx.textAlign = 'center';
@@ -334,6 +444,13 @@ function colorToRgb(colorStr) {
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     return `${r}, ${g}, ${b}`;
+}
+
+// ハイスコア消去関数
+function resetHighScore() {
+    localStorage.removeItem('numberShooter_highScore'); // ストレージから削除
+    highScore = 0; // 変数も初期化
+    alert('ハイスコアをリセットしました！');
 }
 
 // 表示倍率計算
