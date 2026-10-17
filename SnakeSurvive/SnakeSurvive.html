@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>スネークサバイブ</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./SnakeSurvive.css">
+    </head>
+    <body>
+        <table id="main_table">
+            <tr>
+                <td id="title">
+                    <span id="checkmap"></span>
+                    <span id="title_line">
+                        【スネークサバイブ】
+                    </span>
+                    <br><br>
+                    <span>
+                        キー操作で緑のゴールを目指そう！
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <canvas id="mainScreen" width="405" height="405"></canvas>
+        <div id="kill-message" class="hidden"></div>
+        <!-- mainScreen Canvas の直下に追加 -->
+        <div id="touch-keyboard">
+            <div class="key-row">
+                <button class="arrow-key arrow-center" data-key="ArrowUp">↑</button>
+            </div>
+            <div class="key-row">
+                <button class="arrow-key arrow-center" data-key="ArrowLeft">←</button>
+                <button class="arrow-key arrow-center" data-key="ArrowDown">↓</button>
+                <button class="arrow-key arrow-center" data-key="ArrowRight">→</button>
+            </div>
+            <div class="key-row">
+                <button id="retry" class="arrow-key" type="button" value="RETRY">RETRY</button>
+            </div>
+        </div>
+        <!-- JavaScript -->
+        <script type="text/javascript" src="./SnakeSurvive.js"></script>
+    </body>
+</html>
+

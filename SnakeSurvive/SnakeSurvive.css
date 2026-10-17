@@ -1,0 +1,159 @@
+/* 全体 */
+body {
+    text-align: center;
+    font-family: sans-serif;
+    /* スマホでの画面揺れ・不要なスクロールを防止 */
+    overscroll-behavior: none;
+    touch-action: pan-x pan-y;
+}
+
+/* メインテーブル */
+#main_table {
+    width: 100%;
+    table-layout: fixed;
+    /* ボタンエリアの高さ分、下部に余白を設けてグリッドと重なるのを防ぐ */
+    padding-bottom: 10px;
+}
+
+/* タイトルエリア */
+#title {
+    height: 110px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ccf;
+    border: 0px;
+    border-radius: 20px;
+}
+
+/* タイトル行 */
+#title_line {
+    font-weight: bold;
+    font-size: x-large;
+    border: 0px;
+    margin:0px;
+    padding: 0px;
+    letter-spacing: 1px;
+}
+
+/* 操作説明文 */
+#explanation {
+    text-align: left;
+    background-color: #fff;
+    font-size: 100%;
+    border: 0px;
+}
+
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.arrow-key {
+    touch-action: manipulation;
+    -webkit-user-select: none; /* テキスト選択を防止 */
+    user-select: none;
+}
+
+/* テンキーのスタイリング */
+#touch-keyboard {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.arrow-key {
+    flex: 1;
+    height: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.arrow-center {
+    /* 上下中央ズレを手動調整する設定 */
+    box-sizing: border-box;
+    line-height: 1;         /* 行の高さを文字サイズに固定 */
+    padding-top: 0px;
+    padding-bottom: 5px;    /* 矢印が上に寄っている場合は数値を増やす（3px〜6px程度） */
+
+}
+
+.arrow-key:active {
+    background-color: #2563EB;
+}
+
+/* メイン画面 Canvas（レスポンシブ化） */
+#mainScreen {
+    background: #111;
+    border: 2px solid #555;
+    margin-top: 10px;
+    /* スマホの画面幅に合わせて自動縮小 */
+    max-width: 100%;
+    width: 405px;
+    height: auto;
+    box-sizing: border-box;
+}
+
+#retry {
+    flex: 2; /* 少し横幅を広くする */
+    background-color: #e53e3e; /* 赤系にして目立たせる */
+}
+
+#retry:active {
+    background-color: #c53030;
+}
+
+/* スマホ画面からはみ出さないようにレスポンシブ化 */
+/*
+#mainScreen {
+    background: #111;
+    border: 2px solid #555;
+    margin-top: 10px;
+    max-width: 90vw;
+    max-height: 90vw;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
+*/
+
+/* 撃破メッセージのスタイル */
+#kill-message {
+    position: absolute;
+    top: 50px; /* Canvasの上部中央 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒背景 */
+    color: #fff; /* 白文字 */
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+    z-index: 100; /* Canvasより前面に表示 */
+    transition: opacity 0.5s ease; /* 表示・非表示のフェードアニメーション */
+    pointer-events: none; /* クリックなどが Canvas に届くようにする */
+}
+
+/* 非表示（透明）の状態 */
+.hidden {
+    opacity: 0;
+}
+
+/* 表示の状態 */
+.visible {
+    opacity: 1;
+}
+
+
