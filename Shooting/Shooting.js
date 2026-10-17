@@ -1,8 +1,7 @@
 // キャンバス
 const canvas = document.getElementById('mainScreen');
 const ctx = canvas.getContext('2d');
-// プレイヤー（砲台）の座標
-const player = { x: canvas.width / 2, y: canvas.height - 30 };
+const player = { x: canvas.width / 2, y: canvas.height - 30 };  // プレイヤー（砲台）の座標
 const speedCoeff = 1.5;     // 敵スピード係数
 const bulletSpeed = 10;     // 弾丸スピード
 //const colorName = [
@@ -35,6 +34,9 @@ let fogDurationId = null;
 //　スコア
 let score = 0;
 
+// ハイスコア
+let highScore = 0;
+
 // ゲームオバーフラグ
 let gameOver = false;
 
@@ -48,9 +50,6 @@ let particles = [];
 // 難易度
 let diffSpeed = 0;  // 個々のスピードを30秒ごとに早める
 let diffInterval = 0;   // 敵の発生間隔を短くする
-
-// ハイスコア
-let highScore = 0;
 
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
@@ -87,6 +86,20 @@ function makeButtonAction(){
     });
 }
 
+// キーボードイベントハンドラー
+function handleKeyDown(e) {
+    if (gameOver) return;
+
+    if (e.key >= '0' && e.key <= '9') {
+        const pressedNum = parseInt(e.key, 10);
+        const target = findLowestTarget(pressedNum);
+
+        if (target) {
+            spawnBullet(target);
+        }
+    }
+}
+
 // テンキー用のイベント登録関数を追加
 function setupTouchKeyboard() {
     const keys = document.querySelectorAll('.num-key');
@@ -103,6 +116,11 @@ function setupTouchKeyboard() {
             }
         });
     });
+}
+
+// 乱数（min～maxの整数）
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // 初期化
@@ -193,25 +211,6 @@ function spawnEnemy() {
         angle: Math.random() * Math.PI * 2, // 初期角度（ランダム）
         rotationSpeed: (Math.random() - 0.5) * getRandomInt(1, 9) / 10  // 回転速度（正負ランダム） 0.1～0.9大きくると早く回転
     });
-}
-
-// キーボードイベントハンドラー
-function handleKeyDown(e) {
-    if (gameOver) return;
-
-    if (e.key >= '0' && e.key <= '9') {
-        const pressedNum = parseInt(e.key, 10);
-        const target = findLowestTarget(pressedNum);
-
-        if (target) {
-            spawnBullet(target);
-        }
-    }
-}
-
-// 乱数（min～maxの整数）
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // 押された数字に対応する最も下の敵を探す関数
@@ -393,13 +392,20 @@ function mainLoop() {
         // 画面全体に薄いグレーの半透明膜を重ねる
         ctx.fillStyle = 'rgba(200, 200, 200, 0.65)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+        // 画面全体に白いランダムドット（ノイズ）を散りばめる
+        //ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        //for (let i = 0; i < 150; i++) {
+        //    const rx = Math.random() * canvas.width;
+        //    const ry = Math.random() * canvas.height;
+        //    ctx.fillRect(rx, ry, 3, 3);
+        //}
         // 警告メッセージ表示
         ctx.fillStyle = '#ff3333';
         ctx.font = 'bold 20px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('WARNING: FOG!', canvas.width / 2, 30);
         ctx.restore();
+
     }
 
     // スコア描画

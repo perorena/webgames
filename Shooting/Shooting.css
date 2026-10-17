@@ -1,3 +1,10 @@
+/* 全体 */
+body {
+    touch-action: pan-x pan-y;
+    user-select: none; /* テキスト選択を無効化 */
+    -webkit-user-select: none;
+}
+
 /* メインテーブル */
 #main_table {
     width: 100%;
@@ -26,39 +33,8 @@
     letter-spacing: 1px;
 }
 
-/* 操作説明文 */
-#explanation {
-    text-align: left;
-    background-color: #fff;
-    font-size: 100%;
-    border: 0px;
-}
-
-/* メニューボタンなど */
-.menu_button {
-    width: 61px;
-    height: 55px;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 5px;
-    background-color: #eee;
-    font-weight: bold;
-    font-size: small;
-}
-
-/* 遷移用ボタンなど */
-.transition_button {
-    width: 150px;
-    height: 35px;
-    border-radius: 20px;
-}
-
 /* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
-button,
-.menu_button,
-.transition_button {
+button {
     touch-action: manipulation;
 }
 
@@ -111,8 +87,32 @@ button,
     background-color: dimgray; /* 背景をダーク系にすると見やすい */
 }
 
-body {
-    touch-action: pan-x pan-y;
-    user-select: none; /* テキスト選択を無効化 */
-    -webkit-user-select: none;
+#retry {
+    flex: 2; /* 少し横幅を広くする */
+    background-color: #e53e3e; /* 赤系にして目立たせる */
+}
+
+#retry:active {
+    background-color: #c53030;
+}
+
+/* ハイスコアリセットボタンのスタイリング */
+#resetHighScoreBtn {
+    width: 100%;
+    height: 40px;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #4A5568;
+    background-color: #EDF2F7;
+    border: 1px solid #CBD5E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color 0.1s ease;
+}
+
+#resetHighScoreBtn:active {
+    background-color: #CBD5E0;
 }
