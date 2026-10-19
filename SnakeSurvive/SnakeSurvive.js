@@ -3,7 +3,9 @@
 // ==========================================
 const canvas = document.getElementById('mainScreen');
 const ctx = canvas.getContext('2d');
-const GRID_SIZE = 15;                        // 1マスのサイズ（15px：26x26マス構成）
+const GRID_SIZE = 15;                        // 1マスのサイズ（15px：27x27マス構成）
+const UI_HEIGHT = 45;                        // 上部スコアエリアの高さ(px)
+const GAME_HEIGHT = canvas.height - UI_HEIGHT; // ゲーム領域の高さ(405px)
 const TILE_COUNT = canvas.width / GRID_SIZE; // 405 / 15 = 27マス
 const LOOP_INTERVAL = 200;                  // メインループの間隔（ms）
 const GOAL_INTERVAL = 5000;                 // ゴール移動の間隔（ms）
@@ -539,6 +541,7 @@ function triggerGameOver(message) {
 // ==========================================
 // 描画処理
 // ==========================================
+/*
 function draw() {
     ctx.fillStyle = '#111';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -647,5 +650,143 @@ function draw() {
         killMessageTimer--;
     }
 }
+*/
+// ==========================================
+// 描画処理
+// ==========================================
+function draw() {
+    // 画面全体を黒でクリア
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // --------------------------------------
+    // 上部スコアエリア（背景と区切り線）
+    // --------------------------------------
+    //ctx.save();
+    ctx.fillStyle = '#222';
+    ctx.fillRect(0, 0, canvas.width, UI_HEIGHT);
+
+    // スコア枠とゲーム領域の境界線（灰色）
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, UI_HEIGHT);
+    ctx.lineTo(canvas.width, UI_HEIGHT);
+    //ctx.stroke();
+
+    // 情報UI描画（見やすく配置）
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(`STAGE: ${stage}`, 10, 18);
+    ctx.fillText(`SCORE: ${score}`, 10, 36);
+
+    ctx.fillStyle = '#ffcc00'; // ハイスコアは黄色で強調
+    ctx.fillText(`HIGH SCORE: ${highScore}`, 140, 36);
+
+    ctx.fillStyle = '#ff5555';
+    ctx.fillText(`ENEMIES: ${enemies.length}`, canvas.width - 95, 18);
+    ctx.restore();
+
+    // --------------------------------------
+    // ゲーム要素の描画（Y座標に UI_HEIGHT を足す）
+    // --------------------------------------
+
+    // ゴール（緑）
+    if (goal) {
+        ctx.fillStyle = '#00ff66';
+        ctx.fillRect(goal.x * GRID_SIZE, goal.y * GRID_SIZE + UI_HEIGHT, GRID_SIZE - 1, GRID_SIZE - 1);
+    }
+
+    // 千切れた障害物（灰色）
+    ctx.fillStyle = '#777777';
+    obstacles.forEach(obs => {
+        ctx.fillRect(obs.x * GRID_SIZE, obs.y * GRID_SIZE + UI_HEIGHT, GRID_SIZE - 1, GRID_SIZE - 1);
+    });
+
+    // プレイヤー（青）
+    player.forEach((segment, index) => {
+        ctx.fillStyle = (index === 0) ? '#00ccff' : '#0055aa';
+        ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE + UI_HEIGHT, GRID_SIZE - 1, GRID_SIZE - 1);
+
+        // プレイヤーの目の描画
+        if (index === 0) {
+            ctx.fillStyle = '#000000';
+            const gx = segment.x * GRID_SIZE;
+            const gy = segment.y * GRID_SIZE + UI_HEIGHT; // ★+UI_HEIGHT
+            const eyeSize = 2;
+
+            if (playerDir.x === 1) {        // 右
+                ctx.fillRect(gx + 10, gy + 3, eyeSize, eyeSize);
+                ctx.fillRect(gx + 10, gy + 9, eyeSize, eyeSize);
+            } else if (playerDir.x === -1) { // 左
+                ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
+                ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
+            } else if (playerDir.y === -1) { // 上
+                ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
+                ctx.fillRect(gx + 9, gy + 3, eyeSize, eyeSize);
+            } else if (playerDir.y === 1) {  // 下
+                ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
+                ctx.fillRect(gx + 9, gy + 9, eyeSize, eyeSize);
+            }
+        }
+    });
+
+    // 敵たち（赤）
+    enemies.forEach(enemy => {
+        enemy.body.forEach((segment, index) => {
+            if (index === 0) {
+                if (enemy.body.length === 1 && Math.floor(Date.now() / 200) % 2 === 0) {
+                    ctx.fillStyle = '#ff9999';
+                } else {
+                    ctx.fillStyle = '#ff3333';
+                }
+                
+                ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE + UI_HEIGHT, GRID_SIZE - 1, GRID_SIZE - 1);
+
+                // 敵の目の描画
+                ctx.fillStyle = '#000000';
+                const gx = segment.x * GRID_SIZE;
+                const gy = segment.y * GRID_SIZE + UI_HEIGHT; // ★+UI_HEIGHT
+                const eyeSize = 2;
+
+                if (enemy.dir.x === 1) {        // 右
+                    ctx.fillRect(gx + 10, gy + 3, eyeSize, eyeSize);
+                    ctx.fillRect(gx + 10, gy + 9, eyeSize, eyeSize);
+                } else if (enemy.dir.x === -1) { // 左
+                    ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
+                    ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
+                } else if (enemy.dir.y === -1) { // 上
+                    ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
+                    ctx.fillRect(gx + 9, gy + 3, eyeSize, eyeSize);
+                } else if (enemy.dir.y === 1) {  // 下
+                    ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
+                    ctx.fillRect(gx + 9, gy + 9, eyeSize, eyeSize);
+                }
+            } else {
+                ctx.fillStyle = '#aa0000';
+                ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE + UI_HEIGHT, GRID_SIZE - 1, GRID_SIZE - 1);
+            }
+        });
+    });
+
+    // 撃破メッセージ表示
+    if (killMessageTimer > 0) {
+        ctx.save();
+        ctx.font = 'bold 18px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillText(killMessageText, canvas.width / 2 + 2, (GAME_HEIGHT / 2) + UI_HEIGHT + 2);
+
+        ctx.fillStyle = '#ffff00';
+        ctx.fillText(killMessageText, canvas.width / 2, (GAME_HEIGHT / 2) + UI_HEIGHT);
+
+        ctx.restore();
+        killMessageTimer--;
+    }
+}
+
+
 
 
