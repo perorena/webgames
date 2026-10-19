@@ -33,6 +33,13 @@ body {
     letter-spacing: 1px;
 }
 
+/* 遷移用ボタンなど */
+.transition_button {
+    width: 150px;
+    height: 35px;
+    border-radius: 20px;
+}
+
 /* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
 button {
     touch-action: manipulation;
@@ -88,7 +95,7 @@ button {
 }
 
 #retry {
-    flex: 2; /* 少し横幅を広くする */
+    color: white;
     background-color: #e53e3e; /* 赤系にして目立たせる */
 }
 
@@ -97,6 +104,15 @@ button {
 }
 
 /* ハイスコアリセットボタンのスタイリング */
+#resetHighScoreBtn {
+    background-color: #EDF2F7;
+}
+
+#resetHighScoreBtn:active {
+    background-color: #CBD5E0;
+}
+
+/*
 #resetHighScoreBtn {
     width: 100%;
     height: 40px;
@@ -116,3 +132,4 @@ button {
 #resetHighScoreBtn:active {
     background-color: #CBD5E0;
 }
+    */

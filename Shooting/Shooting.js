@@ -20,6 +20,7 @@ const colorName = [
 ];
 const spawnInterval = 2000;    // 2秒
 const difficultynterval = 30000;    // 30秒
+const highScoreKey = 'numberShooter_highScore';
 
 // タイマーやアニメーションIDを管理する変数
 let spawnIntervalId = null;
@@ -150,7 +151,7 @@ function init(){
     diffInterval = 0;
 
     // ハイスコア
-    highScore = localStorage.getItem('numberShooter_highScore') || 0;
+    highScore = localStorage.getItem(highScoreKey) || 0;
 
     // 敵の発生タイマー
     spawnIntervalId = setInterval(spawnEnemy, spawnInterval);    // 2秒ごと
@@ -285,7 +286,9 @@ function mainLoop() {
                 // 爆発エフェクト（破片）を生成
                 createParticles(b.targetEnemy.x, b.targetEnemy.y, b.targetEnemy.color, b.targetEnemy.value);
                 enemies.splice(enemyIdx, 1);
-                score += 100;
+                let baseScore = 100;    // 基本点
+                let heightBonus = Math.floor((canvas.height - b.targetEnemy.y) / 10);   // 高さボーナス
+                score += baseScore + heightBonus;
             }
             bullets.splice(i, 1);
         } else {
@@ -421,11 +424,7 @@ function mainLoop() {
         // ハイスコア
         if (score > highScore) {
             highScore = score;
-            localStorage.setItem('numberShooter_highScore', highScore);
-            //ctx.fillStyle = '#fff';
-            //ctx.font = '18px sans-serif';
-            //ctx.clearRect(10, 30, 200, 30);
-            //ctx.fillText(`HIGH SCORE: ${highScore}`, 10, 50); // ハイスコア表示を追加
+            localStorage.setItem(highScoreKey, highScore);
         }
         // ゲームオーバー
         ctx.fillStyle = '#ff0000';
@@ -477,7 +476,7 @@ function colorToRgb(colorStr) {
 
 // ハイスコア消去関数
 function resetHighScore() {
-    localStorage.removeItem('numberShooter_highScore'); // ストレージから削除
+    localStorage.removeItem(highScoreKey); // ストレージから削除
     highScore = 0; // 変数も初期化
     alert('ハイスコアをリセットしました！');
 }

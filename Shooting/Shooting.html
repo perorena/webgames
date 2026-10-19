@@ -18,7 +18,9 @@
                     </span>
                     <br><br>
                     <span>
-                        キーボードの数字キー（0〜9）を押して降ってくる数字を撃ち落とそう！
+                        <button class="transition_button" onclick='window.open("./ShootingHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                        <button id="retry" class="transition_button" value="RETRY">RETRY</button>
+                        <button id="resetHighScoreBtn" class="transition_button">ハイスコアリセット</button>
                     </span>
                 </td>
             </tr>
@@ -43,9 +45,9 @@
             </div>
             <div class="key-row">
                 <button class="num-key key-zero" data-key="0">0</button>
-                <button id="retry" class="num-key key-zero" type="button" value="RETRY">RETRY</button>
+                <!--<button id="retry" class="num-key key-zero" type="button" value="RETRY">RETRY</button>-->
             </div>
-            <button id="resetHighScoreBtn">ハイスコアリセット</button>
+            <!-- <button id="resetHighScoreBtn">ハイスコアリセット</button> -->
         </div>
         <!-- JavaScript -->
         <script type="text/javascript" src="./Shooting.js"></script>
