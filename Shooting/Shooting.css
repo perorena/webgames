@@ -33,6 +33,15 @@ body {
     letter-spacing: 1px;
 }
 
+/* タイトル下のボタンコンテナ（横並び配置） */
+.top-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px; /* ボタン同士の間隔 */
+    margin-top: 5px;
+}
+
 /* 遷移用ボタンなど */
 .transition_button {
     width: 150px;
@@ -93,10 +102,10 @@ button {
     margin: 0 auto;
     background-color: dimgray; /* 背景をダーク系にすると見やすい */
 }
-
+/*
 #retry {
     color: white;
-    background-color: #e53e3e; /* 赤系にして目立たせる */
+    background-color: #e53e3e;
 }
 
 #retry:active {
@@ -104,6 +113,7 @@ button {
 }
 
 /* ハイスコアリセットボタンのスタイリング */
+/*
 #resetHighScoreBtn {
     background-color: #EDF2F7;
 }
@@ -111,7 +121,7 @@ button {
 #resetHighScoreBtn:active {
     background-color: #CBD5E0;
 }
-
+*/
 /*
 #resetHighScoreBtn {
     width: 100%;
@@ -132,4 +142,27 @@ button {
 #resetHighScoreBtn:active {
     background-color: #CBD5E0;
 }
-    */
+*/
+/* テンキー最下部のハイスコアリセットボタン */
+#resetHighScoreBtn {
+    display: block;
+    width: 100%;
+    max-width: 200px;       /* 矢印キーの幅に合わせてコンパクトに */
+    margin: 8px auto 0 auto; /* 上に少し隙間を作る */
+    padding: 6px 12px;
+    background-color: #d69e2e; /* 警告感のある落ち着いた黄色・オレンジ */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#resetHighScoreBtn:active {
+    background-color: #b7791f;
+}
+
