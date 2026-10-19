@@ -7,6 +7,7 @@ const GRID_SIZE = 15;                        // 1マスのサイズ（15px：26x
 const TILE_COUNT = canvas.width / GRID_SIZE; // 405 / 15 = 27マス
 const LOOP_INTERVAL = 200;                  // メインループの間隔（ms）
 const GOAL_INTERVAL = 5000;                 // ゴール移動の間隔（ms）
+const HIGH_SCORE_KEY = 'snakeSurvive_highScore';
 
 // タイマーID
 let loopIntervalId = null;
@@ -71,6 +72,7 @@ function onLoad() {
 
 // ボタン設定
 function makeButtonAction() {
+    // やり直す
     let retryButton = document.getElementById('retry');
     if (retryButton) {
         retryButton.addEventListener('click', function(event) {
@@ -79,6 +81,13 @@ function makeButtonAction() {
             init();
         });
     }
+    // ハイスコアリセット
+    let highscoreButton = document.getElementById('resetHighScoreBtn');
+    highscoreButton.addEventListener('click', function(event){
+    if (confirm('ハイスコアをリセットしますか？')) {
+            resetHighScore();
+        }
+    });
 }
 
 // キーボード操作処理
@@ -109,6 +118,13 @@ function setupTouchKeyboard() {
     });
 }
 
+// ハイスコア消去関数
+function resetHighScore() {
+    localStorage.removeItem(HIGH_SCORE_KEY); // ストレージから削除
+    highScore = 0; // 変数も初期化
+    alert('ハイスコアをリセットしました！');
+}
+
 // ==========================================
 // ゲーム制御関数（初期化・生成・ループ）
 // ==========================================
@@ -118,7 +134,7 @@ function init() {
     isGameOver = false;
 
     // ローカルストレージからハイスコア取得
-    highScore = localStorage.getItem('numberShooter_highScore_snake') || 0;
+    highScore = localStorage.getItem(HIGH_SCORE_KEY) || 0;
 
     // 撃破メッセージリセット
     killMessageText = "";
@@ -392,6 +408,7 @@ function triggerKillMessage(msgText) {
 // ==========================================
 // 当たり判定処理
 // ==========================================
+// [0:頭] - [1:首/胴体先頭] - [2:中央] - [3:尻尾手前] - [4:尻尾先端]
 function checkCollisions() {
     const pHead = player[0];
 
@@ -402,7 +419,7 @@ function checkCollisions() {
 
         if (score > highScore) {
             highScore = score;
-            localStorage.setItem('numberShooter_highScore_snake', highScore);
+            localStorage.setItem(HIGH_SCORE_KEY, highScore);
         }
 
         stage++;
@@ -450,13 +467,13 @@ function checkCollisions() {
             }
         }
 
-        // 胴体攻撃判定
+        // プレイヤーが敵を噛んだ（胴体攻撃判定）
         let bittenEnemyBody = false;
         for (let i = 1; i < enemy.body.length; i++) {
             if (pHead.x === enemy.body[i].x && pHead.y === enemy.body[i].y) {
                 const cut = enemy.body.splice(i);
                 obstacles.push(...cut);
-                score += player.length * (4 - i);
+                score += player.length * cut.length * 10;
                 bittenEnemyBody = true;
                 break;
             }
@@ -464,11 +481,12 @@ function checkCollisions() {
 
         if (bittenEnemyBody) continue;
 
+        // プレイヤーが敵に嚙まれた
         for (let i = 1; i < player.length; i++) {
             if (eHead.x === player[i].x && eHead.y === player[i].y) {
                 const cut = player.splice(i);
                 obstacles.push(...cut);
-                score -= enemy.body.length * (4 - i);
+                score -= enemy.body.length * cut.length * 10;
                 break;
             }
         }

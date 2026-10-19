@@ -18,7 +18,9 @@
                     </span>
                     <br><br>
                     <span>
-                        キー操作で緑のゴールを目指そう！
+                        <button class="transition_button" onclick='window.open("./SnakeSurviveHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                        <button id="retry" class="transition_button" value="RETRY">RETRY</button>
+                        <button id="resetHighScoreBtn" class="transition_button">ハイスコアリセット</button>
                     </span>
                 </td>
             </tr>
@@ -35,9 +37,11 @@
                 <button class="arrow-key arrow-center" data-key="ArrowDown">↓</button>
                 <button class="arrow-key arrow-center" data-key="ArrowRight">→</button>
             </div>
+            <!--
             <div class="key-row">
                 <button id="retry" class="arrow-key" type="button" value="RETRY">RETRY</button>
             </div>
+            -->
         </div>
         <!-- JavaScript -->
         <script type="text/javascript" src="./SnakeSurvive.js"></script>

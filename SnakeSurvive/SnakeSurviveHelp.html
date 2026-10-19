@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>スネークサバイブ</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./SnakeSurvive.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">【スネークサバイブ】</span>
+            </td>
+        </tr>
+        <tr>
+            <td id="explanation">
+                <ruby>敵<rt>てき</rt></ruby>のヘビを<ruby>倒<rt>たお</rt></ruby>しながら、<ruby>緑色<rt>みどりいろ</rt></ruby>のゴールを<ruby>目指<rt>めざ</rt></ruby>しましょう！
+                <br><br>
+                【<ruby>操作方法<rt>そうさほうほう</rt></ruby>】<br>
+                ・キーボードの[<ruby>矢印<rt>やじるし</rt></ruby>キー] または <ruby>画面<rt>がめん</rt></ruby><ruby>下<rt>した</rt></ruby>のボタンでヘビを<ruby>動<rt>うご</rt></ruby>かします。<br><br>
+
+                【ルール】<br>
+                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>と<ruby>正面<rt>しょうめん</rt></ruby>からぶつかるとゲームオーバーです。<br>
+                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>を<ruby>横<rt>よこ</rt></ruby>や<ruby>後<rt>うし</rt></ruby>ろから<ruby>噛<rt>か</rt></ruby>むと<ruby>撃破<rt>げきは</rt></ruby>（<ruby>全滅<rt>ぜんめつ</rt></ruby>）できます！<br>
+                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>噛<rt>か</rt></ruby>むと、そこから<ruby>千切<rt>ちぎ</rt></ruby>れて<ruby>障害物<rt>しょうがいぶつ</rt></ruby>（<ruby>灰色<rt>はいいろ</rt></ruby>）になります。<br>
+                ・<ruby>敵<rt>てき</rt></ruby>が<ruby>頭<rt>あたま</rt></ruby>だけ（<ruby>長<rt>なが</rt></ruby>さ1）になると<ruby>点滅<rt>てんめつ</rt></ruby>します。<br>
+                ・<ruby>千切<rt>ちぎ</rt></ruby>れた<ruby>障害物<rt>しょうがいぶつ</rt></ruby>や<ruby>自分<rt>じぶん</rt></ruby>の<ruby>体<rt>からだ</rt></ruby>にぶつかるとゲームオーバーです。<br>
+                ・<ruby>敵<rt>てき</rt></ruby>をすべて<ruby>倒<rt>たお</rt></ruby>すか、<ruby>緑色<rt>みどりいろ</rt></ruby>のゴールに<ruby>到達<rt>とうたつ</rt></ruby>するとステージクリアです。<br><br>
+
+                【<ruby>得点<rt>とくてん</rt></ruby>の<ruby>仕組<rt>しく</rt></ruby>み】<br>
+                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>を<ruby>撃破<rt>げきは</rt></ruby>：<ruby>自分<rt>じぶん</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さ × 20<ruby>点<rt>てん</rt></ruby><br>
+                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>噛<rt>か</rt></ruby>む：<ruby>自分<rt>じぶん</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さ × <ruby>千<rt>ちぎ</rt></ruby>った<ruby>長<rt>なが</rt></ruby>さ × 10<ruby>点<rt>てん</rt></ruby><br>
+                ・<ruby>敵<rt>てき</rt></ruby>に<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>噛<rt>か</rt></ruby>まれる：<ruby>敵<rt>てき</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さ × <ruby>千<rt>ちぎ</rt></ruby>られた<ruby>長<rt>なが</rt></ruby>さ × 10<ruby>点<rt>てん</rt></ruby> マイナス<br>
+                ※自分の体が長く、より大きな胴体を千切るほど高得点になります！<br><br>
+
+                <button class="transition_button" onclick="window.close()"><ruby>閉<rt>と</rt></ruby>じる</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+

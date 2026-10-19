@@ -43,8 +43,16 @@ body {
     border: 0px;
 }
 
+/* 遷移用ボタンなど */
+.transition_button {
+    width: 150px;
+    height: 35px;
+    border-radius: 20px;
+}
+
 /* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
 button,
+transition_button,
 .arrow-key {
     touch-action: manipulation;
     -webkit-user-select: none; /* テキスト選択を防止 */
@@ -107,27 +115,13 @@ button,
 }
 
 #retry {
-    flex: 2; /* 少し横幅を広くする */
-    background-color: #e53e3e; /* 赤系にして目立たせる */
+    color: white;
+    background-color: #e53e3e;
 }
 
 #retry:active {
     background-color: #c53030;
 }
-
-/* スマホ画面からはみ出さないようにレスポンシブ化 */
-/*
-#mainScreen {
-    background: #111;
-    border: 2px solid #555;
-    margin-top: 10px;
-    max-width: 90vw;
-    max-height: 90vw;
-    width: 100%;
-    height: auto;
-    box-sizing: border-box;
-}
-*/
 
 /* 撃破メッセージのスタイル */
 #kill-message {
