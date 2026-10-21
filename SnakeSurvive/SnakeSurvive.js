@@ -42,6 +42,8 @@ let highScore = 0;
 let killMessageText = "";      // 表示するメッセージ
 let killMessageTimer = 0;      // 表示用タイマー（フレーム数）
 
+let isWipedOut = false;     // 敵を全滅したかどうか
+
 // ランダムで表示されるメッセージリスト
 const killMessages = [
     "撃破！ 見事なり！",
@@ -152,6 +154,9 @@ function init() {
     ];
     playerDir = { x: 1, y: 0 };
 
+    // 敵を全滅したかどうか
+    isWipedOut = false;
+
     // 障害物の初期化
     obstacles = [];
 
@@ -240,6 +245,7 @@ function stopTimers() {
     goalIntervalId = null;
 }
 
+/*
 // ゴールランダム移動（四隅付近へ）
 function goalMove() {
     const margin = 2; // 端からの余白（マス数）
@@ -254,6 +260,53 @@ function goalMove() {
     ];
     let flag = getRandomInt(0, 3);
     goal = locations[flag];
+}
+*/
+
+// ゴールランダム移動（残骸・障害物との重複防止）
+function goalMove() {
+    const margin = 2; // 端からの余白（マス数）
+    const minPos = margin; // 2マス目
+    const maxPos = TILE_COUNT - margin - 1; // 24マス目
+
+    // 基本候補（四隅）
+    const candidateLocations = [
+        { x: maxPos, y: maxPos }, // 右下 (24, 24)
+        { x: minPos, y: maxPos }, // 左下 (2, 24)
+        { x: minPos, y: minPos }, // 左上 (2, 2)
+        { x: maxPos, y: minPos }  // 右上 (24, 2)
+    ];
+
+    // 配列をシャッフル（ランダムな順序で調べる）
+    candidateLocations.sort(() => Math.random() - 0.5);
+
+    // 四隅の中で「残骸（obstacles）」と被っていない場所を探す
+    for (let loc of candidateLocations) {
+        const isOverlap = obstacles.some(obs => obs.x === loc.x && obs.y === loc.y);
+        if (!isOverlap) {
+            goal = loc;
+            return;
+        }
+    }
+
+    // 万が一、四隅全てに残骸がある場合は、画面内の空いている場所をランダム検索
+    let safeGoal = null;
+    let attempts = 0;
+    while (!safeGoal && attempts < 100) {
+        attempts++;
+        const rx = getRandomInt(1, TILE_COUNT - 2);
+        const ry = getRandomInt(1, TILE_COUNT - 2);
+        const isOverlap = obstacles.some(obs => obs.x === rx && obs.y === ry);
+        
+        if (!isOverlap) {
+            safeGoal = { x: rx, y: ry };
+        }
+    }
+
+    // 安全な場所が見つかれば更新（見つからなければ既存位置を保持）
+    if (safeGoal) {
+        goal = safeGoal;
+    }
 }
 
 // 乱数生成関数
@@ -456,16 +509,30 @@ function checkCollisions() {
 
         // 頭同士の衝突判定
         if (pHead.x === eHead.x && pHead.y === eHead.y) {
+            // 同じマスで重なった場合
             if (playerDir.x === -enemy.dir.x && playerDir.y === -enemy.dir.y) {
                 triggerGameOver("GAME OVER（敵の頭と正面衝突！）");
                 return;
             } else {
-                // 敵撃退
+                // 敵撃退（側面・後方からの攻撃）
                 obstacles.push(...enemy.body);
                 enemies.splice(enemyIndex, 1);
                 score += player.length * 20;
                 triggerKillMessage();
                 continue; 
+            }
+        } else {
+            // 1フレームの移動でお互いの頭が入れ替わった（すれ違った/交差した）判定
+            // プレイヤーの直前の頭の位置：pHead から playerDir を引いた位置
+            // 敵の直前の頭の位置：eHead から enemy.dir を引いた位置
+            const prevPHead = { x: (pHead.x - playerDir.x + TILE_COUNT) % TILE_COUNT, y: (pHead.y - playerDir.y + TILE_COUNT) % TILE_COUNT };
+            const prevEHead = { x: (eHead.x - enemy.dir.x + TILE_COUNT) % TILE_COUNT, y: (eHead.y - enemy.dir.y + TILE_COUNT) % TILE_COUNT };
+
+            // 「今のプレイヤーの頭＝敵の前の頭」かつ「今の敵の頭＝プレイヤーの前の頭」なら正面衝突で交差している
+            if (pHead.x === prevEHead.x && pHead.y === prevEHead.y &&
+                eHead.x === prevPHead.x && eHead.y === prevPHead.y) {
+                triggerGameOver("GAME OVER（敵の頭と正面衝突！！）");
+                return;
             }
         }
 
@@ -495,10 +562,10 @@ function checkCollisions() {
     }
 
     // 敵が全滅したかの判定
-    if (enemies.length === 0) {
-        if (!goal) {
-            goal = { x: TILE_COUNT - 3, y: TILE_COUNT - 3 };
-        }
+    if (enemies.length === 0 && !isWipedOut) {
+        isWipedOut = true;
+        goalMove(); // 安全な位置にゴールを配置
+        triggerKillMessage("敵全滅！ ゴールへ急げ！");
     }
 
     // 敵 vs 敵 の判定処理
@@ -538,119 +605,6 @@ function triggerGameOver(message) {
     setTimeout(() => alert(message), 10);
 }
 
-// ==========================================
-// 描画処理
-// ==========================================
-/*
-function draw() {
-    ctx.fillStyle = '#111';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // 情報UI描画
-    ctx.fillStyle = '#fff';
-    ctx.font = '13px sans-serif';
-    ctx.fillText(`STAGE: ${stage}`, 10, 18);
-    ctx.fillText(`SCORE: ${score}`, 10, 36);
-    ctx.fillText(`HIGH SCORE: ${highScore}`, 10, 54);
-
-    ctx.fillText(`ENEMIES: ${enemies.length}`, canvas.width - 100, 18);
-
-    // ゴール（緑）
-    if (goal) {
-        ctx.fillStyle = '#00ff66';
-        ctx.fillRect(goal.x * GRID_SIZE, goal.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
-    }
-
-    // 千切れた障害物（灰色）
-    ctx.fillStyle = '#777777';
-    obstacles.forEach(obs => {
-        ctx.fillRect(obs.x * GRID_SIZE, obs.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
-    });
-
-    // プレイヤー（青）
-    player.forEach((segment, index) => {
-        ctx.fillStyle = (index === 0) ? '#00ccff' : '#0055aa';
-        ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
-
-        // プレイヤーの目の描画（15px用にスケール微調整）
-        if (index === 0) {
-            ctx.fillStyle = '#000000';
-            const gx = segment.x * GRID_SIZE;
-            const gy = segment.y * GRID_SIZE;
-            const eyeSize = 2; // 15pxグリッド用に2px
-
-            if (playerDir.x === 1) {        // 右
-                ctx.fillRect(gx + 10, gy + 3, eyeSize, eyeSize);
-                ctx.fillRect(gx + 10, gy + 9, eyeSize, eyeSize);
-            } else if (playerDir.x === -1) { // 左
-                ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
-                ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
-            } else if (playerDir.y === -1) { // 上
-                ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
-                ctx.fillRect(gx + 9, gy + 3, eyeSize, eyeSize);
-            } else if (playerDir.y === 1) {  // 下
-                ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
-                ctx.fillRect(gx + 9, gy + 9, eyeSize, eyeSize);
-            }
-        }
-    });
-
-    // 敵たち（赤）
-    enemies.forEach(enemy => {
-        enemy.body.forEach((segment, index) => {
-            if (index === 0) {
-                if (enemy.body.length === 1 && Math.floor(Date.now() / 200) % 2 === 0) {
-                    ctx.fillStyle = '#ff9999';
-                } else {
-                    ctx.fillStyle = '#ff3333';
-                }
-                
-                ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
-
-                // 敵の目の描画
-                ctx.fillStyle = '#000000';
-                const gx = segment.x * GRID_SIZE;
-                const gy = segment.y * GRID_SIZE;
-                const eyeSize = 2;
-
-                if (enemy.dir.x === 1) {        // 右
-                    ctx.fillRect(gx + 10, gy + 3, eyeSize, eyeSize);
-                    ctx.fillRect(gx + 10, gy + 9, eyeSize, eyeSize);
-                } else if (enemy.dir.x === -1) { // 左
-                    ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
-                    ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
-                } else if (enemy.dir.y === -1) { // 上
-                    ctx.fillRect(gx + 3, gy + 3, eyeSize, eyeSize);
-                    ctx.fillRect(gx + 9, gy + 3, eyeSize, eyeSize);
-                } else if (enemy.dir.y === 1) {  // 下
-                    ctx.fillRect(gx + 3, gy + 9, eyeSize, eyeSize);
-                    ctx.fillRect(gx + 9, gy + 9, eyeSize, eyeSize);
-                }
-            } else {
-                ctx.fillStyle = '#aa0000';
-                ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
-            }
-        });
-    });
-
-    // 撃破メッセージ表示
-    if (killMessageTimer > 0) {
-        ctx.save();
-        ctx.font = 'bold 18px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillText(killMessageText, canvas.width / 2 + 2, canvas.height / 2 + 2);
-
-        ctx.fillStyle = '#ffff00';
-        ctx.fillText(killMessageText, canvas.width / 2, canvas.height / 2);
-
-        ctx.restore();
-        killMessageTimer--;
-    }
-}
-*/
 // ==========================================
 // 描画処理
 // ==========================================
