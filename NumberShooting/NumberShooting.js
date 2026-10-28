@@ -52,6 +52,10 @@ let particles = [];
 let diffSpeed = 0;  // 個々のスピードを30秒ごとに早める
 let diffInterval = 0;   // 敵の発生間隔を短くする
 
+// コンボ関連の変数
+let comboCount = 0;       // 現在のコンボ数
+let maxCombo = 0;         // 今回のプレイでの最大コンボ数（ハイスコア表示などに利用可）
+
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
 
@@ -97,6 +101,9 @@ function handleKeyDown(e) {
 
         if (target) {
             spawnBullet(target);
+        } else {
+            // お手付き（画面にない数字を押した）でコンボリセット
+            comboCount = 0;
         }
     }
 }
@@ -114,6 +121,9 @@ function setupTouchKeyboard() {
             const target = findLowestTarget(pressedNum);
             if (target) {
                 spawnBullet(target);
+            } else {
+                // お手付きでコンボリセット
+                comboCount = 0;
             }
         });
     });
@@ -145,6 +155,8 @@ function init(){
     gameOver = false;
     enemies = [];
     bullets = [];
+    comboCount = 0;
+    maxCombo = 0;
 
     // 難易度設定
     diffSpeed = 0;
@@ -286,9 +298,26 @@ function mainLoop() {
                 // 爆発エフェクト（破片）を生成
                 createParticles(b.targetEnemy.x, b.targetEnemy.y, b.targetEnemy.color, b.targetEnemy.value);
                 enemies.splice(enemyIdx, 1);
+                // コンボ計算
+                comboCount++;
+                if (comboCount > maxCombo) maxCombo = comboCount; // 最大コンボ更新
+
+                // コンボ数に応じた倍率設定
+                let multiplier = 1.0;
+                if (comboCount >= 20) {
+                    multiplier = 3.0;
+                } else if (comboCount >= 10) {
+                    multiplier = 2.0;
+                } else if (comboCount >= 5) {
+                    multiplier = 1.5;
+                }
+
                 let baseScore = 100;    // 基本点
                 let heightBonus = Math.floor((canvas.height - b.targetEnemy.y) / 10);   // 高さボーナス
-                score += baseScore + heightBonus;
+                //score += baseScore + heightBonus;
+                // (基本点 + 高さボーナス) に コンボ倍率 を掛ける
+                score += Math.floor((baseScore + heightBonus) * multiplier);
+
             }
             bullets.splice(i, 1);
         } else {
@@ -336,14 +365,6 @@ function mainLoop() {
         ctx.translate(enemy.x, enemy.y);
         // 座標系を enemy.angle だけ回転
         ctx.rotate(enemy.angle);
-        // 霧の場合
-        //if (isFog) {
-        //    ctx.globalAlpha = 0.4;
-        //    ctx.fillText(enemy.value, -3, -3);
-        //    ctx.fillText(enemy.value, 3, 3);
-        //    ctx.fillText(enemy.value, -3, 3);
-        //    ctx.globalAlpha = 1.0;
-        //}
         // 霧（FOG）の時は位置を微妙にずらして重なり描画（残像・手ぶれ効果）
         if (isFog) {
             // 滲み・ブレ描画
@@ -395,13 +416,6 @@ function mainLoop() {
         // 画面全体に薄いグレーの半透明膜を重ねる
         ctx.fillStyle = 'rgba(200, 200, 200, 0.65)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // 画面全体に白いランダムドット（ノイズ）を散りばめる
-        //ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        //for (let i = 0; i < 150; i++) {
-        //    const rx = Math.random() * canvas.width;
-        //    const ry = Math.random() * canvas.height;
-        //    ctx.fillRect(rx, ry, 3, 3);
-        //}
         // 警告メッセージ表示
         ctx.fillStyle = '#ff3333';
         ctx.font = 'bold 20px sans-serif';
@@ -416,8 +430,24 @@ function mainLoop() {
     ctx.font = '18px sans-serif';
     ctx.fillText(`SCORE: ${score}`, 10, 25);    // スコア
     ctx.fillText(`HIGH SCORE: ${highScore}`, 10, 50);   // ハイスコア
-    //ctx.fillText(`diffSpeed: ${diffSpeed}`, 10, 75);
-    //ctx.fillText(`diffInterval: ${diffInterval}`, 10, 100);
+    //ctx.fillText(`diffSpeed: ${diffSpeed}`, 10, 105);
+    //ctx.fillText(`diffInterval: ${diffInterval}`, 10, 130);
+
+    // コンボ回数表示
+    if (comboCount >= 2) {
+        ctx.save();
+        ctx.fillStyle = '#ffeb3b'; // 目立つ黄色
+        ctx.font = 'bold 22px sans-serif';
+        
+        // 倍率のテキストを作る
+        let multText = '';
+        if (comboCount >= 20) multText = ' (x3.0!)';
+        else if (comboCount >= 10) multText = ' (x2.0)';
+        else if (comboCount >= 5) multText = ' (x1.5)';
+
+        ctx.fillText(`${comboCount} COMBO!${multText}`, 10, 80);
+        ctx.restore();
+    }
 
     // ハイスコアとゲームオーバー表示
     if (gameOver) {
