@@ -126,6 +126,7 @@ function setupTouchKeyboard() {
 function resetHighScore() {
     localStorage.removeItem(HIGH_SCORE_KEY); // ストレージから削除
     highScore = 0; // 変数も初期化
+    draw(); // 画面のハイスコア表示を即座に更新
     alert('ハイスコアをリセットしました！');
 }
 
@@ -244,24 +245,6 @@ function stopTimers() {
     loopIntervalId = null;
     goalIntervalId = null;
 }
-
-/*
-// ゴールランダム移動（四隅付近へ）
-function goalMove() {
-    const margin = 2; // 端からの余白（マス数）
-    const minPos = margin; // 2マス目
-    const maxPos = TILE_COUNT - margin - 1; // 27 - 2 - 1 = 24マス目（画面内に完全に入る）
-
-    const locations = [
-        { x: maxPos, y: maxPos }, // 右下 (24, 24)
-        { x: minPos, y: maxPos }, // 左下 (2, 24)
-        { x: minPos, y: minPos }, // 左上 (2, 2)
-        { x: maxPos, y: minPos }  // 右上 (24, 2)
-    ];
-    let flag = getRandomInt(0, 3);
-    goal = locations[flag];
-}
-*/
 
 // ゴールランダム移動（残骸・障害物との重複防止）
 function goalMove() {
@@ -616,7 +599,7 @@ function draw() {
     // --------------------------------------
     // 上部スコアエリア（背景と区切り線）
     // --------------------------------------
-    //ctx.save();
+    ctx.save();
     ctx.fillStyle = '#222';
     ctx.fillRect(0, 0, canvas.width, UI_HEIGHT);
 
@@ -626,7 +609,7 @@ function draw() {
     ctx.beginPath();
     ctx.moveTo(0, UI_HEIGHT);
     ctx.lineTo(canvas.width, UI_HEIGHT);
-    //ctx.stroke();
+    ctx.stroke();
 
     // 情報UI描画（見やすく配置）
     ctx.fillStyle = '#fff';
