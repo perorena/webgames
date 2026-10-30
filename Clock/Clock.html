@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="UTF-8">
+        <title>時計</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./Clock.css">
+    </head>
+    <body>
+        <!-- 描画エリア -->
+        <div id="coordCanvasRapper">
+            <div class="clock"> 
+                <p>
+                    <span id="show_hour" style="font-size: 30px;"></span>時
+                    <span id="show_minute" style="font-size: 30px;"></span>分
+                    <span id="show_second" style="font-size: 30px;"></span>秒です
+                </p>
+            </div>
+            <canvas id="coordCanvas">
+            </canvas>
+        </div>
+        <!-- JavaScript -->
+        <script type="text/javascript" src="./Clock.js"></script>
+    </body>
+</html>

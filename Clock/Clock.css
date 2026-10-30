@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#coordCanvasRapper {
+    margin: 10px auto;
+    text-align: center;
+    max-width: 640px; /* PCでの最大幅 */
+    width: 95%;      /* スマホ表示では画面幅に収まるよう自動調整 */
+    box-sizing: border-box;
+}
+
+.clock p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.clock span {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+#coordCanvas {
+    width: 100%;       /* 画面幅に応じて伸縮 */
+    height: auto;      /* アスペクト比を維持 */
+    max-width: 640px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* 画面幅が小さいスマホ向けの文字サイズ微調整 */
+@media (max-width: 480px) {
+    .clock p {
+        font-size: 1rem;
+    }
+    .clock span {
+        font-size: 1.4rem;
+    }
+}
+
