@@ -1,70 +1,146 @@
 <!DOCTYPE html>
 <html lang='ja'>
-    <head>
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0' />
-        <title>Webゲーム</title>
-        <style>
-            body{
-                width: 100%;
-                text-align: center;
-            }
-            button {
-                width: 300px;
-                height: 50px;
-            }
-        </style>
-    </head>
-    <body id='allArea'>
-        <h1>Webゲーム</h1>
-        <br>
-        <button onclick='window.open("./Checkers/Checkers.html")'>【チェッカー】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./15Puzzle/15Puzzle.html")'>【15パズル】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./2048Puzzle/2048Puzzle.html")'>【2048パズル】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./HitAndBlow/HitAndBlow.html")'>【ヒットアンドブロー】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./Grouping/Grouping.html")'>【グループ分け】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./MakeSquare/MakeSquare.html")'>【四角に分ける】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./GroupTen/GroupTen.html")'>【グループ１０】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./NotCross/NotCross.html")'>【交差させるな】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./LessOrGreater/LessOrGreater.html")'>【不等号】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./NumberPlace/NumberPlace.html")'>【ナンバープレイス】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./Soukoban/Soukoban.html")'>【倉庫番】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./SoukoSouji/SoukoSouji.html")'>【倉庫掃除】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./Minesweeper/Minesweeper.html")'>【マインスイーパー】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./CardDrop/CardDrop.html")'>【カードドロップ】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./NumberShooting/NumberShooting.html")'>【数字シューティング】</button>
-        <br>
-        <br>
-        <button onclick='window.open("./SnakeSurvive/SnakeSurvive.html")'>【スネークサバイブ】</button>
-        <br>
-        <br>
-    </body>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Webパズル＆ツール コレクション</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --primary-color: #4a90e2;
+            --text-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 24px rgba(74, 144, 226, 0.25);
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background-color: var(--bg-color);
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin: 40px 0 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .section-title::before, .section-title::after {
+            content: '';
+            width: 50px;
+            height: 2px;
+            background-color: #cbd5e1;
+        }
+
+        /* カード型グリッドレイアウト */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            padding: 18px 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        /* セクション別のカードアクセント色 */
+        .other-card:hover {
+            background-color: #2ecc71;
+        }
+
+        .dev-card:hover {
+            background-color: #e67e22;
+        }
+    </style>
+</head>
+<body id='allArea'>
+
+    <header>
+        <h1>🎮 Webパズル＆ツール</h1>
+        <div class="subtitle">ブラウザで今すぐ遊べる無料ミニゲーム集</div>
+    </header>
+
+    <main>
+        <div class="section-title">パズル・ゲーム</div>
+        <div class="grid-container">
+            <button class="card" onclick='window.open("./Checkers/Checkers.html")'>チェッカー</button>
+            <button class="card" onclick='window.open("./15Puzzle/15Puzzle.html")'>15パズル</button>
+            <button class="card" onclick='window.open("./2048Puzzle/2048Puzzle.html")'>2048パズル</button>
+            <button class="card" onclick='window.open("./HitAndBlow/HitAndBlow.html")'>ヒットアンドブロー</button>
+            <button class="card" onclick='window.open("./Grouping/Grouping.html")'>グループ分け</button>
+            <button class="card" onclick='window.open("./MakeSquare/MakeSquare.html")'>四角に分ける</button>
+            <button class="card" onclick='window.open("./GroupTen/GroupTen.html")'>グループ１０</button>
+            <button class="card" onclick='window.open("./NotCross/NotCross.html")'>交差させるな</button>
+            <button class="card" onclick='window.open("./LessOrGreater/LessOrGreater.html")'>不等号</button>
+            <button class="card" onclick='window.open("./NumberPlace/NumberPlace.html")'>ナンバープレイス</button>
+            <button class="card" onclick='window.open("./Soukoban/Soukoban.html")'>倉庫番</button>
+            <button class="card" onclick='window.open("./SoukoSouji/SoukoSouji.html")'>倉庫掃除</button>
+            <button class="card" onclick='window.open("./Minesweeper/Minesweeper.html")'>マインスイーパー</button>
+            <button class="card" onclick='window.open("./CardDrop/CardDrop.html")'>カードドロップ</button>
+            <button class="card" onclick='window.open("./NumberShooting/NumberShooting.html")'>数字シューティング</button>
+            <button class="card" onclick='window.open("./SnakeSurvive/SnakeSurvive.html")'>スネークサバイブ</button>
+        </div>
+
+        <div class="section-title">その他・ツール</div>
+        <div class="grid-container">
+            <button class="card other-card" onclick='window.open("./QuadraticFunction/QuadraticFunction.html")'>二次関数</button>
+            <button class="card other-card" onclick='window.open("./QuadraticFunction/CubicFunction.html")'>三次関数</button>
+            <button class="card other-card" onclick='window.open("./LightRefraction/LightRefraction.html")'>光の反射</button>
+            <button class="card other-card" onclick='window.open("./Clock/Clock.html")'>時計</button>
+        </div>
+
+        <div class="section-title">開発中</div>
+        <div class="grid-container">
+            <button class="card dev-card" onclick='window.open("./HeiankyoAlien/HeiankyoAlien.html")'>平安京エイリアン</button>
+        </div>
+    </main>
+
+</body>
 </html>
+
