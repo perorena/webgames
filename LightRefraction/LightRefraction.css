@@ -1,0 +1,66 @@
+#datainput {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+
+#addText {
+    margin: 10px;
+    text-align: center;
+}
+
+#coordCanvasRapper {
+    margin: 20px auto;
+    text-align: center;
+    max-width: 640px; /* 本来の幅 */
+    width: 100%;
+}
+
+#coordCanvas {
+    border: 1px solid black;
+    width: 100%;      /* 画面幅に合わせて自動縮小 */
+    height: auto;     /* 縦横比（4:3）を自動で維持 */
+    display: block;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.refractiveLabel {
+    font-size: x-large;
+}
+
+#numberText {
+    font-size: x-large;
+    width: 100px;
+}
+
+#refractiveSelect1,
+#refractiveSelect2 {
+    font-size: x-large;
+    max-width: 100%; /* スマホで選択枠がはみ出すのを防ぐ */
+}
+
+#startButton {
+    width: 100px;
+    height: 50px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+/* type=number スピンを消す */
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
