@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!-- スマホなどのモバイル端末で画面幅に合わせた適切な倍率（レスポンシブ）で表示させるための設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>２次関数</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./QuadraticFunction.css">
+  </head>
+  <body>
+    <!-- 全体を中央に寄せるためのコンテナ（CSS側で画面幅100%・最大幅制限に対応） -->
+    <div id="container">
+      <!-- タイトルエリア -->
+      <div>
+        <h2>２次関数</h2>
+      </div>
+      <!-- 入力エリア -->
+      <div id="datainput">
+        <!-- 入力項目をまとめるコンテナ（スマホ画面での折り返し・中央揃え用） -->
+        <div class="input-group">
+          <!-- step="any" を指定することで小数点の入力にも柔軟に対応 -->
+          <label>a：<input type="number" id="coefficienA" value="1" class="no-spin" step="any"></label>
+          <label>b：<input type="number" id="coefficienB" value="0" class="no-spin" step="any"></label>
+          <label>c：<input type="number" id="coefficienC" value="0" class="no-spin" step="any"></label>
+        </div>
+        <!-- ボタンの押しやすさとタップ反応向上のため button タグを使用 -->
+        <button type="button" id="startBtn" onclick="buttonClick()">開始</button>
+        <div id="addText"></div>
+      </div>
+      <!-- 描画エリア -->
+      <div id="coordCanvasRapper">
+        <canvas id="coordCanvas"></canvas>
+      </div>
+    </div>
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./QuadraticFunction.js"></script>
+  </body>
+</html>

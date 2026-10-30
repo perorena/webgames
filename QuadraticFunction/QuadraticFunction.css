@@ -1,0 +1,108 @@
+/* 全要素のサイズ計算をパディング・ボーダー込みに統一 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 全体を束ねるコンテナ（中央配置・スマホ画面での画面食いはみ出しを防止） */
+#container {
+    width: 100%;             /* スマホ画面に合わせて可変 */
+    max-width: 680px;        /* PC等では従来通り最大680px */
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+#explanation {
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* 入力エリア全体を中央揃え */
+#datainput {
+    margin: 15px auto;
+    text-align: center;
+}
+
+/* 入力要素のグループ化（画面幅が狭いときに綺麗に配置） */
+.input-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap; /* 画面が極端に狭い場合に自動折り返し */
+}
+
+.input-group label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+#addText {
+    margin: 15px auto 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-height: 1.5em;
+    -webkit-text-size-adjust: 100%; /* スマホ横向き時の勝手な文字拡大を防止 */
+}
+
+#coordCanvasRapper {
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* キャンバスをインラインブロック化して中央配置にフィットさせる */
+#coordCanvas {
+    border: 1px solid black;
+    display: block;
+    background-color: #ffffff;
+    width: 100%;            /* 親要素（画面幅）に合わせて伸縮 */
+    max-width: 640px;       /* 最大幅は従来の640px */
+    height: auto;
+    aspect-ratio: 4 / 3;    /* アスペクト比(4:3)を維持して歪みを防止 */
+    margin: 0 auto;
+    touch-action: manipulation; /* スマホでのダブルタップによる意図しない拡大を防止 */
+}
+
+/* type=number スピン（上下矢印）を消す */
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none;     /* Chrome, Safari */
+    margin: 0;                    /* Chrome, Safari */
+}
+.no-spin {
+    width: 65px;
+    height: 40px;                 /* スマホの指でもタップしやすい高さに拡張 */
+    font-size: 1.1rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* 開始ボタンのスタイリング（スマホでの誤操作防止と視認性向上） */
+#startBtn {
+    width: 120px;
+    height: 44px;                 /* モバイルの一般的なタッチターゲットサイズ（44px以上） */
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#startBtn:active {
+    background-color: #0056b3;     /* タップ時のフィードバック */
+}
