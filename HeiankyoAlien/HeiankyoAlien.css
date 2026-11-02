@@ -1,3 +1,10 @@
+/* 画面下部固定操作エリアとの重なりを防止するためbody下部にパディングを追加 */
+body {
+    margin: 0;
+    padding-bottom: 140px;
+    box-sizing: border-box;
+}
+
 /* メインテーブル */
 #main_table {
     width: 100%;
@@ -20,7 +27,7 @@
     font-weight: bold;
     font-size: x-large;
     border: 0px;
-    margin:0px;
+    margin: 0px;
     padding: 0px;
     letter-spacing: 1px;
 }
@@ -103,7 +110,7 @@ button,
     border-collapse: collapse;
     border-spacing: 0px;
     /*text-align: center;
-	vertical-align: middle;*/
+    vertical-align: middle;*/
     table-layout: fixed;
     width: 50px;
     height: 50px;
@@ -193,3 +200,4 @@ button,
     width: 50px;
     height: 50px;*/
 }
+

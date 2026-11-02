@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <base target="_top">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset="UTF-8">
-        <title>平安京エイリアン</title>
-        <!-- CSS -->
-        <link type="text/css" rel="stylesheet" href="./HeiankyoAlien.css">
-    </head>
+<html lang="ja">
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>平安京エイリアン</title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="./HeiankyoAlien.css">
+</head>
 <body>
     <table id="main_table">
         <tr>
@@ -26,9 +26,8 @@
             <td id="number">
                 <!-- <label>1～50までの数字をいれてください。<input type="number" id="dataNumber" value="1" min="1" max="50"></label> -->
                 <label>&emsp;<ruby>問題<rt>もんだい</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。
-                    <select id="dataNumber">
-                        <option value="1" selected>1</option>
-                    </select>
+                    <!-- option要素はJavaScriptのonLoad()で動的に追加します -->
+                    <select id="dataNumber"></select>
                 </label>
             </td>
         </tr>
@@ -57,10 +56,10 @@
     <!-- 2行のボタンを1つの親要素（fixed_footer）で包む -->
     <div class="fixed_footer">
         <div class="button_container">
-            <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png"></button>
-            <button id="ubtn" class="menu_button" type="button" value="↑"><img src="../img/n.png"></button>
-            <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png"></button>
-            <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png"></button>
+            <button id="lbtn" class="menu_button" type="button" value="←"><img src="../img/w.png" alt="左"></button>
+            <button id="ubtn" class="menu_button" type="button" value="↑"><img src="../img/n.png" alt="上"></button>
+            <button id="dbtn" class="menu_button" type="button" value="↓"><img src="../img/s.png" alt="下"></button>
+            <button id="rbtn" class="menu_button" type="button" value="→"><img src="../img/e.png" alt="右"></button>
         </div>
         <div class="button_container">
             <button id="dig" class="menu_button" type="button" value="DIG" style="font-size: small;"><ruby>掘<rt>ほ</rt></ruby>る</button>
@@ -74,3 +73,4 @@
     <script type="text/javascript" src="./HeiankyoAlien.js"></script>
 </body>
 </html>
+

@@ -39,7 +39,7 @@ const PlayerCount = 3;  // プレーヤー数
 //3:ゾンビ
 //4:プレーヤー
 //5:ゾンビ＋穴
-// ゾンビ＋穴　時は、ゾンビ画像＋穴画像の二つを表示してそれぞれを縮小させる
+// ゾンビ＋穴 時は、ゾンビ画像＋穴画像の二つを表示してそれぞれを縮小させる
 const Space = 0;
 const RengaWall = 1;
 const Hole = 2;
@@ -49,9 +49,6 @@ const ZombiHole = Zombi + Hole; // 5
 
 // 初期化用ゼロ
 const Zero = 0;
-
-// ゾンビ移動用setInterval ID
-let movingZombiId = null;
 
 // 掘れる穴の最大個数
 const HoleMax = 10;
@@ -86,8 +83,6 @@ let playerDirection = Direction[1];     // 'ArrowRight'
 
 // プレーヤー縮小表示用
 let playerReduction = HoleStyle.length;
-// プレーヤー縮小表示用setInterval ID
-let playerReductionId = null;
 // プレーヤー移動可否
 let playerStop = false;
 
@@ -112,6 +107,16 @@ let maxCol;
 
 // ズーム値
 let zoom = 1.0;
+
+// アニメーションIDを管理する変数
+let animFrameId = null;
+// ゾンビ移動用setInterval ID
+let movingZombiId = null;
+// プレーヤー縮小表示用setInterval ID
+let playerReductionId = null;
+
+
+
 
 // Webページのロードが完了した後に呼び出されるロードイベントを設定する
 window.addEventListener("load", onLoad, false);
@@ -162,7 +167,6 @@ function arrowAction(action){
                     playerDirection = action;
                     if(intTarget == Zombi){
                         // 捕まったので、位置はゾンビにする
-                        //alert('捕まった４');
                         // ゾンビ移動停止
                         if(movingZombiId != null) clearInterval(movingZombiId);
                         movingZombiId = null;
@@ -199,7 +203,6 @@ function arrowAction(action){
         } else if(action == 'x' || action == 'X'){
             // 穴数は10個まで、11個以上は掘らせない
             if(holeIdArray.length > HoleMax) return;
-            //alert('穴掘り' + playerDirection);
             // 穴掘り処理
             let holeId;
             let pTdHole;
@@ -210,15 +213,12 @@ function arrowAction(action){
                 holeId = IdSeparator + intRow.toString() + IdSeparator + intCol.toString();
                 if(intTarget == Space){
                     // 穴が掘れる
-                    //alert('穴が掘れる！');
                     let newHole = false;
                     for(let i = 0; i < holeIdArray.length; i++){
                         if(holeIdArray[i] == Zero){
-                            //holeId = IdSeparator + intRow.toString() + IdSeparator + intCol.toString();
                             holeIdArray[i] = holeId;
                             holeSizeArray[i] = Zero;
                             newHole = true;
-                            //alert('穴が掘れる！穴自然消滅タイマー設定 holeIdArray=' + holeIdArray[i]  + '  holeId=' + holeId + '   holeSizeArray=' + holeSizeArray[i]);
                             holeExtinctionTimerArray[i] = ExtinctionTime;
                             break;
                         }
@@ -234,8 +234,6 @@ function arrowAction(action){
                     }
                 } else if(intTarget == Hole){
                     // 前の穴だけ掘る
-                    //holeId = IdSeparator + intRow.toString() + IdSeparator + intCol.toString();
-                    //alert('穴を掘り続ける！' + holeId);
                     for(let i = 0; i < holeIdArray.length; i++){
                         if(holeIdArray[i] == holeId){
                             let size = holeSizeArray[i];
@@ -244,7 +242,6 @@ function arrowAction(action){
                                 holeSizeArray[i] = size;
                                 let holeImg = document.getElementById(holeId);
                                 holeImg.setAttribute('style', HoleStyle[size]);
-                                //alert('穴を掘り続ける！' + holeId + '  size=' + size);
                             }
                             break;
                         }
@@ -252,7 +249,6 @@ function arrowAction(action){
                 }
             }
         } else if(action == 'z' || action == 'Z'){
-            //alert('穴埋め playerDirection=' + playerDirection);
             // 穴埋め処理
             let holeId;
             let pTdHole;
@@ -274,11 +270,9 @@ function arrowAction(action){
                                 holeImg.setAttribute('style', HoleStyle[size]);
                                 let zombi = document.getElementById(zombiId);
                                 zombi.setAttribute('style', HoleStyle[size]);
-                                //alert('ゾンビ穴を埋める holeId=' + holeId + '  size=' + size + '  zombiId=' + zombiId);
                             } else {
                                 // 埋め終わった
-                                //alert('ゾンビ穴の削除 holeId=' + holeId + '  size=' + size + '  zombiId=' + zombiId);
-                                //穴画像の削除
+                                // 穴画像の削除
                                 let holeImg = document.getElementById(holeId);
                                 holeImg.parentNode.removeChild(holeImg);
                                 // ゾンビ画像削除
@@ -287,11 +281,11 @@ function arrowAction(action){
                                 // 得点
                                 score = score + zombiCatchedTimerArray[i] * 10;
                                 let scoreDisplay = document.getElementById('scoreText');
-                                scoreDisplay.innerText = "　得点：" + score;
+                                scoreDisplay.innerText = " 得点：" + score;
                                 // ゾンビ犬減
                                 zombiCounter = zombiCounter - 1;
                                 let counter = document.getElementById('playerCountText');
-                                counter.innerText = "守り犬数：" + playerCounter+ "　ゾンビ犬数：" + zombiCounter;
+                                counter.innerText = "守り犬数：" + playerCounter+ " ゾンビ犬数：" + zombiCounter;
                                 holeIdArray[i] = Zero;
                                 holeSizeArray[i] = Zero;
                                 holeExtinctionTimerArray[i] = Zero;
@@ -299,7 +293,6 @@ function arrowAction(action){
                                 zombiCatchedTimerArray[i] = Zero;
                                 heiankyoData[intRow][intCol] = Space;
                                 if(zombiCounter <= 0){
-                                    //alert('クリア');
                                     // ゾンビ移動停止
                                     if(movingZombiId != null) clearInterval(movingZombiId);
                                     movingZombiId = null;
@@ -307,13 +300,20 @@ function arrowAction(action){
                                     playerStop = true;
                                     let ci = document.getElementById('clearImage');
                                     ci.style.display = 'block';
-                                    // 次のステージへ
-                                    dataNumber.value = Number(dataNumber.value) + 1;
-                                    // プレーヤー残数が0ならゲームを開始しない
-                                    if(playerCounter > 0){
-                                        drawingTable();
-                                        if(movingZombiId != null) clearInterval(movingZombiId);
-                                        movingZombiId = setInterval(movingZombi, ZombiMovingTimer);
+
+                                    // 次のステージへ進む判定（最終ステージオーバーフロー防止チェックを追加）
+                                    let nextStage = Number(dataNumber.value) + 1;
+                                    if (nextStage <= heiankyoDataArray.length) {
+                                        dataNumber.value = nextStage;
+                                        // プレーヤー残数が0ならゲームを開始しない
+                                        if(playerCounter > 0){
+                                            drawingTable();
+                                            if(movingZombiId != null) clearInterval(movingZombiId);
+                                            movingZombiId = setInterval(movingZombi, ZombiMovingTimer);
+                                        }
+                                    } else {
+                                        // 全ステージクリア時のメッセージ表示
+                                        alert("おめでとうございます！全ステージクリアです！");
                                     }
                                 }
                             }
@@ -330,7 +330,6 @@ function arrowAction(action){
                                 holeSizeArray[i] = size;
                                 let holeImg = document.getElementById(holeId);
                                 holeImg.setAttribute('style', HoleStyle[size]);
-                                //alert('穴を埋め続ける！ holeId=' + holeId + '  size=' + size);
                             } else {    // size = 0
                                 holeIdArray[i] = Zero;
                                 holeSizeArray[i] = Zero;
@@ -339,7 +338,6 @@ function arrowAction(action){
                                 //穴画像の削除
                                 let holeImg = document.getElementById(holeId);
                                 holeImg.parentNode.removeChild(holeImg);
-                                //alert('穴の削除 holeId=' + holeId + '  size=' + size);
                             }
                             break;
                         }
@@ -363,32 +361,25 @@ function actionImage(action){
 // 捕まったときのプレーヤー縮小表示
 function playerDead(){
     playerReduction = playerReduction - 1;
-    //alert('捕まった０ playerReduction=' + playerReduction + '  HoleStyle[playerReduction]=' + HoleStyle[playerReduction]);
     let player = document.getElementById('player');
-    player.setAttribute('style', HoleStyle[playerReduction]);
+    if (player) player.setAttribute('style', HoleStyle[playerReduction]);
     if(playerReduction == 0){
         // プレーヤー縮小表示停止
         if(playerReductionId != null) clearInterval(playerReductionId);
         playerReductionId = null;
         // プレーヤー画像削除
-        let player = document.getElementById('player');
-        player.parentNode.removeChild(player);
+        if (player) player.parentNode.removeChild(player);
         // プレーヤー数減
         playerCounter = playerCounter - 1;
         // 残プレーヤー数
         let counter = document.getElementById('playerCountText');
-        counter.innerText = "守り犬数：" + playerCounter+ "　ゾンビ犬数：" + zombiCounter;
+        counter.innerText = "守り犬数：" + playerCounter+ " ゾンビ犬数：" + zombiCounter;
         if(playerCounter <= 0){
             // ゲームオーバー
-            //alert('ゲームオーバー');
             let gi = document.getElementById('gameoverImage');
             gi.style.display = 'block';
             return;
         };
-        //alert('捕まった２');
-        // プレーヤー画像削除
-        //let player = document.getElementById('player');
-        //player.parentNode.removeChild(player);
         // 新しいプレーヤーをどこかに設定する
         // どこかの空白にプレーヤー配置
         let k = getRandomInt(1, spaceCounter());
@@ -407,7 +398,6 @@ function playerDead(){
                         cell.appendChild(playerImg);
                         // プレーヤーがどっち向きか
                         playerDirection = Direction[1];     // 'ArrowRight'
-                        //alert('捕まった１');
                         // 再度ゾンビ移動処理開始
                         if(movingZombiId != null) clearInterval(movingZombiId);
                         movingZombiId = setInterval(movingZombi, ZombiMovingTimer);
@@ -433,14 +423,14 @@ function movingZombi(){
             if(holeIndex > -1){
                 holeExtinctionTimerArray[holeIndex] = holeExtinctionTimerArray[holeIndex] - 1;
                 if(holeExtinctionTimerArray[holeIndex] <= Zero){
-                    //alert('穴自然消滅 holeId=' + holeId + '  holeIndex=' + holeIndex);
                     holeIdArray[holeIndex] = Zero;
                     holeSizeArray[holeIndex] = Zero;
-                    holeExtinctionTimerArray[i] = Zero;
+                    // 【修正】ループ変数 i ではなく穴の配列インデックス holeIndex のタイマーを初期化
+                    holeExtinctionTimerArray[holeIndex] = Zero;
                     heiankyoData[i][j] = Space;
                     //穴画像の削除
                     let holeImg = document.getElementById(holeId);
-                    holeImg.parentNode.removeChild(holeImg);
+                    if (holeImg) holeImg.parentNode.removeChild(holeImg);
                 }
             }
         }
@@ -449,8 +439,6 @@ function movingZombi(){
     for(let k = 1; k <= zombiInitialvalue; k++){
         let zombiId = 'zombi' + k;
         let zombi = document.getElementById(zombiId);   // 無ければnullを返す
-
-        //alert('ゾンビ移動 zombiId=' + zombiId);
 
         if(zombi != null){
             let pTd = zombi.parentNode;
@@ -464,12 +452,10 @@ function movingZombi(){
             // ゾンビが穴に落ちていたら動かさない
             let zombiIndex = zombiCatchedArray.indexOf(zombiId);
             if(zombiIndex > -1){
-                //alert('ゾンビ動かさない' + '  zombiIndex=' + zombiIndex + '  zombiId=' + zombiId);
                 // 制限時間で穴から抜け出す処理
                 zombiCatchedTimerArray[zombiIndex] = zombiCatchedTimerArray[zombiIndex] - 1;
                 if(zombiCatchedTimerArray[zombiIndex] <= Zero){
                     let holeId = IdSeparator + rowInx.toString() + IdSeparator + colInx.toString();
-                    //alert('ゾンビ抜けだし！holeId=' + holeId + '  zombiIndex=' + zombiIndex + '  zombiId=' + zombiId);
                     holeIdArray[zombiIndex] = Zero;
                     holeSizeArray[zombiIndex] = Zero;
                     holeExtinctionTimerArray[zombiIndex] = Zero;
@@ -478,9 +464,8 @@ function movingZombi(){
                     heiankyoData[rowInx][colInx] = Zombi;
                     //穴画像の削除
                     let holeImg = document.getElementById(holeId);
-                    holeImg.parentNode.removeChild(holeImg);
+                    if (holeImg) holeImg.parentNode.removeChild(holeImg);
                     // ゾンビ大きさを元に戻す
-                    //let zombi = document.getElementById(zombiId);
                     zombi.setAttribute('style', HoleStyle[4]);
                 } else {
                     continue;
@@ -505,14 +490,12 @@ function movingZombi(){
                     // ゾンビ画像削除
                     zombi.parentNode.removeChild(zombi);
                     // ゾンビ移動可能
-                    //alert('ゾンビ移動可能' + action);
                     let zombiImg = document.createElement('img');
                     zombiImg.setAttribute('id', zombiId);
                     zombiImg.setAttribute('class', 'zombisg');
                     zombiImg.src = ZombiDogImageSrc;
                     pTdZombi.appendChild(zombiImg);
                     if(intTarget == Player){
-                        //alert('捕まった');
                         // ゾンビ移動停止
                         if(movingZombiId != null) clearInterval(movingZombiId);
                         movingZombiId = null;
@@ -524,22 +507,19 @@ function movingZombi(){
                         if(playerReductionId != null) clearInterval(playerReductionId);
                         playerReductionId = setInterval(playerDead, PlayerReductionTimer);
                     } else if(intTarget == Hole){
-                        //alert('穴！');
                         holeId = IdSeparator + intRow.toString() + IdSeparator + intCol.toString();
                         for(let i = 0; i < holeIdArray.length; i++){
                             if(holeIdArray[i] == holeId){
                                 let size = holeSizeArray[i];
                                 if(size < 4){
-                                    //alert('穴を消す！holeId=' + holeId + '  i=' + i + '  zombiId=' + zombiId);
                                     holeIdArray[i] = Zero;
                                     holeSizeArray[i] = Zero;
                                     holeExtinctionTimerArray[i] = Zero;
                                     // 穴画像削除
                                     let holeImg = document.getElementById(holeId);
-                                    holeImg.parentNode.removeChild(holeImg);
+                                    if (holeImg) holeImg.parentNode.removeChild(holeImg);
                                     break;
                                 } else {
-                                    //alert('穴に落ちたholeId=' + holeId + '  i=' + i + '  zombiId=' + zombiId);
                                     zombiCatchedArray[i] = zombiId;
                                     zombiCatchedTimerArray[i] = GetOutTime;
                                     heiankyoData[intRow][intCol] = ZombiHole;
@@ -548,15 +528,12 @@ function movingZombi(){
                         }
                     }
                 } else if(intTarget == ZombiHole){
-                    //alert('ゾンビ穴！');
                     // ゾンビ救出
                     // ゾンビが進む方向にゾンビ穴があった場合には、穴を消滅させる
                     // 助けた（移動しようとしてる）ゾンビは進ませない
                     holeId = IdSeparator + intRow.toString() + IdSeparator + intCol.toString();
-                    //alert('ゾンビ穴！holeId=' + holeId + '  zombiId=' + zombiId + '  holeIdArray=' + holeIdArray);
                     for(let i = 0; i < holeIdArray.length; i++){
                         if(holeIdArray[i] == holeId){
-                            //alert('救出！穴を消す！ i=' + i + '  holeId=' + holeId　+ '  zombiId=' + zombiId);
                             holeIdArray[i] = Zero;
                             holeSizeArray[i] = Zero;
                             holeExtinctionTimerArray[i] = Zero;
@@ -565,7 +542,7 @@ function movingZombi(){
                             heiankyoData[intRow][intCol] = Zombi;
                             // 穴画像削除
                             let holeImg = document.getElementById(holeId);
-                            holeImg.parentNode.removeChild(holeImg);
+                            if (holeImg) holeImg.parentNode.removeChild(holeImg);
                             // ゾンビ大きさを元に戻す
                             zombi.setAttribute('style', HoleStyle[4]);
                         }
@@ -599,11 +576,8 @@ function whereZombi(zombi){
         // 下
         if(movingCheck(rowInx, colInx, 1, 0) == true) break;
         // 移動できない状況
-        //alert('移動できない！' + zombi);
         return '';
     }
-    //let action = 'ArrowRight';
-    //for(let i = 0; i<5; i++){
     let action = '';
     while(true){
         let intTarget;
@@ -630,7 +604,6 @@ function whereZombi(zombi){
         if( intRow != -1 && intCol != -1){
             intTarget = heiankyoData[intRow][intCol];
             if(intTarget == Space || intTarget == Player || intTarget == Hole || intTarget == ZombiHole){
-                //return action;
                 break;
             }
         }
@@ -638,7 +611,7 @@ function whereZombi(zombi){
     return action;
 }
 
-// true:移動可能　false:移動不可
+// true:移動可能 false:移動不可
 function movingCheck(rowInx, colInx, r, c){
     let intRow = rowInx + r;
     let intCol = colInx + c;
@@ -654,7 +627,6 @@ function movingCheck(rowInx, colInx, r, c){
 function rowcolPosition(arrow, rowInx, colInx, pTr, pTd){
     let intRow = -1;
     let intCol = -1;
-    //alert('rowcolPosition arrow=' + arrow + '  rowInx=' + rowInx + '  colInx=' + colInx);
     if(arrow == 'ArrowRight'){
         intRow = rowInx;
         intCol = colInx + 1;
@@ -683,32 +655,18 @@ function rowcolPosition(arrow, rowInx, colInx, pTr, pTd){
             pTd = pTd.nextSibling;
         }
     }
-    //alert('rowcolPosition arrow=' + arrow + '  intRow=' + intRow + '  intCol=' + intCol + '  pTr=' +pTr + '   pTd='  + pTd);
     return [intRow, intCol, pTr, pTd];
 }
 
 // キーが押されたとき
 function keyDown(event){
     let strArrow = event.key;
-    //let boolShift = event.shiftKey;
-/*
-    let message
-    message = " | type: " + event.type
-    message += " | key: " + event.key
-    message += " | code: " + event.code;
-    message += " | shiftKey: " + event.shiftKey;
-    message += " | ctrlKey: " + event.ctrlKey;
-    message += " | altKey: " + event.altKey;
-    message += " | metaKey: " + event.metaKey;
-    let si = document.getElementById('title_line');
-    si.insertAdjacentHTML("afterbegin", "<div>"+message+"</div>");
-*/
-    //if(boolShift == true){
-    //    strArrow = KeyShift + strArrow;
-    //}
-
     event.preventDefault();
     arrowAction(strArrow);
+}
+
+// ゲームのメインループ
+function mainLoop() {
 }
 
 // ボタンアクション設定
@@ -779,15 +737,6 @@ function makeButtonAction(){
     turnleftButton.addEventListener('click', function(event){
         arrowAction('A');
     });
-
-    // チェック
-/*
-    let checkButton = document.getElementById('check');
-    checkButton.addEventListener('click', function(event){
-        event.preventDefault();
-        checkData();
-    });
-*/
 }
 
 // 平安京の動的作成
@@ -845,19 +794,20 @@ function makeTable(parentId){
 
     // 得点
     let scoreDisplay = document.getElementById('scoreText');
-    scoreDisplay.innerText = "　得点：" + score ;
+    scoreDisplay.innerText = " 得点：" + score ;
     // プレーヤー数
     let counter = document.getElementById('playerCountText');
-    counter.innerText = "守り犬数：" + playerCounter+ "　ゾンビ犬数：" + zombiCounter;
+    counter.innerText = "守り犬数：" + playerCounter+ " ゾンビ犬数：" + zombiCounter;
 }
 
 // HTML読み込み後、自動実行
 function onLoad(){
-    // 問題選択肢作成
-    for(let i = 2; i <= heiankyoDataArray.length; i++){
+    // セレクトボックスの選択肢を全ステージ分動的生成
+    dataNumber.innerHTML = '';
+    for(let i = 0; i < heiankyoDataArray.length; i++){
         let option = document.createElement("option");
-        option.text = i;
-        option.value = i;
+        option.text = (i + 1).toString();
+        option.value = (i + 1).toString();
         // selectタグの子要素にoptionタグを追加する
         dataNumber.appendChild(option);
     }
@@ -866,7 +816,6 @@ function onLoad(){
     makeButtonAction();
 
     // 迷路の動的作成
-    //drawingTable();
     if(playerCounter > 0){
         drawingTable();
         if(movingZombiId != null) clearInterval(movingZombiId);
@@ -876,20 +825,8 @@ function onLoad(){
 
 // 問題表示
 function drawingTable(){
-    // ゲームオーバーイメージエリア削除
-    let parent = document.getElementById('gameoverImage');
-    while(parent.firstChild){
-      parent.removeChild(parent.firstChild);
-    }
-
-    // クリアメージエリア削除
-    parent = document.getElementById('clearImage');
-    while(parent.firstChild){
-      parent.removeChild(parent.firstChild);
-    }
-
     // 描画エリア削除
-    parent = document.getElementById('mainScreen');
+    let parent = document.getElementById('mainScreen');
     while(parent.firstChild){
       parent.removeChild(parent.firstChild);
     }
@@ -899,19 +836,15 @@ function drawingTable(){
 
     // 問題設定
     dataNo = parseFloat (dataNumber.value);
-    //heiankyoData = heiankyoData[dataNo - 1];   //これだとheiankyoDataを書き換えると元のデータも書き換わるよ～ディープコピーが必要だ！
     heiankyoData = JSON.parse(JSON.stringify(heiankyoDataArray[dataNo - 1]));
     maxRow = heiankyoData.length;
     maxCol = heiankyoData[0].length;
-
-    //alert('空白の数=' + spaceCounter());
 
     // 表示サイズの計算
     zoomCalc();
 
     // 問題の動的作成
     makeTable('mainScreen');
-
 }
 
 // 空間の数
@@ -927,21 +860,12 @@ function spaceCounter(){
 
 // 初期化
 function resetData(){
-    // 得点は全体での得点
-    //score = 0;
-
-    // プレーヤー数は全体で3名
-    //playerCounter = PlayerCount;
-
     // ゾンビ移動停止
     if(movingZombiId != null) clearInterval(movingZombiId);
     movingZombiId = null;
 
     // ゾンビ残数
     zombiCounter = 0;
-
-    // プレーヤーがどっち向きか(画像設定と同じ個所で設定することにした)
-    //playerDirection = Direction[1];     // 'ArrowRight'
 
     // プレーヤー縮小表示停止
     if(playerReductionId != null) clearInterval(playerReductionId);
@@ -975,7 +899,7 @@ function zoomCalc(){
     // 表示サイズの計算
     let mainScreen = document.getElementById('mainScreen');
     let bw = window.innerWidth;
-    let bh = window.innerHeight - 300;          //200は表題やボタンなどの縦幅による
+    let bh = window.innerHeight - 300;          //300は表題やボタンなどの縦幅による
     let gridw = (heiankyoData[0].length + 1) * cellhaba;
     let gridh = (heiankyoData.length + 1) * cellhaba;
 
@@ -987,33 +911,32 @@ function zoomCalc(){
       }
     }
     if(zoom < 0 || zoom > 1) zoom = 1.0;
-    //zoom = zoom * 0.9;
     mainScreen.style.transformOrigin = 'top left';
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
-    //alert("bw=" + bw + "  gridw=" + gridw * zoom + "  bh=" + bh + " gridh=" + gridh * zoom + " zoom=" + zoom);
-    //let subTable = document.getElementById('sub_table');
-    //let a = (zoom - 1) * 10 * 42;
-    //subTable.style = 'margin-top: ' + a.toString() + 'px';
 
-    // ゲームオーバーイメージ
+    // ゲームオーバーイメージ（リサイズ時に重複要素が無限追加されるバグを防止）
     let gameoverImageDiv = document.getElementById('gameoverImage');
     gameoverImageDiv.style.display = 'none';
-    let gimg = document.createElement('img');
-    gimg.setAttribute('id', 'goimage');
+    let gimg = document.getElementById('goimage');
+    if (!gimg) {
+        gimg = document.createElement('img');
+        gimg.setAttribute('id', 'goimage');
+        gameoverImageDiv.appendChild(gimg);
+    }
     gimg.src = GameoverImageSrc;
-    //gimg.style.height = (gridh * zoom * 0.5).toString() + 'px'
     gimg.style.width = (gridw * zoom * 0.5).toString() + 'px';
-    gameoverImageDiv.appendChild(gimg);
 
-    // クリアイメージ
+    // クリアイメージ（リサイズ時に重複要素が無限追加されるバグを防止）
     let clearImageDiv = document.getElementById('clearImage');
     clearImageDiv.style.display = 'none';
-    let cimg = document.createElement('img');
-    cimg.setAttribute('id', 'cimage');
+    let cimg = document.getElementById('cimage');
+    if (!cimg) {
+        cimg = document.createElement('img');
+        cimg.setAttribute('id', 'cimage');
+        clearImageDiv.appendChild(cimg);
+    }
     cimg.src = ClearImageSrc;
-    //cimg.style.height = (gridh * zoom * 0.5).toString() + 'px'
     cimg.style.width = (gridw * zoom * 0.5).toString() + 'px';
-    clearImageDiv.appendChild(cimg);
 }
 
 // 平安京エイリアンマップデータ表示(デバッグ用)
@@ -1025,60 +948,10 @@ function checkData(){
     for(let i = maxRow - 1; i >= 0; i--){
         si.insertAdjacentHTML("afterbegin", "<div>" + heiankyoData[i] + "</div>");
     }
-    // 穴の画像が残り、データは穴が無いとしている現象
-    // heiankyoDataから穴、ゾンビ、プレーヤーの位置を確認し
-    // 再表示、それ以外は画像を削除する
-    // holeIdArray[1] = #1#13  heiankyoDataの座標値から合成できる
-    // holeSizeArray[1] = 4    最大サイズ
-    // holeExtinctionTimerArray[1] = 25 初期値でExtinctionTimeを設定、カウントダウンさせて、0になったら穴消滅
-    // zombiCatchedArray[1] = zonbi2   ゾンビ2が落ちている
-    // zombiCatchedTimerArray[1] = 15   初期値でGetOutTimeを設定、カウントダウンさせて、0になったら抜けだし
-
-    // 穴（10px,20px,30px,40px,50px）
-    // holeIdArray、holeSizeArray、holeExtinctionTimerArray、zombiCatchedArray、zombiCatchedTimerArrayの配列は、indexで対応している
-    // 最大10個（0は穴ではない、holeIdを保存、holeIdはheiankyoDataの座標値がIDとなる（例：#1#13））
-    // let holeIdArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // 穴サイズ（HoleStyleの引数（0～4）、最大4のときにゾンビを捕まえる）
-    // let holeSizeArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // 穴自然消滅タイマー
-    // let holeExtinctionTimerArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // 捕まえたゾンビ（0は捕まえていない、zombiIdを保存、例：zomib1～）
-    // let zombiCatchedArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // 捕まえたゾンビ抜けだしタイマー
-    // let zombiCatchedTimerArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     si.insertAdjacentHTML("beforeend", "<div>" + holeIdArray + "</div>");
     si.insertAdjacentHTML("beforeend", "<div>" + holeSizeArray + "</div>");
     si.insertAdjacentHTML("beforeend", "<div>" + holeExtinctionTimerArray + "</div>");
     si.insertAdjacentHTML("beforeend", "<div>" + zombiCatchedArray + "</div>");
     si.insertAdjacentHTML("beforeend", "<div>" + zombiCatchedTimerArray + "</div>");
-
-
-//0:空間
-//1:壁
-//2:穴
-//3:ゾンビ
-//4:プレーヤー
-//5:ゾンビ穴
-/*
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-1,0,0,0,0,3,0,0,0,0,3,0,0,0,0,0,1
-1,0,1,0,0,4,1,0,0,0,1,0,0,0,1,0,1
-1,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1
-1,0,0,0,1,0,1,0,0,0,1,0,0,1,1,0,1
-1,0,0,0,0,0,1,0,1,0,1,0,3,0,1,0,1
-1,0,0,3,1,0,1,0,3,0,0,0,0,0,0,0,1
-1,0,1,0,1,0,0,0,0,0,1,1,1,1,0,0,1
-1,0,1,0,0,0,1,1,1,0,0,0,0,0,0,1,1
-1,3,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1
-1,0,0,0,0,0,1,1,0,1,1,1,0,1,1,0,1
-1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1
-1,0,1,0,1,1,1,0,1,1,0,1,1,1,1,0,1
-1,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,1
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-*/
 }
+
