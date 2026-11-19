@@ -1,0 +1,234 @@
+/* メインテーブル*/
+#main_table{
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* タイトルエリア */
+#title {
+    height: 110px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ccf;
+    border: 0px;
+    border-radius: 20px;
+}
+
+/* タイトル行 */
+#title_line {
+    font-weight: bold;
+    font-size: x-large;
+    border: 0px;
+    margin:0px;
+    padding: 0px;
+    letter-spacing: 1px;
+}
+
+/* 操作説明文 */
+#explanation {
+    text-align: left;
+    background-color: #fff;
+    font-size: 100%;
+    border: 0px;
+}
+
+/* 問題選択 */
+#number {
+    height: 35px;
+    vertical-align: top;
+    border: 1px solid #000;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* メニューボタンなど */
+.menu_button {
+    width: 61px;
+    height: 55px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: small;
+}
+
+/* 遷移用ボタンなど */
+.transition_button {
+    width: 150px;
+    height: 35px;
+    border-radius: 20px;
+}
+
+/* ボタンとメッセージの横並び用コンテナ */
+.button_container {
+    display: flex;
+    align-items: center; /* 上下中央寄せ */
+    gap: 10px;           /* ボタンとメッセージの間隔 */
+}
+
+/* ボタン類やゲーム画面でのダブルタップ拡大を防止 */
+button,
+.menu_button,
+.transition_button,
+#numberGrid {
+    touch-action: manipulation;
+}
+
+/* 問題番号 */
+#dataNumber {
+    font-size: medium;
+}
+
+/* 数字テーブル */
+#numberGrid {
+    padding: 0px;
+    margin: 0px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    /*text-align: center;
+	vertical-align: middle;*/
+    table-layout: fixed;
+    width: 100px;
+    height: 100px;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+#numberGrid td {
+    margin: 0px;
+    padding: 0px;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+	vertical-align: middle;
+}
+
+#scoreBoard {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;           /* RESETボタンの右側の残り幅いっぱいに広げる */
+    gap: 3px 4px;      /* 上下3px、左右4pxの隙間 */
+    align-items: center;
+}
+
+/* 結果モーダル背景（オーバーレイ） */
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* モーダルウィンドウ本体 */
+.modal_content {
+    background-color: #fff;
+    width: 88%;
+    max-width: 340px;
+    border-radius: 16px;
+    padding: 20px 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: popIn 0.2s ease-out;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.modal_title {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.modal_winner {
+    font-size: 17px;
+    font-weight: bold;
+    color: #d9534f;
+    background-color: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-bottom: 12px;
+}
+
+/* 順位表リスト */
+.modal_ranking {
+    max-height: 260px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.rank_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    font-size: 14px;
+}
+
+/* プレイヤー(P)の行を少し目立たせる */
+.rank_row.is_player {
+    border: 2px solid #333;
+    background-color: #eef7ff;
+    font-weight: bold;
+}
+
+.rank_left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rank_color_dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #666;
+    display: inline-block;
+}
+
+/* ボタンエリア */
+.modal_buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal_btn {
+    flex: 1;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.modal_btn.primary {
+    background-color: #4caf50;
+    color: white;
+}
+
+.modal_btn.secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+

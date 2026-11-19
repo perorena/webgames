@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>陣取り - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
+    <link type="text/css" rel="stylesheet" href="./AreaControl.css">
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.8;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解 */
+        .mini_board {
+            border-collapse: collapse;
+            margin: 8px 0 8px 12px;
+        }
+        .mini_board td {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .sample_badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 10px;
+            border: 1px solid #888;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">【<ruby>陣取<rt>じんと</rt></ruby>り】<ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></span>
+            </td>
+        </tr>
+        <tr>
+            <td id="explanation">
+                <ruby>自分<rt>じぶん</rt></ruby>の<ruby>陣地<rt>じんち</rt></ruby>（<b>P</b>）を<ruby>広<rt>ひろ</rt></ruby>げて、<ruby>敵<rt>てき</rt></ruby>（<b>E1〜E8</b>）よりも<ruby>多<rt>おお</rt></ruby>くのマスを<ruby>獲得<rt>かくとく</rt></ruby>するゲームです。<br>
+
+                <div class="section_title">1. <ruby>基本<rt>きほん</rt></ruby>ルール</div>
+                ・<ruby>自分<rt>じぶん</rt></ruby>の<ruby>番<rt>ばん</rt></ruby>がきたら、<ruby>自分<rt>じぶん</rt></ruby>の色と<b><ruby>上下左右<rt>じょうげさゆう</rt></ruby>に<ruby>隣<rt>とな</rt></ruby>り<ruby>合<rt>あ</rt></ruby>う<ruby>白<rt>しろ</rt></ruby>いマス</b>を1つクリック（タップ）します。<br>
+                ・<ruby>斜<rt>なな</rt></ruby>めのマスや、<ruby>離<rt>はな</rt></ruby>れたマス、<ruby>既<rt>すで</rt></ruby>に<ruby>色<rt>いろ</rt></ruby>がついているマスは<ruby>選<rt>えら</rt></ruby>べません。<br>
+
+                <!-- HTMLミニ図解 -->
+                <table class="mini_board">
+                    <tr>
+                        <td style="background-color: white; color: #999;">×</td>
+                        <td style="background-color: #fffde7; border: 2px dashed #e65100;">〇</td>
+                        <td style="background-color: white; color: #999;">×</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #fffde7; border: 2px dashed #e65100;">〇</td>
+                        <td style="background-color: yellowgreen;">P</td>
+                        <td style="background-color: #fffde7; border: 2px dashed #e65100;">〇</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: white; color: #999;">×</td>
+                        <td style="background-color: #fffde7; border: 2px dashed #e65100;">〇</td>
+                        <td style="background-color: plum;">E1</td>
+                    </tr>
+                </table>
+
+                ・<ruby>取<rt>と</rt></ruby>れる<ruby>白<rt>しろ</rt></ruby>いマスがなくなった<ruby>人<rt>ひと</rt></ruby>は<ruby>自動<rt>じどう</rt></ruby>で「<b>(パス)</b>」になります。<br>
+                ・<ruby>全員<rt>ぜんいん</rt></ruby>が<ruby>取<rt>と</rt></ruby>れるマスがなくなるとゲーム<ruby>終了<rt>しゅうりょう</rt></ruby>です。<ruby>一番<rt>いちばん</rt></ruby><ruby>領地数<rt>りょうちすう</rt></ruby>が<ruby>多<rt>おお</rt></ruby>い<ruby>人<rt>ひと</rt></ruby>が<ruby>優勝<rt>ゆうしょう</rt></ruby>です！<br>
+
+                <div class="section_title">2. <ruby>敵<rt>てき</rt></ruby>の4つの<ruby>性格<rt>せいかく</rt></ruby></div>
+                <ruby>ゲーム<rt>げーむ</rt></ruby>ごとに<ruby>敵<rt>てき</rt></ruby>の<ruby>性格<rt>せいかく</rt></ruby>がランダムに<ruby>決<rt>き</rt></ruby>まります。<ruby>画面上部<rt>がめんじょうぶ</rt></ruby>のバッジで<ruby>見分<rt>みわ</rt></ruby>けられます。<br>
+                ・<span class="sample_badge" style="background-color: plum;">E1[妨]:3</span> <b><ruby>妨害<rt>ぼうがい</rt></ruby>タイプ</b>：あなた（P）の<ruby>進路<rt>しんろ</rt></ruby>を<ruby>優先<rt>ゆうせん</rt></ruby>して<ruby>塞<rt>ふさ</rt></ruby>いできます。<br>
+                ・<span class="sample_badge" style="background-color: yellow;">E2[拡]:5</span> <b><ruby>拡大<rt>かくだい</rt></ruby>タイプ</b>：<ruby>広<rt>ひろ</rt></ruby>い<ruby>空<rt>あ</rt></ruby>き<ruby>地<rt>ち</rt></ruby>へどんどん<ruby>陣地<rt>じんち</rt></ruby>を<ruby>広<rt>ひろ</rt></ruby>げます。<br>
+                ・<span class="sample_badge" style="background-color: aqua;">E3[均]:4</span> <b>バランスタイプ</b>：<ruby>拡大<rt>かくだい</rt></ruby>と<ruby>妨害<rt>ぼうがい</rt></ruby>をバランスよく<ruby>行<rt>おこな</rt></ruby>います。<br>
+                ・<span class="sample_badge" style="background-color: pink;">E4[気]:2</span> <b><ruby>気<rt>き</rt></ruby>ままタイプ</b>：<ruby>気<rt>き</rt></ruby>まぐれにどこへでも<ruby>進<rt>すす</rt></ruby>みます。<br>
+
+                <div class="section_title">3. <ruby>画面<rt>がめん</rt></ruby>の<ruby>見方<rt>みかた</rt></ruby>とボタン</div>
+                ・<ruby>上部<rt>じょうぶ</rt></ruby>のバッジの<ruby>数字<rt>すうじ</rt></ruby>は<ruby>現在<rt>げんざい</rt></ruby>の<ruby>領地数<rt>りょうちすう</rt></ruby>、<ruby>黒<rt>くろ</rt></ruby>い<ruby>太枠<rt>ふとわく</rt></ruby>がついている<ruby>人<rt>ひと</rt></ruby>が<ruby>現在<rt>げんざい</rt></ruby>の<ruby>手番<rt>てばん</rt></ruby>です。<br>
+                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます（<ruby>敵<rt>てき</rt></ruby>の<ruby>性格<rt>せいかく</rt></ruby>も<ruby>変<rt>か</rt></ruby>わります）。<br><br>
+
+                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

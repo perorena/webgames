@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base target="_top">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>陣取り</title>
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="./AreaControl.css">
+</head>
+<body>
+    <table id="main_table">
+        <tr>
+            <td id="title">
+                <span id="title_line">
+                    【<ruby>陣取<rt>じんと</rt></ruby>り】
+                </span>
+                <br><br>
+                <span>
+                    <button class="transition_button" onclick='window.open("./AreaControlHelp.html")'><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></button>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td id="number">
+                <label>&emsp;<ruby>問題<rt>もんだい</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。
+                    <select id="dataNumber">
+                        <option value="1" selected>1</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="button_container">
+                    <button id="reset" class="menu_button" type="button" value="RESET"><ruby>RESET<rt>りせっと</rt></ruby></button>
+                    <!-- <div id="activePlayerMessage"></div> -->
+                    <div id="scoreBoard"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="successImage"></div>
+    <div id="mainScreen"></div>
+    <!-- ゲーム終了時の結果モーダル -->
+    <div id="resultModal" class="modal_overlay" style="display: none;">
+        <div class="modal_content">
+            <h2 id="resultTitle" class="modal_title">ゲーム終了！</h2>
+            <div id="resultWinner" class="modal_winner"></div>
+            <div id="resultRanking" class="modal_ranking"></div>
+            <div class="modal_buttons">
+                <button id="modalPlayAgain" class="modal_btn primary">もう一度遊ぶ</button>
+                <button id="modalClose" class="modal_btn secondary">盤面を見る</button>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript -->
+    <script type="text/javascript" src="./AreaControlData.js"></script>
+    <script type="text/javascript" src="./AreaControl.js"></script>
+</body>
+</html>
