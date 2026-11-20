@@ -4,35 +4,127 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>ヒット＆ブロー</title>
-    <!-- CSS -->
+    <title>ヒット＆ブロー - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./HitAndBlow.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* 本編の履歴テーブルを模したHTMLミニ図解 */
+        .mini_history {
+            border-collapse: collapse;
+            margin: 8px 0 10px 12px;
+            font-size: 14px;
+        }
+        .mini_history th, .mini_history td {
+            border: 1px solid #000;
+            padding: 4px 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .mini_history th {
+            background-color: cornflowerblue;
+        }
+        .mini_history td.secret {
+            background-color: #fffde7;
+            letter-spacing: 3px;
+        }
+        .hit_num {
+            color: #d32f2f;
+            text-decoration: underline;
+        }
+        .blow_num {
+            color: #1565c0;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【ヒット＆ブロー】</span>
+                <span id="title_line">【ヒット＆ブロー】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                ヒットアンドブローは、0～9の<ruby>数字<rt>すうじ</rt></ruby>を<ruby>使<rt>つか</rt></ruby>ってコンピュータが<ruby>作<rt>つく</rt></ruby>った<ruby>数値<rt>すうち</rt></ruby>を<ruby>当<rt>あて</rt></ruby>てる<ruby>推理<rt>すいり</rt></ruby>ゲームです。<br>
-                <img src="../img/HitAndBlow.png"><br>
-                ・<ruby>遊<rt>あそ</rt></ruby>ぶ<ruby>桁数<rt>けたすう</rt></ruby>を<ruby>選<rt>えら</rt></ruby>びます。<br>
-                ・スタートボタンをクリックすると0～9の<ruby>数字<rt>すうじ</rt></ruby>から<ruby>重複<rt>じゅうふく</rt></ruby>なしで3<ruby>桁<rt>けた</rt></ruby>または4<ruby>桁<rt>けた</rt></ruby>の<ruby>問題<rt>もんだい</rt></ruby>を<ruby>作<rt>つく</rt></ruby>ります。
-                <ruby>先頭<rt>せんとう</rt></ruby>が「0」になることもあります。<br>
-                ・<ruby>入力<rt>にゅうりょく</rt></ruby>ボックスに<ruby>数字<rt>すうじ</rt></ruby>を<ruby>入力<rt>にゅうりょく</rt></ruby>するとコンピュータが「ヒット（Hit）」と「ブロー（Blow）」の<ruby>数<rt>かず</rt></ruby>を<ruby>返<rt>かえ</rt></ruby>します。<br>
-                &emsp;※ヒット（Hit）: <ruby>数字<rt>すうじ</rt></ruby>と<ruby>桁<rt>けた</rt></ruby>の<ruby>位置<rt>いち</rt></ruby>がどちらも<ruby>合<rt>あ</rt></ruby>っている<ruby>数<rt>かず</rt></ruby>。<br>
-                &emsp;※ブロー（Blow）: <ruby>数字<rt>すうじ</rt></ruby>は合っているが、<ruby>桁<rt>けた</rt></ruby>の<ruby>位置<rt>いち</rt></ruby>が<ruby>違<rt>ちが</rt></ruby>う<ruby>数<rt>かず</rt></ruby>。<br>
-                ・すべての<ruby>位置<rt>いち</rt></ruby>が<ruby>一致<rt>いっち</rt></ruby>する「3ヒット」または「4ヒット」になるまで（<ruby>最大<rt>さいだい</rt></ruby>10<ruby>回<rt>かい</rt></ruby>まで）<ruby>繰<rt>く</rt></ruby>り<ruby>返<rt>かえ</rt></ruby>して<ruby>当<rt>あて</rt></ruby>てます。<br>
-                ・[<ruby>START<rt>すたーと</rt></ruby>]ボタンをクリック（タップ）するとコンピュータが<ruby>問題<rt>もんだい</rt></ruby>を<ruby>作<rt>つく</rt></ruby>ります。<br>
-                ・[<ruby>GIVE UP<rt>ぎぶあっぷ</rt></ruby>]ボタンをクリック（タップ）すると答えを表示します。<br><br>
+                0〜9の数字を使って、コンピュータが作った<b>3桁または4桁の秘密の数字</b>を推理して当てるゲームです。<br>
 
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                <div class="section_title">1. 基本ルール</div>
+                ・遊ぶ桁数（3桁 / 4桁）を選び、[START]ボタンを押すとスタートします。<br>
+                ・0〜9の数字から<b>重複なし（すべて別の数字）</b>で問題が作られます。<br>
+                <span style="font-size: 13px;">※「0 5 2」のように先頭が「0」になることもあります。</span><br>
+                ・プルダウンから数字をすべて選ぶと自動で判定され、<b>「Hit（ヒット）」</b>と<b>「Blow（ブロー）」</b>の数が表示されます。<br>
+                ・<b>10回以内</b>にすべての数字と位置を当てる（3Hit または 4Hit）とクリアです！<br>
+
+                <div class="section_title">2. Hit（ヒット）と Blow（ブロー）の見方</div>
+                ・<b class="hit_num">Hit（ヒット）</b>：数字も場所（桁）もどちらも合っている数<br>
+                ・<b class="blow_num">Blow（ブロー）</b>：数字は含まれているが、場所（桁）が違う数<br>
+
+                <!-- HTMLミニ図解 -->
+                <div class="rule_label">推理の例（正解が「4 1 8」の場合）</div>
+                <table class="mini_history">
+                    <tr>
+                        <td></td>
+                        <td class="secret">4 1 8</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>あなたの推理</th>
+                        <th>Hit</th>
+                        <th>Blow</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1 2 3</td>
+                        <td>0</td>
+                        <td><span class="blow_num">1</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><span class="hit_num">4</span> <span class="blow_num">8</span> 5</td>
+                        <td><span class="hit_num">1</span></td>
+                        <td><span class="blow_num">1</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><span class="hit_num">4 1 8</span></td>
+                        <td><span class="hit_num">3</span></td>
+                        <td>0</td>
+                    </tr>
+                </table>
+                <span style="font-size: 13px;">
+                    ・1回目：「1」だけが含まれているが場所が違うため <b>0 Hit / 1 Blow</b><br>
+                    ・2回目：「4」は場所も一致（Hit）、「8」は場所違い（Blow）なので <b>1 Hit / 1 Blow</b>
+                </span><br>
+
+                <div class="section_title">3. いろいろな遊び方・攻略のコツ</div>
+                ・<b>最初の2〜3手で候補の数字を絞る</b>：1回目に「0・1・2」、2回目に「3・4・5」、3回目に「6・7・8」のように別々の数字を試すと、使われている数字を素早く特定できます。<br>
+                ・<b>「0 Hit / 0 Blow」を活用する</b>：どちらも「0」が出たときは、その回に入れた数字がすべてハズレと確定する大チャンスです。<br>
+                ・<b>4桁モードや最小手数に挑戦</b>：3桁に慣れたら4桁に挑戦したり、5回以内でのクリアを目指してみましょう。<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・[START]ボタンをクリック（タップ）すると新しい問題が始まります。<br>
+                ・[GIVE UP]ボタンをクリック（タップ）すると途中で諦めて一番上の枠に正解を表示します。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
