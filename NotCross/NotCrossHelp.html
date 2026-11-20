@@ -4,31 +4,148 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>交差させるな</title>
-    <!-- CSS -->
+    <title>交差させるな - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./NotCross.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #fff;
+        }
+        /* 本編の colorName に合わせたルート色 */
+        .r1 { background-color: yellowgreen !important; }
+        .r2 { background-color: plum !important; }
+        .r3 { background-color: yellow !important; }
+        .wall { background-color: black !important; }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【<ruby>交差<rt>こうさ</rt></ruby>させるな】</span>
+                <span id="title_line">【交差させるな】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                <ruby>同<rt>おな</rt></ruby>じ<ruby>色<rt>いろ</rt></ruby>のS(スタート)とG(ゴール)を<ruby>結<rt>むす</rt></ruby>びましょう。
-                <br>
-                <img src="../img/nc.png">
-                <br>
-                ・まず、SまたはGのどちらかのマスをクリック（タップ）し、つなぐ<ruby>色<rt>いろ</rt></ruby>を<ruby>決<rt>き</rt></ruby>めます。<br>
-                ・<ruby>次<rt>つぎ</rt></ruby>に、<ruby>白<rt>しろ</rt></ruby>いマスをクリック（タップ）すると<ruby>決<rt>き</rt></ruby>めた<ruby>色<rt>いろ</rt></ruby>になります。<br>
-                ・<ruby>白<rt>しろ</rt></ruby>いマス<ruby>以外<rt>いがい</rt></ruby>（<ruby>黒<rt>くろ</rt></ruby>いマスなど）は<ruby>選<rt>えら</rt></ruby>べません。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                同じ色の <b>S</b>（スタート）と <b>G</b>（ゴール）を、<b>他の色の線と交差しないように</b>上下左右につなげるパズル（ナンバーリンク系）です。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・<b>手順①</b>：まず、つなぎたい色の <b>S</b> または <b>G</b> のマスをクリック（タップ）して、塗る色を選びます。<br>
+                ・<b>手順②</b>：白いマスをクリック（タップ）すると、選んだ色が塗られてルートが伸びます。<br>
+                ・すべての色の S と G を交差させずに結び、白いマスをすべて埋めるとクリアです！<br>
+
+                <!-- HTMLミニ図解：完成例 -->
+                <div class="rule_label">完成イメージ（各色の S と G を交差させずに接続）</div>
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td class="r1">S</td>
+                            <td class="r2">S</td>
+                            <td></td>
+                            <td class="r3">G</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="r3">S</td>
+                            <td class="r2">G</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="r1">G</td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">ルート完成</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td class="r1">S</td>
+                            <td class="r2">S</td>
+                            <td class="r2"></td>
+                            <td class="r3">G</td>
+                        </tr>
+                        <tr>
+                            <td class="r1"></td>
+                            <td class="r3">S</td>
+                            <td class="r2">G</td>
+                            <td class="r3"></td>
+                        </tr>
+                        <tr>
+                            <td class="r1"></td>
+                            <td class="r3"></td>
+                            <td class="r3"></td>
+                            <td class="r3"></td>
+                        </tr>
+                        <tr>
+                            <td class="r1">G</td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                        </tr>
+                    </table>
+                </div>
+                <span style="font-size: 13px;">※黒いマス（<span style="display:inline-block;width:14px;height:14px;background:#000;vertical-align:middle;"></span>）や、すでに別の色が塗られているマスは通れません（斜め移動も不可）。</span><br>
+
+                <div class="section_title">2. いろいろな遊び方・攻略のコツ</div>
+                ・<b>盤面の端や壁際を通るルートから決める</b>：外周の角（四隅）や黒マスの周りは通れる道が1通りに限られることが多いため、外側から順番につなぐと解きやすくなります。<br>
+                ・<b>別の色の S や G を閉じ込めない</b>：最短距離でまっすぐつなぐと他の色の進路を塞いでしまうことがあるため、大きく迂回させるのがポイントです。<br>
+                ・<b>問題番号を変えて挑戦</b>：上のプルダウンから問題を切り替えると、S と G の組が増えて複雑なルートパズルに挑戦できます。<br>
+
+                <div class="section_title">3. 画面の見方とボタン</div>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
