@@ -82,8 +82,7 @@
 button,
 .menu_button,
 .transition_button,
-.button_container,
-#heiankyo {
+.button_container {
     touch-action: manipulation;
 }
 

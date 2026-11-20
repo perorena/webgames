@@ -4,51 +4,223 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>カードドロップ</title>
-    <!-- CSS -->
+    <title>カードドロップ - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./CardDrop.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解（5列） */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0 8px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 34px;
+            height: 44px;
+            border: 1px solid #333;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 13px;
+            line-height: 1.1;
+            background-color: #fff;
+        }
+        .mini_board td.empty {
+            background-color: #f0f0f0;
+        }
+        .mini_board td.falling {
+            background-color: #fffde7;
+            border: 2px dashed #e65100;
+        }
+        .spade, .club { color: #111; }
+        .heart, .diamond { color: #d32f2f; }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* 役一覧テーブル */
+        .yaku_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 6px 0;
+            font-size: 13px;
+        }
+        .yaku_table th, .yaku_table td {
+            border: 1px solid #999;
+            padding: 5px 6px;
+            vertical-align: middle;
+        }
+        .yaku_table th {
+            background-color: #eef;
+            text-align: left;
+        }
+        .pt {
+            font-weight: bold;
+            color: #d32f2f;
+            white-space: nowrap;
+            text-align: right !important;
+        }
+        .mini_hand {
+            display: inline-flex;
+            gap: 2px;
+        }
+        .mini_card {
+            display: inline-block;
+            width: 24px;
+            padding: 2px 0;
+            border: 1px solid #444;
+            border-radius: 3px;
+            background: #fff;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+        .mini_card.dim {
+            opacity: 0.35;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【カードドロップ】</span>
+                <span id="title_line">【カードドロップ】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                カードドロップ<ruby>式<rt>しき</rt></ruby>のポーカーです。
-                <br>
-                <img src="../img/CardDrop.png">
-                <br>
-                <ruby>落<rt>お</rt></ruby>ちてくるカードを<ruby>左右<rt>さゆう</rt></ruby>に<ruby>移動<rt>いどう</rt></ruby>させてポーカーの<ruby>役<rt>やく</rt></ruby>を<ruby>作<rt>つく</rt></ruby>ろう！<br>
-                ・<ruby>各段<rt>かくだん</rt></ruby>で5<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>うと<ruby>自動的<rt>じどうてき</rt></ruby>に<ruby>役判定<rt>やくはんてい</rt></ruby>を<ruby>行<rt>おこな</rt></ruby>い<ruby>得点<rt>とくてん</rt></ruby>を<ruby>計算<rt>けいさん</rt></ruby>します。<br>
-                ・<ruby>役<rt>やく</rt></ruby>となったカードは<ruby>消<rt>き</rt></ruby>え、<ruby>消<rt>き</rt></ruby>えたカードの<ruby>上<rt>うえ</rt></ruby>にあったカードが<ruby>落<rt>お</rt></ruby>ちます。<br>
-                ・すべてのカード(52<ruby>枚<rt>まい</rt></ruby>)を<ruby>使<rt>つか</rt></ruby>いきるか、<ruby>真<rt>ま</rt></ruby>ん<ruby>中<rt>なか</rt></ruby>のレーンが7<ruby>段<rt>だん</rt></ruby>に<ruby>積<rt>つ</rt></ruby>み<ruby>上<rt>あ</rt></ruby>がるとゲームオーバーです。
-                ＜<ruby>役<rt>やく</rt></ruby>＞<br>
-                ロイヤルフラッシュ（30<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じスート（<ruby>柄<rt>がら</rt></ruby>）で10・J・Q・K・Aの5<ruby>枚<rt>まい</rt></ruby>が<ruby>連続<rt>れんぞく</rt></ruby>して<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
-                ストレートフラッシュ（25<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じスートで<ruby>連続<rt>れんぞく</rt></ruby>する5<ruby>枚<rt>まい</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>が<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby>（ロイヤルフラッシュを<ruby>除<rt>のぞ</rt></ruby>く）<br>
-                フォーカード（20<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が4<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
-                フルハウス（15<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が3<ruby>枚<rt>まい</rt></ruby>（スリーカード）と、<ruby>別<rt>べつ</rt></ruby>の<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が2<ruby>枚<rt>まい</rt></ruby>（ワンペア）の<ruby>組<rt>く</rt></ruby>み<ruby>合<rt>あ</rt></ruby>わた<ruby>役<rt>やく</rt></ruby><br>
-                フラッシュ（10<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>数字<rt>すうじ</rt></ruby>に<ruby>関係<rt>かんけい</rt></ruby>なく、<ruby>同<rt>おな</rt></ruby>じスート（<ruby>柄<rt>がら</rt></ruby>）のカード5<ruby>枚<rt>まい</rt></ruby>が<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
-                ストレート（6<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>数字<rt>すうじ</rt></ruby>が<ruby>連続<rt>れんぞく</rt></ruby>している5<ruby>枚<rt>まい</rt></ruby>のカードが<ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby>（スートは<ruby>問<rt>と</rt></ruby>わない）<br>
-                スリーカード（4<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が3<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br>
-                ツーペア（2<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>のペアが2<ruby>組<rt>くみ</rt></ruby>ある<ruby>役<rt>やく</rt></ruby><br>
-                ワンペア（1<ruby>点<rt>てん</rt></ruby>）：<br>
-                &emsp;<ruby>同<rt>おな</rt></ruby>じ<ruby>数字<rt>すうじ</rt></ruby>が2<ruby>枚<rt>まい</rt></ruby><ruby>揃<rt>そろ</rt></ruby>った<ruby>役<rt>やく</rt></ruby><br><br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                上から落ちてくるトランプを左右に動かして、横1段（5枚）でポーカーの役を作る落ちものパズルゲームです。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・落ちてくるカードを「←」「→」で左右に移動させ、「↓」で早落としできます。<br>
+                ・<b>各段で5枚揃う</b>と自動的に役判定を行い、得点が加算されます。<br>
+                ・役となったカードは消え、消えたカードの上にあったカードが下に落ちます。<br>
+
+                <!-- HTMLミニ図解 -->
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                            <td class="club falling">♣<br>7</td>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                        </tr>
+                        <tr>
+                            <td class="spade">♠<br>7</td>
+                            <td class="heart">♥<br>7</td>
+                            <td class="empty"></td>
+                            <td class="diamond">♦<br>2</td>
+                            <td class="spade">♠<br>9</td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">5枚揃う</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                        </tr>
+                        <tr>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                            <td class="empty"></td>
+                            <td class="diamond">♦<br>2</td>
+                            <td class="spade">♠<br>9</td>
+                        </tr>
+                    </table>
+                </div>
+                ※上の例では「7のスリーカード（4点）」が成立し、<b>7の3枚だけが消えて</b>、残った♦2と♠9は場に残ります。<br>
+                ・すべてのカード（52枚）を使いきるとクリア、真ん中のレーン（またはいずれかの列）が7段まで積み上がるとゲームオーバーです。<br>
+
+                <div class="section_title">2. 役と得点（強い順）</div>
+                <table class="yaku_table">
+                    <tr>
+                        <th>役名</th>
+                        <th>揃え方（濃いカードが消えます）</th>
+                        <th style="text-align:right;">得点</th>
+                    </tr>
+                    <tr>
+                        <td><b>ロイヤルフラッシュ</b><br><span style="font-size:11px;">同じスート（柄）で10・J・Q・K・A</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠10</span><span class="mini_card spade">♠J</span><span class="mini_card spade">♠Q</span><span class="mini_card spade">♠K</span><span class="mini_card spade">♠A</span></div></td>
+                        <td class="pt">30点</td>
+                    </tr>
+                    <tr>
+                        <td><b>ストレートフラッシュ</b><br><span style="font-size:11px;">同じスートで連続する5枚の数字</span></td>
+                        <td><div class="mini_hand"><span class="mini_card heart">♥5</span><span class="mini_card heart">♥6</span><span class="mini_card heart">♥7</span><span class="mini_card heart">♥8</span><span class="mini_card heart">♥9</span></div></td>
+                        <td class="pt">25点</td>
+                    </tr>
+                    <tr>
+                        <td><b>フォーカード</b><br><span style="font-size:11px;">同じ数字が4枚</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠K</span><span class="mini_card heart">♥K</span><span class="mini_card diamond">♦K</span><span class="mini_card club">♣K</span><span class="mini_card spade dim">♠3</span></div></td>
+                        <td class="pt">20点</td>
+                    </tr>
+                    <tr>
+                        <td><b>フルハウス</b><br><span style="font-size:11px;">同じ数字3枚＋別の同じ数字2枚</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠8</span><span class="mini_card heart">♥8</span><span class="mini_card club">♣8</span><span class="mini_card diamond">♦4</span><span class="mini_card spade">♠4</span></div></td>
+                        <td class="pt">15点</td>
+                    </tr>
+                    <tr>
+                        <td><b>フラッシュ</b><br><span style="font-size:11px;">数字に関係なく同じスート5枚</span></td>
+                        <td><div class="mini_hand"><span class="mini_card diamond">♦2</span><span class="mini_card diamond">♦5</span><span class="mini_card diamond">♦9</span><span class="mini_card diamond">♦J</span><span class="mini_card diamond">♦A</span></div></td>
+                        <td class="pt">10点</td>
+                    </tr>
+                    <tr>
+                        <td><b>ストレート</b><br><span style="font-size:11px;">スートは問わず数字が連続する5枚</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠4</span><span class="mini_card heart">♥5</span><span class="mini_card club">♣6</span><span class="mini_card diamond">♦7</span><span class="mini_card spade">♠8</span></div></td>
+                        <td class="pt">6点</td>
+                    </tr>
+                    <tr>
+                        <td><b>スリーカード</b><br><span style="font-size:11px;">同じ数字が3枚</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠7</span><span class="mini_card heart">♥7</span><span class="mini_card club">♣7</span><span class="mini_card diamond dim">♦2</span><span class="mini_card spade dim">♠9</span></div></td>
+                        <td class="pt">4点</td>
+                    </tr>
+                    <tr>
+                        <td><b>ツーペア</b><br><span style="font-size:11px;">同じ数字のペアが2組</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠10</span><span class="mini_card heart">♥10</span><span class="mini_card club">♣3</span><span class="mini_card diamond">♦3</span><span class="mini_card spade dim">♠A</span></div></td>
+                        <td class="pt">2点</td>
+                    </tr>
+                    <tr>
+                        <td><b>ワンペア</b><br><span style="font-size:11px;">同じ数字が2枚</span></td>
+                        <td><div class="mini_hand"><span class="mini_card spade">♠A</span><span class="mini_card heart">♥A</span><span class="mini_card club dim">♣5</span><span class="mini_card diamond dim">♦8</span><span class="mini_card spade dim">♠J</span></div></td>
+                        <td class="pt">1点</td>
+                    </tr>
+                </table>
+
+                <div class="section_title">3. いろいろな遊び方・攻略のコツ</div>
+                ・<b>大役（フラッシュ・フルハウス）を狙う</b>：1段目をあえて役なしで埋めて足場にし、2段目で高得点の役を揃えるとスコアが一気に伸びます。<br>
+                ・<b>連鎖消去を狙う</b>：下の段のカードが消えて上のカードが落ちたとき、別の段で新たに5枚揃うと続けて役判定が発生します。<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・画面の「←」「↓」「→」ボタンのほか、パソコンではキーボードの矢印キーでも操作できます。<br>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
