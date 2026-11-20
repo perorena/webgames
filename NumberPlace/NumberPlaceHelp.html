@@ -4,37 +4,132 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>ナンバープレイス</title>
-    <!-- CSS -->
+    <title>ナンバープレイス - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./NumberPlace.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る9×9盤面ミニ図解（本編と同じ palegreen＋太線区切り） */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0 10px 6px;
+            flex-wrap: wrap;
+        }
+        .mini_np {
+            border-collapse: collapse;
+            border: 3px solid #000;
+        }
+        .mini_np td {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #444;
+            background-color: palegreen;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 0;
+        }
+        /* 3×3ブロックの太線区切り */
+        .mini_np td:nth-child(3),
+        .mini_np td:nth-child(6) {
+            border-right: 3px solid #000;
+        }
+        .mini_np tr:nth-child(3) td,
+        .mini_np tr:nth-child(6) td {
+            border-bottom: 3px solid #000;
+        }
+        /* プレイヤーが入れた数字の強調色 */
+        .mini_np td.ans {
+            color: #1565c0;
+            background-color: #e8f5e9;
+        }
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 6px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【ナンバープレイス】</span>
+                <span id="title_line">【ナンバープレイス】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                9×9のマス<ruby>目<rt>め</rt></ruby>を、タテ9マス・ヨコ9マス・<ruby>各<rt>かく</rt></ruby>3×3のマス<ruby>目<rt>め</rt></ruby>が1から9までの<ruby>数字<rt>すうじ</rt></ruby>をそれぞれひとつずつ<ruby>含<rt>ふく</rt></ruby>むように<ruby>埋<rt>う</rt></ruby>めるゲームです。
-                <br>
-                <img src="../img/NumberPlace.png">
-                <br>
-                ＜ルール＞<br>
-                &emsp;・タテの<ruby>列<rt>れつ</rt></ruby>は1から9の<ruby>数字<rt>すうじ</rt></ruby>をそれぞれひとつずつしか<ruby>含<rt>ふく</rt></ruby>むことができない。<br>
-                &emsp;・ヨコの<ruby>列<rt>れつ</rt></ruby>は1から9の<ruby>数字<rt>すうじ</rt></ruby>をそれぞれひとつずつしか<ruby>含<rt>ふく</rt></ruby>むことができない。<br>
-                &emsp;・<ruby>各<rt>かく</rt></ruby>3×3のマス<ruby>目<rt>め</rt></ruby>は1から9の<ruby>数字<rt>すうじ</rt></ruby>をそれぞれひとつずつしか<ruby>含<rt>ふく</rt></ruby>むことができない。<br>
-                ・<ruby>既存<rt>きそん</rt></ruby>の<ruby>問題<rt>もんだい</rt></ruby>を<ruby>解<rt>と</rt></ruby>きたい<ruby>場合<rt>ばあい</rt></ruby>には、<ruby>問題<rt>もんだい</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んでください。<br>
-                ・<ruby>新<rt>あたら</rt></ruby>しい<ruby>問題<rt>もんだい</rt></ruby>を<ruby>解<rt>と</rt></ruby>きたい<ruby>場合<rt>ばあい</rt></ruby>には、<ruby>空<rt>あ</rt></ruby>き<ruby>目安数<rt>めやすすう</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んで、[<ruby>GENERATOR<rt>じぇねれーた</rt></ruby>]ボタンをクリックしてください。<br><br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br>
-                ・[<ruby>HINT<rt>ひんと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>少<rt>すこ</rt></ruby>しずつ<ruby>解答<rt>かいとう</rt></ruby>を<ruby>表示<rt>ひょうじ</rt></ruby>します。<br>
-                ・[<ruby>SOLVER<rt>そるばー</rt></ruby>]ボタンをクリック（タップ）すると<ruby>解答<rt>かいとう</rt></ruby>を<ruby>表示<rt>ひょうじ</rt></ruby>します。<br>
-                ・[<ruby>GENERATOR<rt>じぇねれーた</rt></ruby>]ボタンをクリック（タップ）すると、<ruby>空<rt>あ</rt></ruby>き<ruby>目安数<rt>めやすすう</rt></ruby>から<ruby>問題<rt>もんだい</rt></ruby>を<ruby>作成<rt>さくせい</rt></ruby>します。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                9×9のマス目に、<b>1から9までの数字を重複なく埋めていく</b>定番の数字ロジックパズル（数独）です。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・空いているマスをタップ（クリック）し、プルダウンから <b>1〜9</b> の数字を選んで入れます。<br>
+                ・次の3つの条件をすべて満たしてすべてのマスを埋めるとクリアです！<br>
+                 <b>① タテの1列（9マス）に 1〜9 が1つずつ入ること</b><br>
+                 <b>② ヨコの1列（9マス）に 1〜9 が1つずつ入ること</b><br>
+                 <b>③ 太線で囲まれた3×3のブロック（9マス）に 1〜9 が1つずつ入ること</b><br>
+
+                <!-- HTMLミニ図解：9×9盤面 -->
+                <div class="rule_label">完成イメージ（タテ・ヨコ・3×3すべてに 1〜9 が1つずつ）</div>
+                <div class="board_wrap">
+                    <table class="mini_np">
+                        <tr><td>5</td><td></td><td>2</td><td>7</td><td>3</td><td></td><td>9</td><td>1</td><td>4</td></tr>
+                        <tr><td>3</td><td>1</td><td>7</td><td></td><td>4</td><td>9</td><td>6</td><td>5</td><td></td></tr>
+                        <tr><td>6</td><td>4</td><td>9</td><td>5</td><td>8</td><td>1</td><td></td><td>2</td><td>7</td></tr>
+                        <tr><td>1</td><td>3</td><td></td><td>8</td><td>6</td><td>4</td><td>2</td><td>7</td><td>9</td></tr>
+                        <tr><td>2</td><td>9</td><td>8</td><td>3</td><td></td><td>7</td><td>4</td><td>6</td><td>5</td></tr>
+                        <tr><td>4</td><td>7</td><td>6</td><td>9</td><td>2</td><td>5</td><td>8</td><td></td><td>1</td></tr>
+                        <tr><td>9</td><td>2</td><td>3</td><td>1</td><td>5</td><td>8</td><td>7</td><td>4</td><td></td></tr>
+                        <tr><td></td><td>5</td><td>4</td><td>6</td><td>7</td><td>3</td><td>1</td><td>9</td><td>2</td></tr>
+                        <tr><td>7</td><td>6</td><td>1</td><td>4</td><td></td><td>2</td><td>5</td><td>8</td><td>3</td></tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">完成</span></div>
+                    <table class="mini_np">
+                        <tr><td>5</td><td class="ans">8</td><td>2</td><td>7</td><td>3</td><td class="ans">6</td><td>9</td><td>1</td><td>4</td></tr>
+                        <tr><td>3</td><td>1</td><td>7</td><td class="ans">2</td><td>4</td><td>9</td><td>6</td><td>5</td><td class="ans">8</td></tr>
+                        <tr><td>6</td><td>4</td><td>9</td><td>5</td><td>8</td><td>1</td><td class="ans">3</td><td>2</td><td>7</td></tr>
+                        <tr><td>1</td><td>3</td><td class="ans">5</td><td>8</td><td>6</td><td>4</td><td>2</td><td>7</td><td>9</td></tr>
+                        <tr><td>2</td><td>9</td><td>8</td><td>3</td><td class="ans">1</td><td>7</td><td>4</td><td>6</td><td>5</td></tr>
+                        <tr><td>4</td><td>7</td><td>6</td><td>9</td><td>2</td><td>5</td><td>8</td><td class="ans">3</td><td>1</td></tr>
+                        <tr><td>9</td><td>2</td><td>3</td><td>1</td><td>5</td><td>8</td><td>7</td><td>4</td><td class="ans">6</td></tr>
+                        <tr><td class="ans">8</td><td>5</td><td>4</td><td>6</td><td>7</td><td>3</td><td>1</td><td>9</td><td>2</td></tr>
+                        <tr><td>7</td><td>6</td><td>1</td><td>4</td><td class="ans">9</td><td>2</td><td>5</td><td>8</td><td>3</td></tr>
+                    </table>
+                </div>
+
+                <div class="section_title">2. いろいろな遊び方・攻略のコツ</div>
+                ・<b>新しい問題を自動生成して遊ぶ</b>：用意された問題だけでなく、画面の「空き目安数」を選んで <b>[GENERATOR]</b> を押すと、必ず論理的に解ける新しい問題を何度でも自動作成できます。<br>
+                ・<b>数字がたくさん埋まっている列やブロックから探す</b>：残り1〜2マスになっているタテ・ヨコ・3×3ブロックから先に埋めていくのが基本です。<br>
+                ・<b>同じ数字の縦横ラインで絞り込む</b>：ある3×3ブロックの中で「この数字が入れる場所はここ1マスしかない！」という場所を見つけて確定させましょう。<br>
+
+                <div class="section_title">3. 画面の見方とボタン</div>
+                ・[HINT]ボタンをクリック（タップ）すると、論理的に確定できるマスを<b>1マスずつ</b>埋めてヒントをくれます。<br>
+                ・[SOLVER]ボタンをクリック（タップ）すると、解答をすべて表示します。<br>
+                ・[GENERATOR]ボタンをクリック（タップ）すると、空き目安数に応じた新しい問題を作成します。<br>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
