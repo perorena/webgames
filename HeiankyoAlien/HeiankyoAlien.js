@@ -975,4 +975,3 @@ function checkData(){
     si.insertAdjacentHTML("beforeend", "<div>" + zombiCatchedArray + "</div>");
     si.insertAdjacentHTML("beforeend", "<div>" + zombiCatchedTimerArray + "</div>");
 }
-

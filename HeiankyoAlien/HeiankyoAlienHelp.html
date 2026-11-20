@@ -4,48 +4,182 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>平安京エイリアン</title>
-    <!-- CSS -->
+    <title>平安京エイリアン - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./HeiankyoAlien.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* 操作キー一覧テーブル */
+        .key_table {
+            border-collapse: collapse;
+            margin: 6px 0 8px 12px;
+            font-size: 13px;
+        }
+        .key_table th, .key_table td {
+            border: 1px solid #999;
+            padding: 4px 10px;
+        }
+        .key_table th {
+            background-color: #eef;
+            text-align: left;
+        }
+        .key_badge {
+            display: inline-block;
+            background: #f5f5f5;
+            border: 1px solid #666;
+            border-radius: 4px;
+            padding: 0 6px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        /* HTML/CSSだけで作る平安京盤面＆穴5段階ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_heian {
+            border-collapse: collapse;
+            border: 2px solid #5d4037;
+        }
+        .mini_heian td {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #999;
+            background-color: lightgray;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 18px;
+            padding: 0;
+            position: relative;
+        }
+        .mini_heian td.wall {
+            background-color: #b7410e;
+            background-image: linear-gradient(335deg, rgba(255,255,255,0.2) 2px, transparent 2px),
+                              linear-gradient(155deg, rgba(255,255,255,0.2) 2px, transparent 2px);
+            background-size: 16px 16px;
+            border-color: #7f2a06;
+        }
+        /* 穴の表現 */
+        .hole_circle {
+            display: inline-block;
+            border-radius: 50%;
+            background: radial-gradient(circle, #111 55%, #5d4037 100%);
+            vertical-align: middle;
+        }
+        .hole_sm { width: 14px; height: 14px; }
+        .hole_max {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            font-size: 15px;
+            color: #fff;
+        }
+        .arrow {
+            font-size: 16px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【<ruby>平安京<rt>へいあんきょう</rt></ruby>エイリアン】</span>
+                <span id="title_line">【平安京エイリアン】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                プレーヤーである<ruby>犬<rt>いぬ</rt></ruby>を<ruby>操作<rt>そうさ</rt></ruby>し、<ruby>敵<rt>てき</rt></ruby>であるゾンビ<ruby>犬<rt>いぬ</rt></ruby>を<ruby>穴<rt>あな</rt></ruby>を<ruby>掘<rt>ほ</rt></ruby>って<ruby>埋<rt>う</rt></ruby>めていくゲームです。いわゆる、<ruby>平安京<rt>へいあんきょう</rt></ruby>エイリアンです！<br>
-                <img src="../img/Heiankyo.png"><br>
-                ・<ruby>犬<rt>いぬ</rt></ruby>は<ruby>直接的<rt>ちょくせつてき</rt></ruby>な<ruby>攻撃手段<rt>こうげきしゅだん</rt></ruby>はなく、「<ruby>穴<rt>あな</rt></ruby>を<ruby>掘<rt>ほ</rt></ruby>る」「<ruby>穴<rt>あな</rt></ruby>を<ruby>埋<rt>う</rt></ruby>める」の<ruby>操作<rt>そうさ</rt></ruby>でゾンビ<ruby>犬<rt>いぬ</rt></ruby>を<ruby>退治<rt>たいじ</rt></ruby>します。<br>
-                ・<ruby>犬<rt>いぬ</rt></ruby><ruby>掘<rt>ほ</rt></ruby>りは、Xキーを<ruby>押<rt>お</rt></ruby>すごとに<ruby>最大<rt>さいだい</rt></ruby>5<ruby>段階<rt>だんかい</rt></ruby>あります。<ruby>穴<rt>あな</rt></ruby>を<ruby>掘<rt>ほ</rt></ruby>る<ruby>場所<rt>ばしょ</rt></ruby>は、<ruby>犬<rt>いぬ</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>（<ruby>頭<rt>あたま</rt></ruby>の<ruby>方向<rt>ほうこう</rt></ruby>）となります。<br>
-                ・<ruby>最大<rt>さいだい</rt></ruby>の<ruby>大<rt>おお</rt></ruby>きさになったときのみ、ゾンビ<ruby>犬<rt>いぬ</rt></ruby>を<ruby>穴<rt>あな</rt></ruby>に<ruby>落<rt>お</rt></ruby>とすことができます。
-                ・<ruby>犬<rt>いぬ</rt></ruby>を<ruby>移動<rt>いどう</rt></ruby>させずに、<ruby>向<rt>む</rt></ruby>きだけを<ruby>変<rt>か</rt></ruby>えたい<ruby>場合<rt>ばあい</rt></ruby>には、Sキー（<ruby>右<rt>みぎ</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）、またはAキー（<ruby>左<rt>ひだり</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）を<ruby>押<rt>お</rt></ruby>します。<br>
-                ・<ruby>犬<rt>いぬ</rt></ruby>は<ruby>穴<rt>あな</rt></ruby>の<ruby>大<rt>おお</rt></ruby>きさに<ruby>関<rt>かか</rt></ruby>わらず、<ruby>穴<rt>あな</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>通<rt>とお</rt></ruby>ることはできません。
-                &emsp;ただし、ゾンビ<ruby>犬<rt>いぬ</rt></ruby>が<ruby>最大<rt>さいだい</rt></ruby><ruby>穴<rt>あな</rt></ruby><ruby>以外<rt>いがい</rt></ruby>の<ruby>穴<rt>あな</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>通<rt>とお</rt></ruby>ると、その<ruby>穴<rt>あな</rt></ruby>は<ruby>消滅<rt>しょうめつ</rt></ruby>してしまいます。<br>
-                ・ゾンビ<ruby>犬<rt>いぬ</rt></ruby>は<ruby>穴<rt>あな</rt></ruby>に<ruby>落<rt>お</rt></ruby>ちただけでは<ruby>退治<rt>たいじ</rt></ruby>できず、<ruby>穴<rt>あな</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めて<ruby>通路<rt>つうろ</rt></ruby>の<ruby>状態<rt>じょうたい</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>したときに<ruby>初<rt>はじ</rt></ruby>めて<ruby>退治<rt>たいじ</rt></ruby>できます。<br>
-                ・<ruby>穴<rt>あな</rt></ruby><ruby>埋<rt>う</rt></ruby>めは、Zキーを<ruby>押<rt>お</rt></ruby>すたびに<ruby>最大<rt>さいだい</rt></ruby>5<ruby>段階<rt>だんかい</rt></ruby>で<ruby>穴<rt>あな</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めます。
-                ・ゾンビ<ruby>犬<rt>いぬ</rt></ruby>は<ruby>穴<rt>あな</rt></ruby>に<ruby>落<rt>お</rt></ruby>ちてから<ruby>一定<rt>いってい</rt></ruby><ruby>時間<rt>じかん</rt></ruby><ruby>経過<rt>けいか</rt></ruby>すると<ruby>這<rt>は</rt></ruby>い<ruby>上<rt>あ</rt></ruby>がって<ruby>通路<rt>つうろ</rt></ruby><ruby>上<rt>じょう</rt></ruby>に<ruby>復活<rt>ふっかつ</rt></ruby>し、<ruby>穴<rt>あな</rt></ruby>も<ruby>消<rt>き</rt></ruby>えてしまいます。<br>
-                &emsp;また、<ruby>通路<rt>つうろ</rt></ruby><ruby>上<rt>じょう</rt></ruby>の<ruby>他<rt>ほか</rt></ruby>のゾンビ<ruby>犬<rt>いぬ</rt></ruby>と<ruby>穴<rt>あな</rt></ruby>の<ruby>中<rt>なか</rt></ruby>のゾンビ<ruby>犬<rt>いぬ</rt></ruby>が<ruby>接触<rt>せっしょく</rt></ruby>すると、<ruby>時間<rt>じかん</rt></ruby><ruby>経過<rt>けいか</rt></ruby>に<ruby>関<rt>かか</rt></ruby>わらず<ruby>一瞬<rt>いっしゅん</rt></ruby>で<ruby>穴<rt>あな</rt></ruby>から<ruby>救出<rt>きゅうしゅつ</rt></ruby>されます。<br>
-                ・<ruby>犬<rt>いぬ</rt></ruby>がゾンビ<ruby>犬<rt>いぬ</rt></ruby>に<ruby>接触<rt>せっしょく</rt></ruby>するとやられてしまい、プレーヤーの<ruby>犬数<rt>けんすう</rt></ruby>が<ruby>減<rt>へ</rt></ruby>ります。<ruby>再開<rt>さいかい</rt></ruby>のエイリアンの<ruby>数<rt>かず</rt></ruby>は、やられた<ruby>直前<rt>ちょくぜん</rt></ruby>の<ruby>数<rt>かず</rt></ruby>です。<br>
-                ・そのステージのすべてのエイリアンを<ruby>退治<rt>たいじ</rt></ruby>するとステージクリアとなります。<br>
-                <br><br>
-                &emsp;&emsp;Xキー：<ruby>掘<rt>ほ</rt></ruby>る<br>
-                &emsp;&emsp;Zキー：<ruby>埋<rt>う</rt></ruby>める<br>
-                &emsp;&emsp;Sキー：<ruby>向<rt>む</rt></ruby>き<ruby>変更<rt>へんこう</rt></ruby>（<ruby>右<rt>みぎ</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）<br>
-                &emsp;&emsp;Aキー：<ruby>向<rt>む</rt></ruby>き<ruby>変更<rt>へんこう</rt></ruby>（<ruby>左<rt>ひだり</rt></ruby><ruby>回<rt>まわ</rt></ruby>り）<br>
-                <ruby>矢印<rt>やじるし</rt></ruby>キー：<ruby>移動<rt>いどう</rt></ruby><br>
-                <ruby>同時<rt>どうじ</rt></ruby>に<ruby>掘<rt>ほ</rt></ruby>れる<ruby>穴<rt>あな</rt></ruby>：<ruby>最大<rt>さいだい</rt></ruby>10<ruby>個<rt>こ</rt></ruby><br>
-                <ruby>犬<rt>いぬ</rt></ruby>（プレーヤー）：3匹<br>
-                <br>
-                [<ruby>START<rt>スタート</rt></ruby>]ボタンをクリック（タップ）するとそのステージが<ruby>開始<rt>かいし</rt></ruby>します。
-                ステージが<ruby>変<rt>か</rt></ruby>わっても<ruby>犬数<rt>けんすう</rt></ruby>は3<ruby>匹<rt>びき</rt></ruby>にはなりません。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                守り犬（🐶）を操作して、迷路をうろつく<b>ゾンビ犬（🧟）</b>を「穴を掘って埋める」ことで全滅させるアクションパズルゲームです！<br>
+
+                <div class="section_title">1. 操作方法（キーボード・画面ボタン）</div>
+                <table class="key_table">
+                    <tr>
+                        <th>アクション</th>
+                        <th>キーボード</th>
+                        <th>画面ボタン</th>
+                    </tr>
+                    <tr>
+                        <td>上下左右に移動</td>
+                        <td><span class="key_badge">↑</span> <span class="key_badge">↓</span> <span class="key_badge">←</span> <span class="key_badge">→</span></td>
+                        <td>方向ボタン</td>
+                    </tr>
+                    <tr>
+                        <td>目の前に穴を掘る（5段階）</td>
+                        <td><span class="key_badge">X</span></td>
+                        <td>掘るボタン</td>
+                    </tr>
+                    <tr>
+                        <td>目の前の穴を埋める（5段階）</td>
+                        <td><span class="key_badge">Z</span></td>
+                        <td>埋めるボタン</td>
+                    </tr>
+                    <tr>
+                        <td>その場で向きだけ変える</td>
+                        <td><span class="key_badge">A</span>（左回り） / <span class="key_badge">S</span>（右回り）</td>
+                        <td>向き変更ボタン</td>
+                    </tr>
+                </table>
+
+                <div class="section_title">2. ゾンビ犬の退治の流れ（5段階の穴）</div>
+                守り犬には直接攻撃する手段がないため、次の3ステップで退治します。<br>
+
+                <!-- HTML/CSSミニ図解 -->
+                <div class="rule_label">① 5回掘って最大の穴にする → ② 落ちたら5回埋めて退治！</div>
+                <div class="board_wrap">
+                    <table class="mini_heian">
+                        <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
+                        <tr><td>🐶</td><td><span class="hole_circle hole_max"></span></td><td>🧟</td></tr>
+                        <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">穴に落ちる</span></div>
+                    <table class="mini_heian">
+                        <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
+                        <tr><td>🐶</td><td><span class="hole_circle hole_max">🧟</span></td><td></td></tr>
+                        <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">Zを5回で埋める</span></div>
+                    <table class="mini_heian">
+                        <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
+                        <tr><td>🐶</td><td style="color:#d32f2f;font-size:12px;font-weight:bold;">退治!</td><td></td></tr>
+                        <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
+                    </table>
+                </div>
+                ・<b>穴の大きさ（5段階）</b>：<span class="key_badge">X</span> を5回押して<b>最大サイズ</b>にした穴にだけゾンビ犬が落ちます。1〜4段階目の小さな穴（<span class="hole_circle hole_sm"></span>）はゾンビ犬に踏まれると消えてしまいます。<br>
+                ・<b>埋めて完全撃破</b>：穴に落としただけでは倒せません。<span class="key_badge">Z</span> を5回押して通路に戻すと退治完了です（早く埋めるほど高得点ボーナス！）。<br>
+                ・<b>脱出と救出に注意</b>：穴に落ちたゾンビ犬は約5秒たつと這い上がって復活します。また、他のゾンビ犬が接触すると一瞬で救出されてしまいます。<br>
+
+                <div class="section_title">3. ルール・攻略のコツ</div>
+                ・<b>自分の穴は通れない</b>：守り犬は大きさに関係なく穴の上を歩けないため、自分の退路を塞がないよう注意しましょう（同時に掘れる穴は<b>最大10個</b>で、時間経過でも自然に消えます）。<br>
+                ・<b>その場で向き変更（<span class="key_badge">A</span>/<span class="key_badge">S</span>）を活用</b>：行き止まりや角でゾンビ犬に追い詰められたときは、一歩も動かずに<span class="key_badge">A</span>/<span class="key_badge">S</span>で振り返って目の前に穴を掘るのがコツです。<br>
+                ・<b>残機（守り犬数）</b>：ゾンビ犬に触れると守り犬（初期3匹）が1匹減り、0になるとゲームオーバーです。ステージをクリアしても守り犬の数は回復しないので大切に戦いましょう。<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・[START] / [RESET]ボタンをクリック（タップ）すると、選択中のステージをやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
