@@ -4,29 +4,123 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>15パズル</title>
-    <!-- CSS -->
+    <title>15パズル - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./15Puzzle.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 8px 12px;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: white;
+        }
+        .mini_board td.empty {
+            background-color: gray;
+        }
+        .mini_board td.movable {
+            background-color: #fffde7;
+            border: 2px dashed #e65100;
+        }
+        .arrow {
+            font-size: 20px;
+            font-weight: bold;
+            color: #66c;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【15パズル】</span>
+                <span id="title_line">【15パズル】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                <ruby>左上<rt>ひだりうえ</rt></ruby>に<ruby>数字<rt>すうじ</rt></ruby>タイル１を<ruby>置<rt>お</rt></ruby>き、<ruby>数字<rt>すうじ</rt></ruby>タイルを<ruby>順番<rt>じゅんばん</rt></ruby>に<ruby>並<rt>なら</rt></ruby>べましょう。<br>
-                <img src="../img/15puz2.png"><br>
-                ・<ruby>空白<rt>くうはく</rt></ruby>の<ruby>周<rt>まわ</rt></ruby>りにある<ruby>数字<rt>すうじ</rt></ruby>タイルをクリック（タップ）すると、その<ruby>数字<rt>すうじ</rt></ruby>タイルが<ruby>空白<rt>くうはく</rt></ruby>に<ruby>移動<rt>いどう</rt></ruby>します。<br>
-                ・<ruby>右下<rt>みぎした</rt></ruby>は<ruby>空白<rt>くうはく</rt></ruby>にします。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>正解<rt>せいかい</rt></ruby>タイル<ruby>順<rt>じゅん</rt></ruby>になります。<br>
-                ・[<ruby>SHUFFLE<rt>しゃっふる</rt></ruby>]ボタンをクリック（タップ）すると<ruby>問題<rt>もんだい</rt></ruby>を<ruby>作<rt>つく</rt></ruby>ります。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                バラバラになった数字のタイルを動かして、左上から<b>1・2・3…</b>と順番どおりに並べるパズルゲームです。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・<b>灰色の空白マスと上下左右に隣り合うタイル</b>をクリック（タップ）すると、空白の場所へスライドします。<br>
+                ・斜めのタイルや、離れたタイルは動かせません。<br>
+
+                <!-- HTMLミニ図解：動かし方 -->
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="movable">5</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td class="movable">7</td>
+                            <td class="empty"></td>
+                            <td>8</td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">8をクリック</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>8</td>
+                            <td class="empty"></td>
+                        </tr>
+                    </table>
+                </div>
+                ※点線枠（<b>5・7・8</b>）のように、空白と隣り合うタイルだけが動かせます。<br>
+                ・右下が空白になり、全ての数字が順番どおりに並んだらクリアです！<br>
+
+                <div class="section_title">2. いろいろな遊び方</div>
+                ・<b>最小手数チャレンジ</b>：画面の「操作回数」をどれだけ少なくしてクリアできるか挑戦しましょう。<br>
+                ・<b>巨大パズルに挑戦</b>：難易度の数字を大きくするとマス目が増え、歯ごたえのある難問になります。<br>
+                ・<b>攻略のコツ</b>：最初に一番上の行（1・2・3…）を揃え、そのあと左端の列を揃えていくと解きやすくなります。<br>
+
+                <div class="section_title">3. 画面の見方とボタン</div>
+                ・[SHUFFLE]ボタンをクリック（タップ）するとタイルがシャッフルされ、ゲームが始まります。<br>
+                ・[RESET]ボタンをクリック（タップ）すると、揃った初期状態に戻すことができます。<br>
+                ・上のプルダウンから難易度（タイルの数）を変更できます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
