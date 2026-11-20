@@ -719,5 +719,3 @@ function zoomCalc(){
     mainScreen.style.transform ='scale(' + zoom.toString() + ',' + zoom.toString() + ')';
 }
 */
-
-
