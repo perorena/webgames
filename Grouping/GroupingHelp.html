@@ -4,30 +4,152 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>グルーピング</title>
-    <!-- CSS -->
+    <title>グルーピング - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./Grouping.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #fff;
+        }
+        /* 本編の colorName に合わせたグループ色 */
+        .g1 { background-color: yellowgreen !important; }
+        .g2 { background-color: plum !important; }
+        .g3 { background-color: yellow !important; }
+        .wall { background-color: black !important; }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【グルーピング】</span>
+                <span id="title_line">【グルーピング】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                すべてのマスを１～５の<ruby>数字<rt>すうじ</rt></ruby>がひとつずつ<ruby>入<rt>はい</rt></ruby>ったグループ（<ruby>同<rt>おな</rt></ruby>じ<ruby>色<rt>いろ</rt></ruby>）に<ruby>分<rt>わ</rt></ruby>けましょう。<br>
-                <img src="../img/gp.png"><br>
-                ・マスをクリック（タップ）すると<ruby>色<rt>いろ</rt></ruby>が<ruby>付<rt>つ</rt></ruby>きます。<br>
-                ・<ruby>同<rt>おな</rt></ruby>じグループ（<ruby>同<rt>おな</rt></ruby>じ<ruby>色<rt>いろ</rt></ruby>）の１～５の<ruby>数字<rt>すうじ</rt></ruby>は、マス<ruby>同士<rt>どうし</rt></ruby>が<ruby>隣<rt>とな</rt></ruby>り<ruby>合<rt>あ</rt></ruby>っていなければなりません。<br>
-                ・<ruby>黒<rt>くろ</rt></ruby>いマスは<ruby>選択<rt>せんたく</rt></ruby>できません。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br>
-                ・[<ruby>UNDO<rt>あんどぅ</rt></ruby>]ボタンをクリック（タップ）するとひとつ<ruby>前<rt>まえ</rt></ruby>の<ruby>状態<rt>じょうたい</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                盤面にあるすべての数字マスを、<b>「1〜5の数字が1つずつ入った5マスのグループ」</b>に色分けするロジックパズルです。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・白いマスをクリック（タップ）すると色がつきます。<br>
+                ・5マス塗り終わるごとに、<b>次のグループの色へ自動で切り替わります</b>。<br>
+                ・1つのグループ（同じ色）の条件は次の2つです。<br>
+                 <b>① 1・2・3・4・5 の数字が1つずつ揃っていること</b>（同じ数字は塗れません）<br>
+                 <b>② 5マスすべてが上下左右でひと続きにつながっていること</b>（斜めはつながりません）<br>
+
+                <!-- HTMLミニ図解：完成例 -->
+                <div class="rule_label">完成イメージ（各色それぞれ 1〜5 がひと続き）</div>
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>5</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">色分け完成</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td class="g1">1</td>
+                            <td class="g1">2</td>
+                            <td class="g2">5</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="g1">3</td>
+                            <td class="g1">4</td>
+                            <td class="g2">4</td>
+                            <td class="g2">1</td>
+                        </tr>
+                        <tr>
+                            <td class="g1">5</td>
+                            <td class="g3">1</td>
+                            <td class="g2">3</td>
+                            <td class="g2">2</td>
+                        </tr>
+                        <tr>
+                            <td class="g3">2</td>
+                            <td class="g3">3</td>
+                            <td class="g3">4</td>
+                            <td class="g3">5</td>
+                        </tr>
+                    </table>
+                </div>
+                ※黒いマス（<span style="display:inline-block;width:14px;height:14px;background:#000;vertical-align:middle;"></span>）は壁なので選択できません。<br>
+                ・すべての白いマスを条件どおりに色分けできるとクリアです！<br>
+
+                <div class="section_title">2. いろいろな遊び方・攻略のコツ</div>
+                ・<b>孤立しやすい角や壁際から決める</b>：黒マスや盤面の端に囲まれて「ここからしか伸ばせない」というマスから順番に5マスつなげていくと解きやすくなります。<br>
+                ・<b>同じ数字が隣り合う場所に境界線を引く</b>：隣り合う同じ数字（例：4と4）は絶対に別のグループになるため、そこを境目にして考えるのがコツです。<br>
+                ・<b>問題番号を変えて挑戦</b>：上のプルダウンから別の問題に切り替えて、より広い盤面（グループ数が多い問題）にも挑戦してみましょう。<br>
+
+                <div class="section_title">3. 画面の見方とボタン</div>
+                ・[UNDO]ボタンをクリック（タップ）すると、現在塗っているグループの色をリセットして塗り直すことができます。<br>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
