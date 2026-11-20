@@ -4,32 +4,150 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>四角に分ける</title>
-    <!-- CSS -->
+    <title>四角に分ける - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./MakeSquare.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #fff;
+        }
+        /* 本編の colorName に合わせた四角形の色 */
+        .g1 { background-color: yellowgreen !important; }
+        .g2 { background-color: plum !important; }
+        .g3 { background-color: yellow !important; }
+        .g4 { background-color: aqua !important; }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【<ruby>四角<rt>しかく</rt></ruby>に<ruby>分<rt>わ</rt></ruby>ける】</span>
+                <span id="title_line">【四角に分ける】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                すべてのマスを<ruby>正方形<rt>せいほうけい</rt></ruby>、または<ruby>長方形<rt>ちょうほうけい</rt></ruby>のどちらかに<ruby>分<rt>わ</rt></ruby>けましょう。
-                <br>
-                <img src="../img/ms.png">
-                <br>
-                ・<ruby>好<rt>す</rt></ruby>きなマスをクリック（タップ）し、ドラッグして<ruby>正方形<rt>せいほうけい</rt></ruby>、または<ruby>長方形<rt>ちょうほうけい</rt></ruby>を<ruby>作<rt>つく</rt></ruby>ります。<br>
-                ・ひとつの<ruby>正方形<rt>せいほうけい</rt></ruby>、または<ruby>長方形<rt>ちょうほうけい</rt></ruby>には<ruby>必<rt>かなら</rt></ruby>ずひとつの<ruby>数字<rt>すうじ</rt></ruby>が<ruby>入<rt>はい</rt></ruby>ります。
-                その<ruby>数字<rt>すうじ</rt></ruby>が<ruby>正方形<rt>せいほうけい</rt></ruby>や<ruby>長方形<rt>ちょうほうけい</rt></ruby>のマスの<ruby>数<rt>かず</rt></ruby>と<ruby>同<rt>おな</rt></ruby>じでなければなりません。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br>
-                ・[<ruby>UNDO<rt>あんどぅ</rt></ruby>]ボタンをクリック（タップ）するとひとつ<ruby>前<rt>まえ</rt></ruby>の<ruby>状態<rt>じょうたい</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                盤面にあるすべてのマスを、<b>正方形または長方形</b>に切り分けて色を塗るロジックパズル（シカク）です。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・白いマスからドラッグ（指でなぞる）して、正方形または長方形の範囲を作ります。<br>
+                ・1つの四角形は、次の2つの条件を満たしているときだけ色が確定します。<br>
+                 <b>① 四角形の中に数字が1つだけ入っていること</b>（数字なし・2個以上はNG）<br>
+                 <b>② その数字と、四角形のマスの数（面積）が同じであること</b><br>
+
+                <!-- HTMLミニ図解：完成例 -->
+                <div class="rule_label">完成イメージ（各四角形のマス数 ＝ 中の数字）</div>
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td>4</td>
+                            <td></td>
+                            <td>2</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">四角に分割</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td class="g1">4</td>
+                            <td class="g1"></td>
+                            <td class="g2">2</td>
+                            <td class="g3">4</td>
+                        </tr>
+                        <tr>
+                            <td class="g1"></td>
+                            <td class="g1"></td>
+                            <td class="g2"></td>
+                            <td class="g3"></td>
+                        </tr>
+                        <tr>
+                            <td class="g4">6</td>
+                            <td class="g4"></td>
+                            <td class="g4"></td>
+                            <td class="g3"></td>
+                        </tr>
+                        <tr>
+                            <td class="g4"></td>
+                            <td class="g4"></td>
+                            <td class="g4"></td>
+                            <td class="g3"></td>
+                        </tr>
+                    </table>
+                </div>
+                <span style="font-size: 13px;">※すでに色がついているマスに重ねて引くことはできません。すべての白いマスを塗りつぶすとクリアです！</span><br>
+
+                <div class="section_title">2. いろいろな遊び方・攻略のコツ</div>
+                ・<b>形が1通りに決まる数字から探す</b>：例えば「2」や「3」「5」などの素数は細長い1列の長方形にしかならないため、他の数字とぶつからない方向を見つければすぐに確定できます。<br>
+                ・<b>盤面の四隅（角のマス）を誰が取るか考える</b>：角のマスまで届く数字が1つしかない場合、その数字の四角形が角を含むことが確定します。<br>
+                ・<b>問題番号を変えて挑戦</b>：上のプルダウンから問題を切り替えると、盤面が広くなり難易度がアップします。<br>
+
+                <div class="section_title">3. 画面の見方とボタン</div>
+                ・[UNDO]ボタンをクリック（タップ）すると、直前に塗った四角形を白に戻すことができます。<br>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
