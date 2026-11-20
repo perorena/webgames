@@ -4,34 +4,138 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>グループ１０</title>
-    <!-- CSS -->
+    <title>グループ１０ - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./GroupTen.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作る盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #fff;
+        }
+        /* 本編の colorName に合わせたグループ色 */
+        .g1 { background-color: yellowgreen !important; }
+        .g2 { background-color: plum !important; }
+        .g3 { background-color: yellow !important; }
+        .minus { color: red !important; }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【グループ１０】</span>
+                <span id="title_line">【グループ１０】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                <ruby>選択<rt>せんたく</rt></ruby>したマスの<ruby>数字<rt>すうじ</rt></ruby>を<ruby>足<rt>た</rt></ruby>すと１０になるグループに<ruby>分<rt>わ</rt></ruby>けましょう。<br>
-                <img src="../img/gt.png"><br>
-                ・マスをクリック（タップ）すると<ruby>色<rt>いろ</rt></ruby>が<ruby>付<rt>つ</rt></ruby>きます。<br>
-                &emsp;ただし、<ruby>選択<rt>せんたく</rt></ruby>したマスが<ruby>隣<rt>とな</rt></ruby>り<ruby>合<rt>あ</rt></ruby>っていなかったり、<ruby>足<rt>た</rt></ruby>した<ruby>数<rt>かず</rt></ruby>が１０を<ruby>超<rt>こ</rt></ruby>えるようなマスは<ruby>選択<rt>せんたく</rt></ruby>できません。<br>
-                ・<ruby>赤<rt>あか</rt></ruby>い<ruby>数字<rt>すうじ</rt></ruby>（－１）は<ruby>引<rt>ひ</rt></ruby>き<ruby>算<rt>ざん</rt></ruby>となります。<ruby>上手<rt>じょうず</rt></ruby>に<ruby>利用<rt>りよう</rt></ruby>しましょう。<br>
-                ・<ruby>赤<rt>あか</rt></ruby>い<ruby>数字<rt>すうじ</rt></ruby>（－１）を<ruby>使<rt>つか</rt></ruby>うときは<ruby>赤<rt>あか</rt></ruby>い<ruby>数字<rt>すうじ</rt></ruby>からクリック（タップ）するようにしましょう。<br>
-                &emsp;例えば、<br>
-                &emsp;&emsp;×：９・２・－１の<ruby>順番<rt>じゅんばん</rt></ruby>では<ruby>選択<rt>せんたく</rt></ruby>できません。<br>
-                &emsp;&emsp;〇：－１・２・９の<ruby>順番<rt>じゅんばん</rt></ruby>なら<ruby>選択<rt>せんたく</rt></ruby>できます。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br>
-                ・[<ruby>UNDO<rt>あんどぅ</rt></ruby>]ボタンをクリック（タップ）するとひとつ<ruby>前<rt>まえ</rt></ruby>の<ruby>状態<rt>じょうたい</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                盤面にあるすべてのマスを、<b>「数字を足すとちょうど10になるグループ」</b>に色分けする計算パズルです。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・マスをクリック（タップ）すると色がつき、数字が足されていきます。<br>
+                ・合計が<b>ちょうど10</b>になると、<b>次のグループの色へ自動で切り替わります</b>。<br>
+                ・ただし、次の2つの条件を満たすマスしか選べません。<br>
+                 <b>① 同じ色のマスと上下左右に隣り合っていること</b>（斜めはつながりません）<br>
+                 <b>② 足した合計が10を超えないこと</b>（途中で11以上になるマスは押せません）<br>
+
+                <!-- HTMLミニ図解：完成例 -->
+                <div class="rule_label">完成イメージ（各色それぞれ合計が 10 でひと続き）</div>
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="minus">-1</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>5</td>
+                            <td>2</td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">合計10で色分け</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td class="g1">3</td>
+                            <td class="g2">2</td>
+                            <td class="g2">9</td>
+                        </tr>
+                        <tr>
+                            <td class="g1">4</td>
+                            <td class="g2 minus">-1</td>
+                            <td class="g3">3</td>
+                        </tr>
+                        <tr>
+                            <td class="g1">3</td>
+                            <td class="g3">5</td>
+                            <td class="g3">2</td>
+                        </tr>
+                    </table>
+                </div>
+                <span style="font-size: 13px;">※緑（3+4+3=10）、紫（-1+2+9=10）、黄（5+2+3=10）ですべてのマスが埋まればクリアです！</span><br>
+
+                <div class="section_title">2. 赤い数字（マイナス）の使い方</div>
+                ・<span class="minus" style="font-weight:bold;">-1</span> などの赤い数字は<b>引き算</b>になります。<br>
+                ・途中で合計が10を超える操作はできないため、<b>赤い数字から先にクリックする</b>のがポイントです。<br>
+                 ×：<b>9 → 2 → <span class="minus">-1</span></b> の順番（9+2=11となり、途中で10を超えるため選択できません）<br>
+                 〇：<b><span class="minus">-1</span> → 2 → 9</b> の順番（-1+2=1、1+9=10となり選択できます！）<br>
+
+                <div class="section_title">3. いろいろな遊び方・攻略のコツ</div>
+                ・<b>「9」や「8」などの大きい数字から組み合わせを探す</b>：例えば「9」の相手は「1」か「2と-1」のように候補が限られるため、大きい数字の周辺から決めると解きやすくなります。<br>
+                ・<b>問題番号を変えて挑戦</b>：上のプルダウンから問題を切り替えると、マイナスの数字が増えたり盤面が広くなったりして歯ごたえが増します。<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・[UNDO]ボタンをクリック（タップ）すると、現在塗っているグループの色をリセットして塗り直すことができます。<br>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
