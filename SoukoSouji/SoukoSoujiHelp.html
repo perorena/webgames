@@ -4,31 +4,189 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>倉庫掃除</title>
-    <!-- CSS -->
+    <title>倉庫掃除 - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./SoukoSouji.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTML/CSSだけで作る倉庫掃除盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_souji {
+            border-collapse: collapse;
+            border: 2px solid #5d4037;
+        }
+        .mini_souji td {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #999;
+            background-color: lightgray;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 18px;
+            padding: 0;
+        }
+        /* レンガ壁 */
+        .mini_souji td.wall {
+            background-color: #b7410e;
+            background-image: linear-gradient(335deg, rgba(255,255,255,0.2) 2px, transparent 2px),
+                              linear-gradient(155deg, rgba(255,255,255,0.2) 2px, transparent 2px);
+            background-size: 16px 16px;
+            border-color: #7f2a06;
+        }
+        /* ゴミ（本編と同じ黄色の●） */
+        .mini_souji td.trash {
+            color: yellow;
+            font-size: 20px;
+            text-shadow: 0 0 2px #666;
+        }
+        /* 掃除済みの床 */
+        .mini_souji td.clean {
+            background-color: #eceff1;
+            color: #90a4ae;
+            font-size: 12px;
+        }
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【<ruby>倉庫掃除<rt>そうこそうじ</rt></ruby>】</span>
+                <span id="title_line">【倉庫掃除】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                <ruby>掃除機<rt>そうじき</rt></ruby>を<ruby>操<rt>あやつ</rt></ruby>って、<ruby>倉庫<rt>そうこ</rt></ruby>にあるゴミを<ruby>片付<rt>かたづ</rt></ruby>けましょう！<br>
-                <img src="../img/Soukosouji.png"><br>
-                <br>
-                <ruby>矢印<rt>やじるし</rt></ruby>キーを<ruby>使<rt>つか</rt></ruby>って、<ruby>掃除機<rt>そうじき</rt></ruby>を<ruby>操作<rt>そうさ</rt></ruby>します。<br>
-                ・<ruby>掃除機<rt>そうじき</rt></ruby>は<ruby>壁<rt>かべ</rt></ruby>や<ruby>荷物<rt>にもつ</rt></ruby>を<ruby>通<rt>とお</rt></ruby>り<ruby>抜<rt>ぬ</rt></ruby>けることはできません。<br>
-                ・ゴミの<ruby>無<rt>な</rt></ruby>いところへは<ruby>行<rt>い</rt></ruby>けません。<ruby>一筆書<rt>ひとふでが</rt></ruby>きのように<ruby>掃除<rt>そうじ</rt></ruby>しましょう！<br>
-                ・すべてのゴミ（<ruby>黄色<rt>きいろ</rt></ruby>の●<ruby>印<rt>しるし</rt></ruby>）を<ruby>吸<rt>すい</rt></ruby><ruby>込<rt>こめ</rt></ruby>ばクリアとなります。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す<ruby>事<rt>こと</rt></ruby>ができます。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                ロボット掃除機を操作して、倉庫の床に落ちているすべての<b>ゴミ（<span style="color:#e6b800;font-weight:bold;">●</span>）</b>を一筆書きのルートで吸い込むパズルゲームです。<br>
+
+                <div class="section_title">1. 基本ルールと操作方法</div>
+                ・<b>パソコンの場合</b>：キーボードの <b>[↑][↓][←][→]（矢印キー）</b> で上下左右に移動します。<br>
+                ・<b>スマホ・タブレットの場合</b>：画面下の <b>[方向ボタン]</b> をタップします。<br>
+                ・<b>「ゴミ（<span style="color:#e6b800;font-weight:bold;">●</span>）があるマス」にしか進めません</b>。一度通って掃除した場所（空間）には戻れないため、一筆書きで進む必要があります。<br>
+
+                <!-- HTML/CSSミニ図解 -->
+                <div class="rule_label">クリアイメージ（一筆書きですべての黄色の●を吸い込む）</div>
+                <div class="board_wrap">
+                    <table class="mini_souji">
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td>🤖</td>
+                            <td class="trash">●</td>
+                            <td class="trash">●</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="trash">●</td>
+                            <td>📦</td>
+                            <td class="trash">●</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="trash">●</td>
+                            <td class="trash">●</td>
+                            <td class="trash">●</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">一筆書き掃除</span></div>
+                    <table class="mini_souji">
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="clean">→</td>
+                            <td class="clean">→</td>
+                            <td class="clean">↓</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td>🤖</td>
+                            <td>📦</td>
+                            <td class="clean">↓</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="clean">↑</td>
+                            <td class="clean">←</td>
+                            <td class="clean">←</td>
+                            <td class="wall"></td>
+                        </tr>
+                        <tr>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                            <td class="wall"></td>
+                        </tr>
+                    </table>
+                </div>
+                <span style="font-size: 13px;">※すべてのゴミ（<span style="color:#e6b800;font-weight:bold;">●</span>）を吸い込むとクリアです！</span><br>
+
+                <div class="section_title">2. 進めない場所の注意</div>
+                ・<b>壁と荷物（📦）</b>：レンガの壁や木箱の荷物は通り抜けられません（倉庫番と違い、荷物を押すこともできません）。<br>
+                ・<b>ゴミのない空間</b>：最初からゴミがないマスや、一度吸い取った後のマスへは移動できません。<br>
+
+                <div class="section_title">3. いろいろな遊び方・攻略のコツ</div>
+                ・<b>行き止まり（袋小路）をゴールにする</b>：周りを壁や荷物に囲まれて「出口が1つしかないゴミマス」は、入ると出られなくなるため、必ず最後（ゴール）に回るルートを考えましょう。<br>
+                ・<b>島のようにゴミを残さない</b>：1マスだけ取り残して周囲を掃除してしまうと二度と近づけなくなるため、壁際から順番に端を詰めていくのがコツです。<br>
+                ・<b>問題番号を変えて挑戦</b>：上のプルダウンから問題を切り替えて、より広い倉庫の一筆書きにも挑戦してみましょう。<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
