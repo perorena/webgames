@@ -723,7 +723,3 @@ function draw() {
         killMessageTimer--;
     }
 }
-
-
-
-

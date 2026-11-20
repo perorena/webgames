@@ -4,42 +4,183 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>スネークサバイブ</title>
-    <!-- CSS -->
+    <title>スネークサバイブ - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./SnakeSurvive.css">
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTML/CSSだけで作るスネーク画面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_arena {
+            border-collapse: collapse;
+            background-color: #111;
+            border: 2px solid #444;
+        }
+        .mini_arena td {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #1e1e1e;
+            padding: 0;
+            position: relative;
+        }
+        /* 本編と同じ配色 */
+        .p_head { background-color: #00ccff !important; }
+        .p_body { background-color: #0055aa !important; }
+        .e_head { background-color: #ff3333 !important; }
+        .e_body { background-color: #aa0000 !important; }
+        .obs_cell { background-color: #777777 !important; }
+        .goal_cell { background-color: #00ff66 !important; }
+
+        /* 目の表現 */
+        .eye_r::after {
+            content: "";
+            position: absolute;
+            right: 2px;
+            top: 3px;
+            width: 3px;
+            height: 3px;
+            background: #000;
+            box-shadow: 0 7px 0 #000;
+        }
+        .eye_l::after {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 3px;
+            width: 3px;
+            height: 3px;
+            background: #000;
+            box-shadow: 0 7px 0 #000;
+        }
+        .eye_u::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            width: 3px;
+            height: 3px;
+            background: #000;
+            box-shadow: 7px 0 0 #000;
+        }
+        .legend_list {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        .swatch {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            vertical-align: middle;
+            margin-right: 4px;
+            border: 1px solid #333;
+        }
+        /* 得点テーブル */
+        .score_table {
+            border-collapse: collapse;
+            margin: 6px 0 6px 12px;
+            font-size: 13px;
+        }
+        .score_table th, .score_table td {
+            border: 1px solid #999;
+            padding: 4px 8px;
+        }
+        .score_table th {
+            background-color: #eef;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【スネークサバイブ】</span>
+                <span id="title_line">【スネークサバイブ】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                <ruby>敵<rt>てき</rt></ruby>のヘビを<ruby>倒<rt>たお</rt></ruby>しながら、<ruby>緑色<rt>みどりいろ</rt></ruby>のゴールを<ruby>目指<rt>めざ</rt></ruby>しましょう！
-                <br><br>
-                【<ruby>操作方法<rt>そうさほうほう</rt></ruby>】<br>
-                ・キーボードの[<ruby>矢印<rt>やじるし</rt></ruby>キー] または <ruby>画面<rt>がめん</rt></ruby><ruby>下<rt>した</rt></ruby>のボタンでヘビを<ruby>動<rt>うご</rt></ruby>かします。<br><br>
+                赤い敵ヘビの体を噛み千切りながら、移動する<b>緑色のゴール</b>を目指すサバイバルアクションゲームです！<br>
 
-                【ルール】<br>
-                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>と<ruby>正面<rt>しょうめん</rt></ruby>からぶつかるとゲームオーバーです。<br>
-                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>を<ruby>横<rt>よこ</rt></ruby>や<ruby>後<rt>うし</rt></ruby>ろから<ruby>噛<rt>か</rt></ruby>むと<ruby>撃破<rt>げきは</rt></ruby>（<ruby>全滅<rt>ぜんめつ</rt></ruby>）できます！<br>
-                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>噛<rt>か</rt></ruby>むと、そこから<ruby>千切<rt>ちぎ</rt></ruby>れて<ruby>障害物<rt>しょうがいぶつ</rt></ruby>（<ruby>灰色<rt>はいいろ</rt></ruby>）になります。<br>
-                ・<ruby>敵<rt>てき</rt></ruby>が<ruby>頭<rt>あたま</rt></ruby>だけ（<ruby>長<rt>なが</rt></ruby>さ1）になると<ruby>点滅<rt>てんめつ</rt></ruby>します。<br>
-                ・<ruby>千切<rt>ちぎ</rt></ruby>れた<ruby>障害物<rt>しょうがいぶつ</rt></ruby>や<ruby>自分<rt>じぶん</rt></ruby>の<ruby>体<rt>からだ</rt></ruby>にぶつかるとゲームオーバーです。<br>
-                ・<ruby>敵<rt>てき</rt></ruby>をすべて<ruby>倒<rt>たお</rt></ruby>すか、<ruby>緑色<rt>みどりいろ</rt></ruby>のゴールに<ruby>到達<rt>とうたつ</rt></ruby>するとステージクリアです。<br><br>
+                <div class="section_title">1. 基本ルールと操作方法</div>
+                ・<b>パソコンの場合</b>：キーボードの <b>[↑][↓][←][→]（矢印キー）</b> で進む方向を変えます。<br>
+                ・<b>スマホ・タブレットの場合</b>：画面下の <b>[方向ボタン]</b> をタップします。<br>
+                ・緑色のゴールマスに到達するとステージクリア！次のステージは敵が1匹ずつ増えます。<br>
 
-                【<ruby>得点<rt>とくてん</rt></ruby>の<ruby>仕組<rt>しく</rt></ruby>み】<br>
-                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>を<ruby>撃破<rt>げきは</rt></ruby>：<ruby>自分<rt>じぶん</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さ × 20<ruby>点<rt>てん</rt></ruby><br>
-                ・<ruby>敵<rt>てき</rt></ruby>の<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>噛<rt>か</rt></ruby>む：<ruby>自分<rt>じぶん</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さ × <ruby>千切<rt>ちぎ</rt></ruby>った<ruby>長<rt>なが</rt></ruby>さ × 10<ruby>点<rt>てん</rt></ruby><br>
-                ・<ruby>敵<rt>てき</rt></ruby>に<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>噛<rt>か</rt></ruby>まれる：<ruby>敵<rt>てき</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さ × <ruby>千切<rt>ちぎ</rt></ruby>られた<ruby>長<rt>なが</rt></ruby>さ × 10<ruby>点<rt>てん</rt></ruby> マイナス<br>
-                ※<ruby>自分<rt>じぶん</rt></ruby>の<ruby>体<rt>からだ</rt></ruby>が<ruby>長<rt>なが</rt></ruby>く、より<ruby>大<rt>おお</rt></ruby>きな<ruby>胴体<rt>どうたい</rt></ruby>を<ruby>千切<rt>ちぎ</rt></ruby>るほど<ruby>高得点<rt>こうとくてん</rt></ruby>になります！<br><br>
+                <!-- HTML/CSSミニ図解 -->
+                <div class="board_wrap">
+                    <table class="mini_arena">
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td class="p_body"></td><td class="p_body"></td><td class="p_body"></td><td class="p_head eye_r"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="e_head eye_l"></td><td class="e_body"></td><td class="e_body"></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td class="obs_cell"></td><td class="obs_cell"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="e_head eye_u"></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="e_body"></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="e_body"></td><td></td><td class="goal_cell"></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    </table>
+                    <div class="legend_list">
+                        <div><span class="swatch p_head"></span><b>自分（青ヘビ）</b>：操作するヘビ</div>
+                        <div><span class="swatch e_head"></span><b>敵（赤ヘビ）</b>：追尾やランダムで動く</div>
+                        <div><span class="swatch obs_cell"></span><b>障害物（灰色）</b>：千切れた体の残骸</div>
+                        <div><span class="swatch goal_cell"></span><b>ゴール（緑）</b>：5秒ごとに四隅へ移動</div>
+                    </div>
+                </div>
+                <span style="font-size: 13px;">※画面の端（上下左右）を超えると、反対側の端からワープして出てきます。</span><br>
 
-                <button class="transition_button" onclick="window.close()"><ruby>閉<rt>と</rt></ruby>じる</button>
+                <div class="section_title">2. バトル・衝突のルール</div>
+                ・<b>敵の頭を横・後ろから攻撃</b>：敵の頭と正面衝突以外の向きでぶつかると、その敵を<b>一撃で撃破</b>できます！<br>
+                ・<b>敵の胴体を噛む</b>：噛んだ場所から後ろが千切れて灰色の障害物になります（敵が頭だけになると赤く点滅します）。<br>
+                ・<b>自分の胴体を噛まれたとき</b>：敵に体を噛まれると自分の長さが短くなり、スコアが減ってしまいます。<br>
+                ・<b>ゲームオーバー条件</b>：次の3つのどれかに当たるとゲームオーバーです。<br>
+                 <b>① 敵の頭との正面衝突</b> <b>② 灰色の障害物</b> <b>③ 自分の体</b><br>
+
+                <div class="section_title">3. 得点の仕組みと攻略のコツ</div>
+                <table class="score_table">
+                    <tr>
+                        <th>アクション</th>
+                        <th>スコア計算</th>
+                    </tr>
+                    <tr>
+                        <td>敵の頭を撃破（横・後ろ）</td>
+                        <td><b>＋（自分の長さ × 20点）</b></td>
+                    </tr>
+                    <tr>
+                        <td>敵の胴体を噛み千切る</td>
+                        <td><b>＋（自分の長さ × 千切った数 × 10点）</b></td>
+                    </tr>
+                    <tr>
+                        <td>敵に自分の胴体を噛まれる</td>
+                        <td><b>−（敵の長さ × 千切られた数 × 10点）</b></td>
+                    </tr>
+                </table>
+                ・<b>全滅させてから安全にゴール</b>：敵をすべて倒すと「敵全滅！ゴールへ急げ！」の合図とともにゴールが安全な場所へ出現します。スコアを稼ぎたいときは、噛まれないよう注意しながら全滅を狙いましょう。<br>
+                ・<b>障害物の作りすぎに注意</b>：敵を千切りすぎると灰色の壁だらけになり、自分の逃げ場がなくなるので注意！<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・[RETRY]ボタンをクリック（タップ）するとステージ1からやり直す事ができます。<br>
+                ・ハイスコアはブラウザに自動保存されます。記録を消したいときはハイスコアリセットボタンを押してください。<br><br>
+
+                <button class="transition_button" onclick="window.close()">閉じる</button>
             </td>
         </tr>
     </table>
 </body>
 </html>
-
