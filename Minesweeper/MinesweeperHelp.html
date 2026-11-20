@@ -4,32 +4,172 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>マインスイーパー</title>
-    <!-- CSS -->
+    <title>マインスイーパー - 遊び方</title>
+    <!-- CSS（本編と同じCSSを使用） -->
     <link type="text/css" rel="stylesheet" href="./Minesweeper.css">
-    <!-- JavaScript -->
-    <script type="text/javascript">
-    </script>
+    <style>
+        /* 遊び方ページ用の追加スタイル */
+        #explanation {
+            line-height: 1.7;
+            padding: 10px 6px;
+        }
+        .section_title {
+            font-weight: bold;
+            background-color: #eef;
+            border-left: 5px solid #66c;
+            padding: 3px 8px;
+            margin: 14px 0 6px 0;
+        }
+        /* HTMLだけで作るマインスイーパー盤面ミニ図解 */
+        .board_wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 10px 12px;
+            flex-wrap: wrap;
+        }
+        .mini_board {
+            border-collapse: collapse;
+        }
+        .mini_board td {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        /* 未開マス（本編と同じ gray） */
+        .mini_board td.closed {
+            background-color: gray;
+        }
+        /* 開いたマス（本編と同じ white） */
+        .mini_board td.open {
+            background-color: white;
+        }
+        /* 旗マス */
+        .mini_board td.flag {
+            background-color: gray;
+            font-size: 15px;
+        }
+        /* 地雷マス */
+        .mini_board td.mine {
+            background-color: #ffebee;
+            font-size: 15px;
+        }
+        /* 本編の colorName に合わせた数字の色 */
+        .n1 { color: slategray; }
+        .n2 { color: yellowgreen; }
+        .n3 { color: deepskyblue; }
+
+        .arrow {
+            font-size: 18px;
+            font-weight: bold;
+            color: #66c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .rule_label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin: 6px 0 2px 12px;
+        }
+    </style>
 </head>
 <body>
     <table id="main_table">
         <tr>
             <td id="title">
-                <span id="title_line">【マインスイーパー】</span>
+                <span id="title_line">【マインスイーパー】遊び方</span>
             </td>
         </tr>
         <tr>
             <td id="explanation">
-                <ruby>地雷<rt>じらい</rt></ruby>を<ruby>踏<rt>ふ</rt></ruby>まずにすべてのマスを<ruby>開<rt>ひら</rt></ruby>けばゲームクリアとなります。<br>
-                <br>
-                <img src="../img/sweeper.png">
-                <br>
-                ・マスに<ruby>書<rt>か</rt></ruby>かれた<ruby>数字<rt>すうじ</rt></ruby>は、<ruby>隣接<rt>りんせつ</rt></ruby>する８つのマスのうち<ruby>地雷<rt>じらい</rt></ruby>のあるマスの<ruby>数<rt>かず</rt></ruby>を
-                <ruby>示<rt>しめ</rt></ruby>しており、それを<ruby>頼<rt>たよ</rt></ruby>りに、<ruby>地雷<rt>じらい</rt></ruby>のないマスだけをすべて<ruby>開<rt>ひら</rt></ruby>けばゲームクリアとなります。<br>
-                ・クリック（タップ）でマスを<ruby>開<rt>ひら</rt></ruby>くことができます。<br>
-                ・<ruby>長押<rt>ながお</rt></ruby>しクリック（タップ）でマスに<ruby>旗<rt>はた</rt></ruby>を<ruby>立<rt>た</rt></ruby>てることができます。<ruby>地雷<rt>じらい</rt></ruby>がありそうなマスに<ruby>立<rt>た</rt></ruby>てると<ruby>参考<rt>さんこう</rt></ruby>になるでしょう。<ruby>旗<rt>はた</rt></ruby>をもう<ruby>一度<rt>いちど</rt></ruby>クリック（タップ）すると<ruby>消<rt>け</rt></ruby>せます。<br>
-                ・[<ruby>RESET<rt>りせっと</rt></ruby>]ボタンをクリック（タップ）すると<ruby>別<rt>べつ</rt></ruby>の<ruby>問題<rt>もんだい</rt></ruby>になります。<br><br>
-                <button class="transition_button" onclick='window.close()'><ruby>閉<rt>と</rt></ruby>じる</button>
+                隠された地雷（💣）を踏まないように、数字をヒントにして<b>地雷のないすべてのマスを開く</b>推理パズルゲームです。<br>
+
+                <div class="section_title">1. 基本ルール</div>
+                ・灰色のマスをクリック（タップ）するとマスが開きます。<br>
+                ・<b>1回目のクリックは必ず安全</b>（地雷が配置されません）なので、最初はどこからでも安心して押せます。<br>
+                ・開いたマスに書かれた数字は、<b>そのマスの周囲8マス（上下左右・斜め）に隠れている地雷の数</b>を表しています。<br>
+
+                <!-- HTMLミニ図解：数字と旗とクリア状態 -->
+                <div class="rule_label">プレイ中の盤面と地雷の推理（4×4・地雷2個の例）</div>
+                <div class="board_wrap">
+                    <table class="mini_board">
+                        <tr>
+                            <td class="open n1">1</td>
+                            <td class="flag">🚩</td>
+                            <td class="open n1">1</td>
+                            <td class="open"></td>
+                        </tr>
+                        <tr>
+                            <td class="open n1">1</td>
+                            <td class="open n1">1</td>
+                            <td class="open n2">2</td>
+                            <td class="open n1">1</td>
+                        </tr>
+                        <tr>
+                            <td class="open"></td>
+                            <td class="open"></td>
+                            <td class="open n1">1</td>
+                            <td class="closed"></td>
+                        </tr>
+                        <tr>
+                            <td class="open"></td>
+                            <td class="open"></td>
+                            <td class="open n1">1</td>
+                            <td class="open n1">1</td>
+                        </tr>
+                    </table>
+                    <div class="arrow">➡<br><span style="font-size: 11px;">正解配置</span></div>
+                    <table class="mini_board">
+                        <tr>
+                            <td class="open n1">1</td>
+                            <td class="mine">💣</td>
+                            <td class="open n1">1</td>
+                            <td class="open"></td>
+                        </tr>
+                        <tr>
+                            <td class="open n1">1</td>
+                            <td class="open n1">1</td>
+                            <td class="open n2">2</td>
+                            <td class="open n1">1</td>
+                        </tr>
+                        <tr>
+                            <td class="open"></td>
+                            <td class="open"></td>
+                            <td class="open n1">1</td>
+                            <td class="mine">💣</td>
+                        </tr>
+                        <tr>
+                            <td class="open"></td>
+                            <td class="open"></td>
+                            <td class="open n1">1</td>
+                            <td class="open n1">1</td>
+                        </tr>
+                    </table>
+                </div>
+                <span style="font-size: 13px;">※周囲に地雷が1つもないマス（空白）を開くと、隣り合う安全なマスが一気に連鎖して開きます。<br>
+                ※地雷（💣）のマスを開いてしまうとゲームオーバーです。</span><br>
+
+                <div class="section_title">2. 旗（🚩）の立て方・消し方</div>
+                ・地雷があると推理したマスには、目印として<b>「旗（🚩）」</b>を立てることができます。<br>
+                 <b>・パソコンの場合</b>：マスの上で<b>右クリック</b><br>
+                 <b>・スマホ・タブレットの場合</b>：マスを<b>長押し</b>（0.2秒ほど押し続けて離す）<br>
+                ・旗が立っているマスは誤ってクリックしても開かないため、安全ストッパーになります。もう一度右クリック（または長押し）すると旗を消せます。<br>
+
+                <div class="section_title">3. いろいろな遊び方・攻略のコツ</div>
+                ・<b>角の「1」から確定させる</b>：開いたマスの「1」の周囲に灰色のマスが1つしか残っていなければ、そこが100%地雷と確定します。<br>
+                ・<b>旗を使わない「ノーフラッグ挑戦」</b>：慣れてきたら旗を1本も立てずにクリアするスピード勝負にも挑戦してみましょう。<br>
+                ・<b>難易度を上げて挑戦</b>：上のプルダウンから問題番号を大きくすると、盤面が広くなり地雷の数も増えてスリルが増します。<br>
+
+                <div class="section_title">4. 画面の見方とボタン</div>
+                ・[RESET]ボタンをクリック（タップ）すると最初からやり直す事ができます。<br>
+                ・1手目を開いたあと、[回答]ボタンを押すと地雷の正解位置をすべて表示できます。<br><br>
+
+                <button class="transition_button" onclick='window.close()'>閉じる</button>
             </td>
         </tr>
     </table>
