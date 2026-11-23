@@ -11,14 +11,16 @@ const PlayerDownImageSrc = Root + 'robot_soujiki_down.png';
 
 //0:空間
 //1:壁
-//2:荷物
+//2:荷物（固定）
 //3:ゴミ
 //4:プレーヤー
+//5:荷物（移動可能）
 const Space = 0;
 const RengaWall = 1;
 const Box = 2;
 const Trash = 3;
 const Player = 4;
+const MovableBox = 5;
 
 
 // 問題データ指定
@@ -67,19 +69,50 @@ function arrowAction(action){
         // 画面外へのチェック
         if (nextRow < 0 || nextRow >= maxRow || nextCol < 0 || nextCol >= maxCol) return;
 
-        // 移動先が「ゴミ」の場合のみ進める（一筆書きルール：空間や壁、荷物には移動できない）
         let intTarget = soukoData[nextRow][nextCol];
+        let canMove = false;
+
+        // 移動先がゴミ掃除か荷物移動か
         if (intTarget == Trash) {
-            
+            // 移動先が「ゴミ」の場合
+            // ゴミ掃除
+            trashClean(nextRow, nextCol);
+            canMove = true;
+        } else if (intTarget == MovableBox) {
+            // 移動先が「荷物（移動可能）」の場合
+            // 荷物の押し出し先（プレーヤーのさらに1マス先）を計算
+            let pushRow = nextRow + (nextRow - rowInx);
+            let pushCol = nextCol + (nextCol - colInx);
+
+            // 押し出し先が画面内かつ「空間(Space)」である場合のみ押せる
+            if (pushRow >= 0 && pushRow < maxRow && pushCol >= 0 && pushCol < maxCol) {
+                if (soukoData[pushRow][pushCol] == Space) {
+                    // データの更新（元の荷物位置を空間にし、押し出し先に荷物を配置）
+                    soukoData[nextRow][nextCol] = Space;
+                    soukoData[pushRow][pushCol] = MovableBox;
+
+                    // 画面上の荷物画像を移動
+                    let table = document.getElementById('soukoGrid');
+                    let boxCell = table.rows[nextRow].cells[nextCol];
+                    let pushCell = table.rows[pushRow].cells[pushCol];
+                    let boxImg = boxCell.querySelector('img');
+                    if (boxImg != null) {
+                        boxCell.removeChild(boxImg);
+                        pushCell.appendChild(boxImg);
+                    }
+                    canMove = true;
+                }
+            }
+        }
+
+        // 移動可能な場合、プレーヤーを再描画してクリア判定を行う
+        if (canMove) {
             // プレーや画像削除
             player.parentNode.removeChild(player);
 
             // 移動先のセルをテーブルから正確に取得（nextSiblingによる位置ズレバグを回避）
             let table = document.getElementById('soukoGrid');
             pTd = table.rows[nextRow].cells[nextCol];
-
-            // ゴミ掃除
-            trashClean(nextRow, nextCol);
 
             // 再描画
             if(pTd != null){
@@ -223,14 +256,21 @@ function makeTable(parentId){
                 img.src = RengaImageSrc;
                 cell.appendChild(img);
             }
-            // 荷物
+            // 荷物（固定）
             if( intTarget == Box){
+                let img = document.createElement('img');
+                img.setAttribute('class', 'sg');
+                img.src = BoxFixImageSrc;
+                cell.appendChild(img);
+            }
+            // 荷物（移動可能）
+            if( intTarget == MovableBox){
                 let img = document.createElement('img');
                 img.setAttribute('class', 'sg');
                 img.src = BoxImageSrc;
                 cell.appendChild(img);
             }
-            // 荷物
+            // ゴミ
             if( intTarget == Trash){
                 cell.style.fontSize = (cellWidth / 2).toString() +'px';
                 cell.style.color = 'yellow';
