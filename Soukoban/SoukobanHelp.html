@@ -20,6 +20,21 @@
             padding: 3px 8px;
             margin: 14px 0 6px 0;
         }
+        /* 本文中の置き場所記号（本編と同じyellow） */
+        .goal_mark {
+            color: yellow;
+            font-weight: bold;
+            font-family: Arial, "Meiryo", sans-serif;
+            text-shadow: 0 0 2px #555;
+        }
+        /* 本文中のインライン画像アイコン */
+        .inline_icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
         /* HTML/CSSだけで作る倉庫番盤面ミニ図解 */
         .board_wrap {
             display: flex;
@@ -42,7 +57,14 @@
             font-size: 18px;
             padding: 0;
         }
-        /* レンガ壁 */
+        /* ミニ盤面内の画像サイズ調整 */
+        .mini_souko td img {
+            width: 28px;
+            height: 28px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        /* レンガ壁（視認性重視のCSS表現） */
         .mini_souko td.wall {
             background-color: #b7410e;
             background-image: linear-gradient(335deg, rgba(255,255,255,0.2) 2px, transparent 2px),
@@ -53,12 +75,9 @@
         /* 置き場所（本編と同じ黄色の●） */
         .mini_souko td.goal {
             color: yellow;
+            font-family: Arial, "Meiryo", sans-serif;
             font-size: 20px;
-            text-shadow: 0 0 2px #666;
-        }
-        /* 置き場所に収まった荷物 */
-        .mini_souko td.box_ok {
-            background-color: #fff59d;
+            text-shadow: 0 0 1px #555;
         }
         .arrow {
             font-size: 18px;
@@ -84,7 +103,7 @@
         </tr>
         <tr>
             <td id="explanation">
-                犬を操作して、倉庫の中にあるすべての<b>荷物（📦）</b>を、<b>指定の置き場所（<span style="color:#e6b800;font-weight:bold;">●</span>）</b>まで押して運ぶ定番パズルゲームです。<br>
+                犬（<img src="../img/dog_front.png" class="inline_icon" alt="犬">）を操作して、倉庫の中にあるすべての<b>荷物（<img src="../img/box1.png" class="inline_icon" alt="荷物">）</b>を、<b>指定の置き場所（<span class="goal_mark">●</span>）</b>まで押して運ぶ定番パズルゲームです。<br>
 
                 <div class="section_title">1. 基本ルールと操作方法</div>
                 ・<b>パソコンの場合</b>：キーボードの <b>[↑][↓][←][→]（矢印キー）</b> で上下左右に移動します。<br>
@@ -104,15 +123,15 @@
                         </tr>
                         <tr>
                             <td class="wall"></td>
-                            <td>🐶</td>
-                            <td>📦</td>
+                            <td><img src="../img/dog_right.png" alt="犬"></td>
+                            <td><img src="../img/box1.png" alt="荷物"></td>
                             <td class="goal">●</td>
                             <td class="wall"></td>
                         </tr>
                         <tr>
                             <td class="wall"></td>
                             <td></td>
-                            <td>📦</td>
+                            <td><img src="../img/box1.png" alt="荷物"></td>
                             <td></td>
                             <td class="wall"></td>
                         </tr>
@@ -144,21 +163,21 @@
                             <td class="wall"></td>
                             <td></td>
                             <td></td>
-                            <td class="box_ok">📦</td>
+                            <td><img src="../img/box2.png" alt="収納済み荷物"></td>
                             <td class="wall"></td>
                         </tr>
                         <tr>
                             <td class="wall"></td>
                             <td></td>
                             <td></td>
-                            <td>🐶</td>
+                            <td><img src="../img/dog_front.png" alt="犬"></td>
                             <td class="wall"></td>
                         </tr>
                         <tr>
                             <td class="wall"></td>
                             <td></td>
                             <td></td>
-                            <td class="box_ok">📦</td>
+                            <td><img src="../img/box2.png" alt="収納済み荷物"></td>
                             <td class="wall"></td>
                         </tr>
                         <tr>
@@ -170,16 +189,16 @@
                         </tr>
                     </table>
                 </div>
-                <span style="font-size: 13px;">※荷物が置き場所（<span style="color:#e6b800;font-weight:bold;">●</span>）にピッタリ乗ると木箱の色が変わり、すべて乗せるとクリアです！</span><br>
+                <span style="font-size: 13px;">※荷物（<img src="../img/box1.png" class="inline_icon" alt="荷物">）が置き場所（<span class="goal_mark">●</span>）にピッタリ乗ると木箱の色が変わり（<img src="../img/box2.png" class="inline_icon" alt="収納済み荷物">）、すべて乗せるとクリアです！</span><br>
 
                 <div class="section_title">2. 動かせない場合の注意</div>
                 ・<b>荷物は「押す」だけ</b>：引っ張ることはできません。<br>
                 ・<b>2つ同時には押せない</b>：荷物のすぐ先に壁や別の荷物があるときは動かせません。<br>
-                ・<b>すり抜け不可</b>：犬が壁や荷物を通り抜けることはできません。<br>
+                ・<b>すり抜け不可</b>：犬がレンガの壁（<img src="../img/renga.png" class="inline_icon" alt="壁">）や荷物を通り抜けることはできません。<br>
 
                 <div class="section_title">3. いろいろな遊び方・攻略のコツ</div>
                 ・<b>壁の隅（角）に押し込まない</b>：置き場所ではない角（2方向が壁の場所）に荷物を押し込んでしまうと、二度と動かせなくなり手詰まりになります。<br>
-                ・<b>奥の置き場所から順番に詰める</b>：手前の置き場所を先に塞いでしまうと奥へ運べなくなるため、ゴールからゴールの順番（逆算）で考えると解きやすくなります。<br>
+                ・<b>奥の置き場所から順番に詰める</b>：手前の置き場所を先に塞いでしまうと奥へ運べなくなるため、ゴールの順番（逆算）で考えると解きやすくなります。<br>
                 ・<b>問題番号を変えて挑戦</b>：上のプルダウンから問題を切り替えて、より荷物が多い難問にも挑戦してみましょう。<br>
 
                 <div class="section_title">4. 画面の見方とボタン</div>
