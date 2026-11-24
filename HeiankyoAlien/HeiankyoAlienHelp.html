@@ -20,6 +20,21 @@
             padding: 3px 8px;
             margin: 14px 0 6px 0;
         }
+        /* 本文中のインライン画像アイコン */
+        .inline_icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
+        .inline_icon_sm {
+            width: 13px;
+            height: 13px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
         /* 操作キー一覧テーブル */
         .key_table {
             border-collapse: collapse;
@@ -66,27 +81,35 @@
             padding: 0;
             position: relative;
         }
+        /* ミニ盤面内の画像サイズ調整 */
+        .mini_heian td img {
+            width: 28px;
+            height: 28px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        /* 穴に落ちたゾンビの重ね表示 */
+        .mini_heian td img.hole_bg {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 28px;
+            height: 28px;
+            z-index: 1;
+        }
+        .mini_heian td img.zombi_in {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            z-index: 2;
+        }
+        /* レンガ壁（視認性重視のCSS表現） */
         .mini_heian td.wall {
             background-color: #b7410e;
             background-image: linear-gradient(335deg, rgba(255,255,255,0.2) 2px, transparent 2px),
                               linear-gradient(155deg, rgba(255,255,255,0.2) 2px, transparent 2px);
             background-size: 16px 16px;
             border-color: #7f2a06;
-        }
-        /* 穴の表現 */
-        .hole_circle {
-            display: inline-block;
-            border-radius: 50%;
-            background: radial-gradient(circle, #111 55%, #5d4037 100%);
-            vertical-align: middle;
-        }
-        .hole_sm { width: 14px; height: 14px; }
-        .hole_max {
-            width: 28px;
-            height: 28px;
-            line-height: 28px;
-            font-size: 15px;
-            color: #fff;
         }
         .arrow {
             font-size: 16px;
@@ -112,7 +135,7 @@
         </tr>
         <tr>
             <td id="explanation">
-                守り犬（🐶）を操作して、迷路をうろつく<b>ゾンビ犬（🧟）</b>を「穴を掘って埋める」ことで全滅させるアクションパズルゲームです！<br>
+                守り犬（<img src="../img/dog_front.png" class="inline_icon" alt="守り犬">）を操作して、迷路をうろつく<b>ゾンビ犬（<img src="../img/zombie_dog.png" class="inline_icon" alt="ゾンビ犬">）</b>を「穴を掘って埋める」ことで全滅させるアクションパズルゲームです！<br>
 
                 <div class="section_title">1. 操作方法（キーボード・画面ボタン）</div>
                 <table class="key_table">
@@ -151,28 +174,43 @@
                 <div class="board_wrap">
                     <table class="mini_heian">
                         <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
-                        <tr><td>🐶</td><td><span class="hole_circle hole_max"></span></td><td>🧟</td></tr>
+                        <tr>
+                            <td><img src="../img/dog_right.png" alt="守り犬"></td>
+                            <td><img src="../img/hole.png" alt="最大の穴"></td>
+                            <td><img src="../img/zombie_dog.png" alt="ゾンビ犬"></td>
+                        </tr>
                         <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
                     </table>
                     <div class="arrow">➡<br><span style="font-size: 11px;">穴に落ちる</span></div>
                     <table class="mini_heian">
                         <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
-                        <tr><td>🐶</td><td><span class="hole_circle hole_max">🧟</span></td><td></td></tr>
+                        <tr>
+                            <td><img src="../img/dog_right.png" alt="守り犬"></td>
+                            <td>
+                                <img src="../img/hole.png" class="hole_bg" alt="最大の穴">
+                                <img src="../img/zombie_dog.png" class="zombi_in" alt="落ちたゾンビ犬">
+                            </td>
+                            <td></td>
+                        </tr>
                         <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
                     </table>
                     <div class="arrow">➡<br><span style="font-size: 11px;">Zを5回で埋める</span></div>
                     <table class="mini_heian">
                         <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
-                        <tr><td>🐶</td><td style="color:#d32f2f;font-size:12px;font-weight:bold;">退治!</td><td></td></tr>
+                        <tr>
+                            <td><img src="../img/dog_right.png" alt="守り犬"></td>
+                            <td style="color:#d32f2f;font-size:12px;font-weight:bold;">退治!</td>
+                            <td></td>
+                        </tr>
                         <tr><td class="wall"></td><td class="wall"></td><td class="wall"></td></tr>
                     </table>
                 </div>
-                ・<b>穴の大きさ（5段階）</b>：<span class="key_badge">X</span> を5回押して<b>最大サイズ</b>にした穴にだけゾンビ犬が落ちます。1〜4段階目の小さな穴（<span class="hole_circle hole_sm"></span>）はゾンビ犬に踏まれると消えてしまいます。<br>
+                ・<b>穴の大きさ（5段階）</b>：<span class="key_badge">X</span> を5回押して<b>最大サイズ（<img src="../img/hole.png" class="inline_icon" alt="最大の穴">）</b>にした穴にだけゾンビ犬が落ちます。1〜4段階目の小さな穴（<img src="../img/hole.png" class="inline_icon_sm" alt="小さな穴">）はゾンビ犬に踏まれると消えてしまいます。<br>
                 ・<b>埋めて完全撃破</b>：穴に落としただけでは倒せません。<span class="key_badge">Z</span> を5回押して通路に戻すと退治完了です（早く埋めるほど高得点ボーナス！）。<br>
                 ・<b>脱出と救出に注意</b>：穴に落ちたゾンビ犬は約5秒たつと這い上がって復活します。また、他のゾンビ犬が接触すると一瞬で救出されてしまいます。<br>
 
                 <div class="section_title">3. ルール・攻略のコツ</div>
-                ・<b>自分の穴は通れない</b>：守り犬は大きさに関係なく穴の上を歩けないため、自分の退路を塞がないよう注意しましょう（同時に掘れる穴は<b>最大10個</b>で、時間経過でも自然に消えます）。<br>
+                ・<b>自分の穴は通れない</b>：守り犬は大きさに関係なく穴の上を歩けないため、レンガの壁（<img src="../img/renga.png" class="inline_icon" alt="壁">）との間で自分の退路を塞がないよう注意しましょう（同時に掘れる穴は<b>最大10個</b>で、時間経過でも自然に消えます）。<br>
                 ・<b>その場で向き変更（<span class="key_badge">A</span>/<span class="key_badge">S</span>）を活用</b>：行き止まりや角でゾンビ犬に追い詰められたときは、一歩も動かずに<span class="key_badge">A</span>/<span class="key_badge">S</span>で振り返って目の前に穴を掘るのがコツです。<br>
                 ・<b>残機（守り犬数）</b>：ゾンビ犬に触れると守り犬（初期3匹）が1匹減り、0になるとゲームオーバーです。ステージをクリアしても守り犬の数は回復しないので大切に戦いましょう。<br>
 
