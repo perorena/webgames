@@ -20,6 +20,14 @@
             padding: 3px 8px;
             margin: 14px 0 6px 0;
         }
+        /* 本文中のインライン画像アイコン */
+        .inline_icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
         /* HTMLだけで作るマインスイーパー盤面ミニ図解 */
         .board_wrap {
             display: flex;
@@ -30,6 +38,7 @@
         }
         .mini_board {
             border-collapse: collapse;
+            border: 2px solid #000;
         }
         .mini_board td {
             width: 34px;
@@ -39,6 +48,14 @@
             vertical-align: middle;
             font-weight: bold;
             font-size: 16px;
+            padding: 0;
+        }
+        /* ミニ盤面内の画像サイズ調整 */
+        .mini_board td img {
+            width: 28px;
+            height: 28px;
+            display: inline-block;
+            vertical-align: middle;
         }
         /* 未開マス（本編と同じ gray） */
         .mini_board td.closed {
@@ -51,12 +68,10 @@
         /* 旗マス */
         .mini_board td.flag {
             background-color: gray;
-            font-size: 15px;
         }
-        /* 地雷マス */
+        /* 地雷マス（本編の正解表示と同じ white） */
         .mini_board td.mine {
-            background-color: #ffebee;
-            font-size: 15px;
+            background-color: white;
         }
         /* 本編の colorName に合わせた数字の色 */
         .n1 { color: slategray; }
@@ -87,7 +102,7 @@
         </tr>
         <tr>
             <td id="explanation">
-                隠された地雷（💣）を踏まないように、数字をヒントにして<b>地雷のないすべてのマスを開く</b>推理パズルゲームです。<br>
+                隠された地雷（<img src="../img/jirai.png" class="inline_icon" alt="地雷">）を踏まないように、数字をヒントにして<b>地雷のないすべてのマスを開く</b>推理パズルゲームです。<br>
 
                 <div class="section_title">1. 基本ルール</div>
                 ・灰色のマスをクリック（タップ）するとマスが開きます。<br>
@@ -100,7 +115,7 @@
                     <table class="mini_board">
                         <tr>
                             <td class="open n1">1</td>
-                            <td class="flag">🚩</td>
+                            <td class="flag"><img src="../img/flag_rainbow.png" alt="旗"></td>
                             <td class="open n1">1</td>
                             <td class="open"></td>
                         </tr>
@@ -127,7 +142,7 @@
                     <table class="mini_board">
                         <tr>
                             <td class="open n1">1</td>
-                            <td class="mine">💣</td>
+                            <td class="mine"><img src="../img/jirai.png" alt="地雷"></td>
                             <td class="open n1">1</td>
                             <td class="open"></td>
                         </tr>
@@ -141,7 +156,7 @@
                             <td class="open"></td>
                             <td class="open"></td>
                             <td class="open n1">1</td>
-                            <td class="mine">💣</td>
+                            <td class="mine"><img src="../img/jirai.png" alt="地雷"></td>
                         </tr>
                         <tr>
                             <td class="open"></td>
@@ -152,10 +167,10 @@
                     </table>
                 </div>
                 <span style="font-size: 13px;">※周囲に地雷が1つもないマス（空白）を開くと、隣り合う安全なマスが一気に連鎖して開きます。<br>
-                ※地雷（💣）のマスを開いてしまうとゲームオーバーです。</span><br>
+                ※地雷（<img src="../img/jirai.png" class="inline_icon" alt="地雷">）のマスを開いてしまうとゲームオーバーです。</span><br>
 
-                <div class="section_title">2. 旗（🚩）の立て方・消し方</div>
-                ・地雷があると推理したマスには、目印として<b>「旗（🚩）」</b>を立てることができます。<br>
+                <div class="section_title">2. 旗（<img src="../img/flag_rainbow.png" class="inline_icon" alt="旗">）の立て方・消し方</div>
+                ・地雷があると推理したマスには、目印として<b>「旗（<img src="../img/flag_rainbow.png" class="inline_icon" alt="旗">）」</b>を立てることができます。<br>
                  <b>・パソコンの場合</b>：マスの上で<b>右クリック</b><br>
                  <b>・スマホ・タブレットの場合</b>：マスを<b>長押し</b>（0.2秒ほど押し続けて離す）<br>
                 ・旗が立っているマスは誤ってクリックしても開かないため、安全ストッパーになります。もう一度右クリック（または長押し）すると旗を消せます。<br>
