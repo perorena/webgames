@@ -1,0 +1,276 @@
+* { box-sizing: border-box; user-select: none; }
+body {
+  margin: 0;
+  background: #1e1e24;
+  color: #f5f6fa;
+  font-family: sans-serif;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 左側：ブロックパレット */
+#palette {
+  width: 290px;
+  flex-shrink: 0;
+  background: #2f3640;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-right: 2px solid #353b48;
+  z-index: 10;
+  overflow-y: auto;
+}
+#palette h2 { font-size: 16px; margin: 0; }
+.hint { font-size: 11px; color: #a4b0be; line-height: 1.38; margin: 0; }
+
+/* 各セクションの囲みボックス */
+.section-box {
+  background: #353b48;
+  padding: 8px 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #dcdde1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 1. 土台サイズ入力エリア */
+.size-inputs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.size-inputs input[type="number"] {
+  width: 54px;
+  background: #2f3640;
+  color: #f5f6fa;
+  border: 1px solid #718093;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  text-align: center;
+}
+.size-inputs span {
+  font-size: 12px;
+  color: #a4b0be;
+}
+.size-inputs button {
+  flex: 1;
+  padding: 5px 8px;
+  font-size: 12px;
+  background: #0097e6;
+}
+.size-inputs button:hover {
+  background: #00a8ff;
+}
+
+/* 2. カラー選択グリッド */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+.color-btn {
+  height: 22px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.14);
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.28);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.color-btn:hover {
+  transform: scale(1.07);
+  z-index: 2;
+}
+.color-btn.active {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #00a8ff, inset 0 -3px 0 rgba(0,0,0,0.28);
+  transform: scale(1.04);
+}
+
+/* 3. ブロック形状選択＆ドラッグリスト（2列グリッドで見やすく整理） */
+.shape-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+.shape-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  background: #2f3640;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid #485460;
+  font-size: 11px;
+  transition: border-color 0.1s, background 0.1s;
+}
+.shape-item:hover {
+  border-color: #70a1ff;
+  background: #3d4654;
+}
+.shape-item.active {
+  border-color: #fbc531;
+  background: #404856;
+  font-weight: bold;
+  color: #fbc531;
+}
+.shape-item:active {
+  cursor: grabbing;
+}
+.shape-badge {
+  font-size: 9px;
+  background: #485460;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #dcdde1;
+}
+.shape-item.active .shape-badge {
+  background: #fbc531;
+  color: #1e1e24;
+}
+
+/* ブロックの向き（0°/90°/180°/270°）表示バー */
+.dir-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+}
+.dir-indicator {
+  font-size: 11px;
+  color: #fbc531;
+  font-weight: bold;
+}
+
+/* 4. お城プリセットボタン */
+button.preset-jp { background: #8c7ae6; padding: 6px 8px; }
+button.preset-jp:hover { background: #9c88ff; }
+button.preset-eu { background: #0097e6; padding: 6px 8px; }
+button.preset-eu:hover { background: #00a8ff; }
+
+/* コントロールボタン */
+.controls {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 2px;
+}
+.btn-row {
+  display: flex;
+  gap: 6px;
+}
+.btn-row button {
+  flex: 1;
+}
+button {
+  background: #40739e;
+  color: white;
+  border: none;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  transition: background 0.15s, opacity 0.15s;
+}
+button:hover:not(:disabled) { background: #487eb0; }
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+button.sub { background: #576574; padding: 4px 8px; font-size: 11px; }
+button.sub:hover { background: #8395a7; }
+button.undo { background: #718093; }
+button.undo:hover:not(:disabled) { background: #7f8fa6; }
+button.save { background: #44bd32; }
+button.save:hover { background: #4cd137; }
+button.load { background: #e1b12c; color: #1e1e24; }
+button.load:hover { background: #fbc531; }
+button.danger { background: #c23616; }
+button.danger:hover { background: #e84118; }
+
+/* 右側：キャンバスエリア */
+#workspace {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+canvas {
+  max-width: 100%;
+  max-height: 100%;
+  background: #2b2d42;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  cursor: crosshair;
+}
+
+/* キャンバス右上のズーム操作HUD */
+#zoom-hud {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+  background: rgba(47, 54, 64, 0.92);
+  border: 1px solid #485460;
+  border-radius: 8px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  z-index: 5;
+}
+#zoom-hud button {
+  padding: 4px 9px;
+  font-size: 12px;
+  background: #40739e;
+  border-radius: 5px;
+}
+#zoom-hud button.reset-btn {
+  background: #576574;
+  font-size: 11px;
+}
+#zoom-hud button.reset-btn:hover {
+  background: #718093;
+}
+#zoom-level-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #fbc531;
+  min-width: 44px;
+  text-align: center;
+}
+
+/* ドラッグ追従ラベル */
+#drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #1e1e24;
+  background: #ffffff;
+  display: none;
+  transform: translate(12px, 12px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 100;
+}
