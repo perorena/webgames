@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>バニラJS ミニブロック・ビルダー（最大64×64・ズーム＆視点移動対応）</title>
+  <link rel="stylesheet" href="MiniBlock.css">
+</head>
+<body>
+
+  <!-- 左側パレット -->
+  <div id="palette">
+    <h2>ミニブロック・ビルダー</h2>
+    <p class="hint">
+      <b>左クリック / D&D</b>：配置・削除（消しゴム選択時）<br>
+      <b>ホイール</b>：拡大縮小 ｜ <b>中ドラッグ / Space+ドラッグ</b>：移動<br>
+      <b>[Rキー]</b> パーツの回転 ｜ <b>[Ctrl+Z]</b> 元に戻す
+    </p>
+
+    <!-- 1. 土台サイズ（最大64×64対応） -->
+    <div class="section-box">
+      <div class="section-title"><span>1. 土台サイズ（4〜64）</span></div>
+      <div class="size-inputs">
+        <input type="number" id="input-grid-x" value="16" min="4" max="64">
+        <span>×</span>
+        <input type="number" id="input-grid-z" value="16" min="4" max="64">
+        <button id="btn-apply-size">適用</button>
+      </div>
+    </div>
+
+    <!-- 2. カラー選択グリッド（日本城・海外城向け17色） -->
+    <div class="section-box">
+      <div class="section-title">
+        <span>2. カラー（17色）</span>
+        <span id="selected-color-name" style="color:#70a1ff;">漆喰ホワイト</span>
+      </div>
+      <div class="color-grid" id="color-grid"></div>
+    </div>
+
+    <!-- 3. パーツ形状（日本城・海外城向け全15種＋削除） -->
+    <div class="section-box">
+      <div class="section-title">
+        <span>3. パーツ形状（15種）</span>
+      </div>
+      <div class="dir-row">
+        <button type="button" id="btn-block-dir" class="sub">向き回転 (R)</button>
+        <span class="dir-indicator" id="dir-label">現在の向き: 手前右 (0°)</span>
+      </div>
+      <div class="shape-list" id="shape-list"></div>
+    </div>
+
+    <!-- 4. お城プリセット（完成サンプル一発呼び出し） -->
+    <div class="section-box">
+      <div class="section-title"><span>4. お城プリセット（サンプル）</span></div>
+      <div class="btn-row">
+        <button type="button" id="btn-preset-jp" class="preset-jp">🏯 日本城</button>
+        <button type="button" id="btn-preset-eu" class="preset-eu">🏰 西洋城</button>
+      </div>
+    </div>
+
+    <!-- 操作・セーブ＆ロード -->
+    <div class="controls">
+      <div class="btn-row">
+        <button id="btn-undo" class="undo" disabled>元に戻す</button>
+        <button id="btn-rotate">視点を90度回転</button>
+      </div>
+      <div class="btn-row">
+        <button id="btn-save" class="save">JSON保存</button>
+        <button id="btn-load" class="load">JSON読込</button>
+      </div>
+      <input type="file" id="file-input" accept=".json,application/json" style="display: none;">
+      <button id="btn-clear" class="danger">すべてクリア</button>
+    </div>
+  </div>
+
+  <!-- 右側キャンバス -->
+  <div id="workspace">
+    <!-- ズーム操作UI -->
+    <div id="zoom-hud">
+      <button type="button" id="btn-zoom-out" title="縮小">−</button>
+      <span id="zoom-level-text">100%</span>
+      <button type="button" id="btn-zoom-in" title="拡大">＋</button>
+      <button type="button" id="btn-zoom-reset" class="reset-btn" title="倍率と位置を初期化">リセット</button>
+    </div>
+
+    <canvas id="canvas" width="840" height="660"></canvas>
+  </div>
+
+  <!-- ドラッグ追従ラベル -->
+  <div id="drag-ghost"></div>
+
+  <script src="MiniBlock.js"></script>
+</body>
+</html>
 
